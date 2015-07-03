@@ -8,13 +8,13 @@ mainApp.config(['$routeProvider', function ($routeProvider)
     {
         $routeProvider.when ('/home',
             {
-                controller: 'homeController',
+                controller: 'HomeController',
                 templateUrl: 'views/home.html'
             }
         ).
             when ('/resume',
             {
-                controller: 'homeController',
+                controller: 'HomeController',
                 templateUrl: 'views/resume.html'
             }
         ).
