@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Tyler Southmayd</title>
+
+        <!-- Stylesheets -->
+        <link rel = "stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel = "stylesheet" type="text/css" href="css/style.css">
+        <!-- Stylesheets -->
+    </head>
+    <body ng-app="mainApp">
+        <div ng-include src="'partials/header.html'"></div>
+
+        <div class = "container">
+            <ng-view></ng-view>
+        </div>
+
+        <!-- JavaScript Libraries -->
+        <script type = "text/javascript" src = "js/lib/jquery-2.1.1.min.js"></script>
+        <script type = "text/javascript" src = "js/lib/bootstrap.js"></script>
+        <script type = "text/javascript" src = "js/lib/angular.min.js"></script>
+        <script type = "text/javascript" src = "js/lib/angular-route.min.js"></script>
+        <script type = "text/javascript" src = "js/lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
+        <!-- JavaScript Libraries -->
+
+        <!-- Angular App/Controllers -->
+        <script type = "text/javascript" src = "js/mainApp.js"></script>
+        <script type = "text/javascript" src = "js/controller/homeController.js"></script>
+        <!-- Angular App/Controllers -->
+    </body>
+</html>
