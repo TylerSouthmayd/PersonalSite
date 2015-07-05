@@ -5,5 +5,11 @@ mainApp.controller('HomeController', HomeController);
 
 function HomeController($scope)
 {
-    $scope.test = 'controllertest';
+    $scope.showNav = true;
+
+    $scope.toggleNav = function()
+    {
+        $scope.showNav = !$scope.showNav;
+    };
+
 }

@@ -1,0 +1,76 @@
+/*@media (min-width: 992px) {*/
+    /*body {*/
+        /*padding-left: 0px;*/
+    /*}*/
+/*}*/
+
+.main-container
+{
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.top-section
+{
+    /*background-color: gray;*/
+    /*background: no-repeat center center;*/
+    /*background-attachment: scroll;*/
+    /*-webkit-background-size: cover;*/
+    /*-moz-background-size: cover;*/
+    /*background-size: cover;*/
+    /*-o-background-size: cover;*/
+    /*margin-bottom: 50px;*/
+    padding: 0 !important;
+    margin: 0 !important;
+    background-image: url("../img/WhiteTilesAtop.png");
+    height:300px;
+}
+.side-bar
+{
+    background-color: green;
+    /*-webkit-transition: 2s linear;*/
+    /*to only change opacity*/
+    /*-webkit-transition: opacity 1s linear*/
+    /*-moz-transition: 2s linear;*/
+    /*-o-transition: 2s linear;*/
+    /*transition: 2s linear;*/
+    opacity: 1;
+    height: 700px;
+    border: 5px solid black;
+}
+.header-text
+{
+    color: white;
+}
+
+.foo
+{
+    background-color: blue;
+    opacity: 0;
+}
+
+.col-sm-12-add,.col-sm-12-remove {
+    transition: 300ms linear all;
+}
+
+.col-sm-12,.col-sm-12-add.col-sm-12-add-active {
+    font-size:3em;
+
+    color:white;
+}
+
+
+.col-sm-12-remove.col-sm-12-remove-active {
+
+    font-size:1em;
+}
+
+.custom .navbar.navbar-fixed-top .navbar-inner{
+    background: rgba(255, 255, 255, 1);
+}
+
+.navbar .navbar-collapse .nav .nav-item:hover,
+.navbar .navbar-collapse .nav .nav-item:focus
+{
+    background-color: transparent;
+}

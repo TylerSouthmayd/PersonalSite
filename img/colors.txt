@@ -1,0 +1,2 @@
+DarkMosaic - #5a6399
+WhiteTiles - #5a6399 - 3/4 intensity - 3/4 noise

@@ -1,7 +1,7 @@
 /**
  * Created by Tyler on 7/2/2015.
  */
-var mainApp = angular.module('mainApp',['ngRoute']);
+var mainApp = angular.module('mainApp',['ngRoute', 'ngAnimate']);
     //['ngRoute', 'ui.bootstrap']);
 
 mainApp.config(['$routeProvider', function ($routeProvider)

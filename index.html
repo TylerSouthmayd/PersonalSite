@@ -1,32 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="mainApp">
     <head lang="en">
         <meta charset="UTF-8">
         <title>Tyler Southmayd</title>
 
         <!-- Stylesheets -->
         <link rel = "stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel = "stylesheet" type="text/css" href="css/jasny-bootstrap.css">
         <link rel = "stylesheet" type="text/css" href="css/style.css">
         <!-- Stylesheets -->
     </head>
-    <body ng-app="mainApp">
-        <div ng-include src="'partials/header.html'"></div>
+    <body onload="">
 
-        <div class = "container">
-            <ng-view></ng-view>
-        </div>
+        <div ng-include src="'partials/navigation.html'"></div>
 
+        <ng-view></ng-view>
+
+        <!--<button class="btn btn-sm" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body" data-autohide="false">Toggle</button>-->
         <!-- JavaScript Libraries -->
         <script type = "text/javascript" src = "js/lib/jquery-2.1.1.min.js"></script>
         <script type = "text/javascript" src = "js/lib/bootstrap.js"></script>
-        <script type = "text/javascript" src = "js/lib/angular.min.js"></script>
+        <script type = "text/javascript" src = "js/lib/jasny-bootstrap.js"></script>
+        <script type = "text/javascript" src = "js/lib/angular.js"></script>
         <script type = "text/javascript" src = "js/lib/angular-route.min.js"></script>
+        <script type = "text/javascript" src = "js/lib/angular-animate.js"></script>
         <script type = "text/javascript" src = "js/lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
+        <script type = "text/javascript" src = "js/init.js"></script>
         <!-- JavaScript Libraries -->
 
         <!-- Angular App/Controllers -->
         <script type = "text/javascript" src = "js/mainApp.js"></script>
         <script type = "text/javascript" src = "js/controller/homeController.js"></script>
+        <script type = "text/javascript" src = "js/controller/navigationController.js"></script>
         <!-- Angular App/Controllers -->
+
     </body>
 </html>
