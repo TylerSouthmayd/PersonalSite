@@ -8,8 +8,8 @@ mainApp.config(['$routeProvider', function ($routeProvider)
     {
         $routeProvider.when ('/home',
             {
-                controller: 'HomeController',
-                templateUrl: 'views/home.html'
+                controller: 'TerminalController',
+                templateUrl: 'partials/terminal.html'
             }
         ).
             when ('/resume',

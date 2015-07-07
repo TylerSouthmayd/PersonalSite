@@ -43,28 +43,6 @@
     color: white;
 }
 
-.foo
-{
-    background-color: blue;
-    opacity: 0;
-}
-
-.col-sm-12-add,.col-sm-12-remove {
-    transition: 300ms linear all;
-}
-
-.col-sm-12,.col-sm-12-add.col-sm-12-add-active {
-    font-size:3em;
-
-    color:white;
-}
-
-
-.col-sm-12-remove.col-sm-12-remove-active {
-
-    font-size:1em;
-}
-
 .custom .navbar.navbar-fixed-top .navbar-inner{
     background: rgba(255, 255, 255, 1);
 }
@@ -73,4 +51,96 @@
 .navbar .navbar-collapse .nav .nav-item:focus
 {
     background-color: transparent;
+}
+
+.black-terminal
+{
+    background-color: darkgray;
+    border-radius: 10px;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.8);
+    margin-top: 20px;
+    color:white;
+}
+
+.curve-top-border
+{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.curve-bottom-border
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.terminal-head
+{
+    background: #333333
+}
+.terminal-body
+{
+    background: #5E2750;
+    min-height: 350px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/*.terminal-shell*/
+/*{*/
+    /*background: inherit;*/
+    /*border: none !important;*/
+    /*resize:none;*/
+    /*margin:0 !important;*/
+/*}*/
+
+.terminal-history:focus,
+.terminal-command-line:focus
+{
+    outline-width: 0;
+}
+
+/*.terminal-command-line*/
+/*{*/
+    /*background: inherit;*/
+    /*border: none !important;*/
+    /*margin:0 !important;*/
+    /*resize:none;*/
+/*}*/
+
+.terminal-command-line
+{
+    background: inherit;
+    width: 85%;
+    height: inherit;
+    margin: 0 !important;
+    border: none !important;
+}
+
+.terminal-command-line-label
+{
+
+    width: 15%;
+    height: inherit;
+    background: inherit;
+    margin: 0 !important;
+    border: none !important;
+}
+
+/*.terminal-row*/
+/*{*/
+    /*width:inherit;*/
+/*}*/
+.terminal-text-area
+{
+    resize: none;
+    width: inherit;
+    height: inherit;
+    margin: 0 !important;
+    border: none !important;
+    background: inherit;
+}
+.terminal-text
+{
+    font-family: Ubuntu;
+    font-size: 16px;
 }
