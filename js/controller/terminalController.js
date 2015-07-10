@@ -3,7 +3,7 @@
  */
 mainApp.controller('TerminalController', TerminalController);
 
-function TerminalController($scope, $timeout)
+function TerminalController($scope, $timeout, $location)
 {
     $scope.user = 'visitor';
     $scope.terminalBody = '';
@@ -13,7 +13,7 @@ function TerminalController($scope, $timeout)
     $scope.commands = [
         {
             "command" : "cd",
-            "args" : []
+            "args" : ["resume", "home"]
         },
         {
             "command" : "ls",
@@ -22,6 +22,10 @@ function TerminalController($scope, $timeout)
         {
             "command" : "view",
             "views" : ["resume", "home"],
+            "args" : []
+        },
+        {
+            "command" : "clear",
             "args" : []
         }];
 
@@ -48,9 +52,9 @@ function TerminalController($scope, $timeout)
     function executeCommand()
     {
         $scope.commandParts = ($scope.command).split(" ");
+        $scope.terminalBody += '\r\n';
         if (checkValidity($scope.commandParts))
         {
-            $scope.terminalBody += '\r\n&#10';
             if($scope.commandParts[0] === "ls")
             {
                 console.log($scope.commands[2].views[i]);
@@ -62,14 +66,20 @@ function TerminalController($scope, $timeout)
 
             } else if ($scope.commandParts[0] === "cd")
             {
-
+                $location.path('/' + $scope.commandParts[1]);
             } else if ($scope.commandParts[0] === "view")
             {
                 if ($scope.commandParts[1] === "resume")
                 {
                     //todo
                 }
+            } else if ($scope.commandParts[0] === "clear")
+            {
+                $scope.terminalBody = '';
             }
+        } else
+        {
+            $scope.terminalBody += 'Invalid Command: ' + $scope.commandParts[0];
         }
     }
 
@@ -108,7 +118,7 @@ function TerminalController($scope, $timeout)
 
     $scope.init = function()
     {
-        var introText = 'ofte) at the same to work on the same documents (often code) at the same time, and without stepping';
+        var introText = 'Hello. Welcome to my site \ntest';
         addLineWithCharDelay(introText,5);
         $timeout(function()
         {

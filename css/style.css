@@ -4,6 +4,10 @@
     /*}*/
 /*}*/
 
+body {
+    background-image: url("../img/bg.jpg");
+}
+
 .main-container
 {
     padding: 0 !important;
@@ -81,7 +85,7 @@
 {
     background: #5E2750;
     min-height: 350px;
-    max-height: 400px;
+    max-height: 4000px;
     overflow-y: auto;
 }
 
@@ -132,9 +136,10 @@
 /*}*/
 .terminal-text-area
 {
-    resize: none;
     width: inherit;
-    height: inherit;
+    min-height:50px;
+    max-height:500px;
+    resize:none;
     margin: 0 !important;
     border: none !important;
     background: inherit;
