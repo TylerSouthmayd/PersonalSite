@@ -1,15 +1,15 @@
 /**
  * Created by Tyler on 7/2/2015.
  */
-var mainApp = angular.module('mainApp',['ngRoute', 'ngAnimate']);
+var mainApp = angular.module('mainApp',['ui.bootstrap','ngRoute', 'ngAnimate']);
     //['ngRoute', 'ui.bootstrap']);
 
 mainApp.config(['$routeProvider', function ($routeProvider)
     {
         $routeProvider.when ('/home',
             {
-                controller: 'TerminalController',
-                templateUrl: 'partials/terminal.html'
+                controller: 'HomeController',
+                templateUrl: 'views/home.html'
             }
         ).
             when ('/resume',

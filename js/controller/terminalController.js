@@ -7,9 +7,11 @@ function TerminalController($scope, $timeout, $location)
 {
     $scope.user = 'visitor';
     $scope.terminalBody = '';
+    $scope.path = '/home'
     $scope.command = '';
     $scope.commandParts = [];
     $scope.readyForInput = false;
+    $scope.showTerminal = true;
     $scope.commands = [
         {
             "command" : "cd",
@@ -52,21 +54,24 @@ function TerminalController($scope, $timeout, $location)
     function executeCommand()
     {
         $scope.commandParts = ($scope.command).split(" ");
-        $scope.terminalBody += '\r\n';
+        if($scope.terminalBody !== '') $scope.terminalBody += '\r\n';
         if (checkValidity($scope.commandParts))
         {
             if($scope.commandParts[0] === "ls")
             {
                 console.log($scope.commands[2].views[i]);
+                $scope.terminalBody += 'Navigate to: \n\t'
                 for(var i = 0; i < $scope.commands[2].views.length; i++)
                 {
                     console.log($scope.commands[2].views[i])
                     $scope.terminalBody += $scope.commands[2].views[i] + ' ';
                 }
+                $scope.terminalBody += '\nusing the \'cd\' command.';
 
             } else if ($scope.commandParts[0] === "cd")
             {
-                $location.path('/' + $scope.commandParts[1]);
+                $scope.path = '/' + $scope.commandParts[1];
+                $location.path($scope.path);
             } else if ($scope.commandParts[0] === "view")
             {
                 if ($scope.commandParts[1] === "resume")
@@ -76,11 +81,13 @@ function TerminalController($scope, $timeout, $location)
             } else if ($scope.commandParts[0] === "clear")
             {
                 $scope.terminalBody = '';
+                $scope.terminalBody = $scope.terminalBody.slice(0, $scope.terminalBody.length - 1);
             }
         } else
         {
             $scope.terminalBody += 'Invalid Command: ' + $scope.commandParts[0];
         }
+
     }
 
     function checkValidity(inputArray)
@@ -97,6 +104,7 @@ function TerminalController($scope, $timeout, $location)
                 if (piece == cmd.command)
                 {
                     isValid = true;
+                    break;
                 }
             }
         }
@@ -114,16 +122,21 @@ function TerminalController($scope, $timeout, $location)
 
     };
 
+    $scope.determineTerminalPosition = function()
+    {
+
+    };
 
 
     $scope.init = function()
     {
-        var introText = 'Hello. Welcome to my site \ntest';
-        addLineWithCharDelay(introText,5);
+        var introText = 'Hello, I\'m Tyler Southmayd. Welcome to my personal website.                          \n';
+        introText += 'You have control over the website through this terminal, type \"help pseubuntu\" for more information.'
+        addLineWithCharDelay(introText,15);
         $timeout(function()
         {
             $scope.readyForInput = true;
-        }, introText.length*5);
+        }, introText.length*15);
     };
 
     $scope.init();

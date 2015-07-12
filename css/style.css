@@ -5,7 +5,7 @@
 /*}*/
 
 body {
-    background-image: url("../img/bg.jpg");
+    /*background-image: url("../img/bg.jpg");*/
 }
 
 .main-container
@@ -26,7 +26,7 @@ body {
     /*margin-bottom: 50px;*/
     padding: 0 !important;
     margin: 0 !important;
-    background-image: url("../img/WhiteTilesAtop.png");
+    /*background-image: url("../img/WhiteTilesAtop.png");*/
     height:300px;
 }
 .side-bar
@@ -84,18 +84,10 @@ body {
 .terminal-body
 {
     background: #5E2750;
-    min-height: 350px;
-    max-height: 4000px;
+    min-height: 200px;
+    max-height: 350px;
     overflow-y: auto;
 }
-
-/*.terminal-shell*/
-/*{*/
-    /*background: inherit;*/
-    /*border: none !important;*/
-    /*resize:none;*/
-    /*margin:0 !important;*/
-/*}*/
 
 .terminal-history:focus,
 .terminal-command-line:focus
@@ -103,18 +95,10 @@ body {
     outline-width: 0;
 }
 
-/*.terminal-command-line*/
-/*{*/
-    /*background: inherit;*/
-    /*border: none !important;*/
-    /*margin:0 !important;*/
-    /*resize:none;*/
-/*}*/
-
 .terminal-command-line
 {
     background: inherit;
-    width: 85%;
+    width: 80%;
     height: inherit;
     margin: 0 !important;
     border: none !important;
@@ -123,25 +107,22 @@ body {
 .terminal-command-line-label
 {
 
-    width: 15%;
+    width: 20%;
     height: inherit;
     background: inherit;
     margin: 0 !important;
     border: none !important;
 }
 
-/*.terminal-row*/
-/*{*/
-    /*width:inherit;*/
-/*}*/
 .terminal-text-area
 {
     width: inherit;
-    min-height:50px;
-    max-height:500px;
+    min-height:25px;
+    max-height:300px;
     resize:none;
     margin: 0 !important;
     border: none !important;
+    outline: none;
     background: inherit;
 }
 .terminal-text
