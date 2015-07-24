@@ -3,7 +3,10 @@
         /*padding-left: 0px;*/
     /*}*/
 /*}*/
+html
+{
 
+}
 body {
     /*background-image: url("../img/bg.jpg");*/
 }
@@ -13,7 +16,23 @@ body {
     padding: 0 !important;
     margin: 0 !important;
 }
-
+.btn-custom
+{
+    background-color: hsl(331, 64%, 17%) !important;
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ab2566", endColorstr="#470f2a");
+    background-image: -khtml-gradient(linear, left top, left bottom, from(#ab2566), to(#470f2a));
+    background-image: -moz-linear-gradient(top, #ab2566, #470f2a);
+    background-image: -ms-linear-gradient(top, #ab2566, #470f2a);
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ab2566), color-stop(100%, #470f2a));
+    background-image: -webkit-linear-gradient(top, #ab2566, #470f2a);
+    background-image: -o-linear-gradient(top, #ab2566, #470f2a);
+    background-image: linear-gradient(#ab2566, #470f2a);
+    border-color: #470f2a #470f2a hsl(331, 64%, 11%);
+    color: #fff !important;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.39);
+    -webkit-font-smoothing: antialiased;
+}
 .top-section
 {
     /*background-color: gray;*/
