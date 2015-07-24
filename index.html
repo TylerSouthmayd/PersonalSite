@@ -14,10 +14,14 @@
     <body>
 
         <!--<div ng-include src="'partials/navigation.html'"></div>-->
+        <div class="container">
+            <ng-view></ng-view>
+            <terminal></terminal>
+            <!--<div ng-include src="'partials/terminal.html'"></div>-->
+        </div>
 
-        <ng-view></ng-view>
 
-        <div ng-include src="'partials/terminal.html'"></div>
+
 
         <!--<button class="btn btn-sm" data-toggle="offcanvas" data-target=".navmenu" data-canvas="body" data-autohide="false">Toggle</button>-->
         <!-- JavaScript Libraries -->
@@ -38,7 +42,13 @@
         <script type = "text/javascript" src = "js/controller/navigationController.js"></script>
         <script type = "text/javascript" src = "js/controller/terminalController.js"></script>
         <script type = "text/javascript" src = "js/directive/scrollToBottom.js"></script>
+        <script type = "text/javascript" src = "js/directive/terminal.js"></script>
         <!-- Angular App/Controllers -->
 
+        <script>
+            $('body').keyup(function (event) {
+                console.log(event.keyCode);
+            });
+        </script>
     </body>
 </html>

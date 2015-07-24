@@ -1,25 +1,38 @@
-<div class="navbar navbar-fixed-bottom" ng-controller="TerminalController">
-    <div collapse="!showTerminal">
-        <div class="container curve-border" is-open="false">
-            <div ng-controller="TerminalController" class="black-terminal">
-                <div class="row terminal-head curve-top-border">
-                    <div class="col-sm-12 terminal-text">
-                        {{user}}@pseubuntu
-                    </div>
+<div class="navbar" ng-class="{'navbar-fixed-top': showTop, 'navbar-fixed-bottom': !showTop}">
+    <div class="row">
+        <div class="col-sm-2 col-sm-offset-8">
+            <div class = "text-center">
+                <div class="btn btn-sm btn-custom" ng-click="toggleTerminal();">
+                    Toggle Terminal <span class="glyphicon glyphicon-sort text-danger"></span>
                 </div>
-                <div class="row terminal-body">
-                    <div class="col-sm-12 terminal-shell">
-                        <div class="row word-wrap">
-                            <div class="col-sm-12">
-                                <textarea show-end-text class="terminal-text terminal-text-area" ng-model="terminalBody"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 curve-border">
+            <div class="" collapse="!showTerminal">
+                <div is-open="false">
+                    <div class="black-terminal">
+                        <div class="row terminal-head curve-top-border">
+                            <div class="col-sm-12 terminal-text">
+                                {{user}}@pseubuntu
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12 terminal-text terminal-row" ng-show="readyForInput">
-                                <span class="terminal-command-line-label">
-                                    {{user}}@pseubuntu{{path}}:
-                                </span>
-                                <input type="text" class="terminal-command-line test" ng-model="command"  ng-keypress="captureKeyPress($event);" maxlength="100"/>
+                        <div class="row terminal-body">
+                            <div class="col-sm-12 terminal-shell">
+                                <div class="row word-wrap">
+                                    <div class="col-sm-12">
+                                        <textarea show-end-text class="terminal-text terminal-text-area" ng-model="terminalBody"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 terminal-text" ng-show="readyForInput">
+                                        <span class="terminal-command-line-label">
+                                            {{user}}@pseubuntu{{path}}:
+                                        </span>
+                                        <input type="text" class="terminal-command-line test" ng-model="command"  ng-keypress="captureKeyPress($event);" maxlength="100"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -27,6 +40,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <script type = "text/javascript" src = "../js/terminalInit.js"></script>

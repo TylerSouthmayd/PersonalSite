@@ -11,6 +11,11 @@ class Argument {
     private $name = 'test';
     private $command;
 
+    function __construct()
+    {
+
+    }
+
     public function setName($newName)
     {
         $this->$name = $newName;
@@ -21,6 +26,3 @@ class Argument {
         return $this->$name;
     }
 }
-
-$test = new Argument();
-echo $test->getName();
