@@ -6,23 +6,44 @@
  * Time: 11:10 AM
  */
 
-class Argument {
+require_once("../SQLUtil.php");
 
-    private $name = 'test';
+class Argument extends SQLUtil {
+
+    const TABLE = "argument";
+
+    private $name;
     private $command;
 
-    function __construct()
+    function __construct($name, $command)
     {
-
+        parent::__construct();
+        $this->name = $name;
+        $this->command = $command;
     }
 
-    public function setName($newName)
+    public static function getAllArguments()
     {
-        $this->$name = $newName;
+        $dbutil = new SQLUtil();
+
+        $res = $dbutil->selectAllFromTable(self::TABLE);
+        $retArr = parent::interpretQueryResponse($res);
+        return $retArr;
     }
 
-    public function getName()
+    public static function getArgumentByName($name)
     {
-        return $this->$name;
+        $dbutil = new SQLUtil();
+        $where = "name = " . "\"" . $name . "\"";
+
+        $res = $dbutil->selectAllFromTableWhere(self::TABLE, $where);
+        $retArr = parent::interpretQueryResponse($res);
+        return $retArr;
     }
+
+    public function setName($newName) { $this->name = $newName; }
+    public function getName() { return $this->name; }
+
+    public function setCommand($cmd) { $this->command = $cmd; }
+    public function getCommand() { return $this->command; }
 }

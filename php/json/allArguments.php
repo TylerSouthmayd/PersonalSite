@@ -6,14 +6,13 @@
  * Time: 2:04 AM
  */
 
-include '../connect.php';
+require_once("../objects/Argument.php");
+$json = null;
+$args = Argument::getAllArguments();
 
-$sql = "SELECT id, name FROM command";
-$result = $conn->query($sql);
-if ($result->num_rows > 0)
+if($args != false)
 {
-    while($row = $result->fetch_assoc()) {
-        echo "id: " . $row["id"]. " - name: " . $row["name"]. "<br>";
-    }
-}
-$conn->close();
+    $json = array('data' => $args);
+} else $json = "Error getting all arguments.";
+
+echo json_encode($json);
