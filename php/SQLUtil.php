@@ -46,7 +46,7 @@ class SQLUtil
         } else
         {
             $retArr['error'] = true;
-            $retArr['errorMessage'] = mysql_error($this->conn);
+            //$retArr['errorMessage'] = mysql_error($this->conn);
         }
         return $retArr;
     }
@@ -62,7 +62,7 @@ class SQLUtil
             }
             return $data;
         }
-        return false;
+        return $result;
     }
 
     public function selectAllFromTable($table)
@@ -84,4 +84,13 @@ class SQLUtil
         $retArr = $this->handleQueryResult($result);
         return $retArr;
     }
+
+    public function executeSql($sql)
+    {
+        $result = $this->conn->query($sql);
+        $retArr = $this->handleQueryResult($result);
+        return $retArr;
+    }
+
+    public function getConnection() { return $this->conn; }
 }
