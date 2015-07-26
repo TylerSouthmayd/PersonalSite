@@ -12,9 +12,9 @@ class Option extends SQLUtil{
 
     private $name;
 
-    function __construct($name)
+    function __construct()
     {
-        $this->name = $name;
+        $this->name = '';
     }
 
     public function setName($newName) { $this->name = $newName; }

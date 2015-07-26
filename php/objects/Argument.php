@@ -15,18 +15,19 @@ class Argument extends SQLUtil {
     private $name;
     private $command;
 
-    function __construct($name, $command)
+    function __construct()
     {
         parent::__construct();
-        $this->name = $name;
-        $this->command = $command;
+        $this->name = '';
+        $this->command = '';
     }
 
     public static function getAllArguments()
     {
         $dbutil = new SQLUtil();
+        $sql = "SELECT C.name AS command_name, C.id AS command_id, A.name AS argument_name, A.id AS argument_id FROM command C, argument A WHERE A.command_id = C.id";
 
-        $res = $dbutil->selectAllFromTable(self::TABLE);
+        $res = $dbutil->executeSql($sql);
         $retArr = parent::interpretQueryResponse($res);
         return $retArr;
     }
