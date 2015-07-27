@@ -2,7 +2,7 @@
  * Created by Tyler on 7/23/2015.
  */
 angular.module('mainApp')
-.directive('terminal', function ()
+.directive('terminal', function (CommandDataSource)
 {
     var terminalSetup = [];
 
@@ -14,7 +14,7 @@ angular.module('mainApp')
         //console.log(scope, elem, attr);
     };
 
-    terminalSetup.controller = function($scope, $timeout, $location)
+    terminalSetup.controller = function($scope, $timeout, $location, CommandDataSource)
     {
         $scope.user = 'visitor';
         $scope.terminalBody = '';
@@ -24,30 +24,22 @@ angular.module('mainApp')
         $scope.readyForInput = false;
         $scope.showTerminal = true;
         $scope.showTop = false;
-        $scope.commands = [
-            {
-                "command" : "cd",
-                "args" : ["resume", "home"]
-            },
-            {
-                "command" : "ls",
-                "args" : []
-            },
-            {
-                "command" : "view",
-                "views" : ["resume", "home"],
-                "args" : []
-            },
-            {
-                "command" : "clear",
-                "args" : []
-            },
-            {
-                "command" : "move",
-                "element" : ["terminal"],
-                "args" : ["top", "bottom"]
-            }
-        ];
+        $scope.commands;
+
+        getCommands();
+        function getCommands()
+        {
+            CommandDataSource.getCommandStructure()
+                .success(function(commands)
+                {
+                    $scope.commands = commands.data;
+                    console.log('commands', $scope.commands);
+                })
+                .error(function(error){
+                    console.log("Failed to get commands from factory: " + error.message);
+                });
+        }
+
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -99,10 +91,12 @@ angular.module('mainApp')
 
         function ls()
         {
+            var info = getCommandByName("cd");
+
             newTerminalLine();
-            for(var i = 0; i < $scope.commands[2].views.length; i++)
+            for(var i = 0; i < info.arguments.length; i++)
             {
-                addLineNoDelay($scope.commands[2].views[i] + ' ');
+                addLineNoDelay(info.arguments[i].argument + ' ');
             }
         }
         function view()
@@ -122,6 +116,17 @@ angular.module('mainApp')
         {
             $scope.terminalBody = '';
             //$scope.terminalBody = $scope.terminalBody.slice(0, $scope.terminalBody.length - 1);
+        }
+        function getCommandByName(name)
+        {
+            var cmd;
+            for(var i = 0; i < $scope.commands.length; i++)
+            {
+                cmd = $scope.commands[i];
+                if (cmd.command == name) {
+                    return cmd;
+                }
+            }
         }
 
         function move()
@@ -167,10 +172,11 @@ angular.module('mainApp')
             for(var i = 0; i < size; i++)
             {
                 piece = inputArray[i];
+                console.log(piece);
                 for(var j = 0; j < $scope.commands.length; j++)
                 {
-                    cmd = $scope.commands[j];
-                    if (piece == cmd.command)
+                    cmd = $scope.commands[j].command;
+                    if (piece == cmd)
                     {
                         isValid = true;
                         break;
