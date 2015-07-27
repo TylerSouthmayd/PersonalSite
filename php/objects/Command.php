@@ -51,11 +51,11 @@ class Command extends SQLUtil {
         $commandStructure = array();
         $commands = Command::getAllCommands();
         $arguments = Argument::getAllArguments();
+        $options = Option::getAllOptions();
         foreach($commands as $cmd)
         {
-            $command = array();
             $args = array();
-
+            $opts = array();
 
             foreach($arguments as $arg)
             {
@@ -68,13 +68,22 @@ class Command extends SQLUtil {
 
                 }
             }
-            array_push($command, array(
+            foreach($options as $opt)
+            {
+                if($opt["command_name"] == $cmd["name"])
+                {
+                    array_push($opts, array(
+                       "option" => $opt["option_name"],
+                       "option_id" => $opt["option_id"]
+                    ));
+                }
+            }
+            array_push($commandStructure, array(
                 "command_id" => $cmd["id"],
                 "command" => $cmd["name"],
-                "arguments" => $args
+                "arguments" => $args,
+                "options" => $opts
             ));
-            //$command["arguments"] = $args;
-            array_push($commandStructure, $command);
         }
         return $commandStructure;
     }
@@ -90,8 +99,6 @@ class Command extends SQLUtil {
     }
 
     public function getName(){ return $this->name; }
-    public function setName($newName){ $this->name = $newName; }
-
     public function getArguments() { return $this->arguments; }
     public function addArgument($arg)
     {
