@@ -14,22 +14,39 @@ angular.module('mainApp')
         //console.log(scope, elem, attr);
     };
 
-    terminalSetup.controller = function($scope, $timeout, $location, CommandDataSource)
+    terminalSetup.controller = function($scope, $timeout, $location, CommandDataSource, CommandUtility)
     {
         $scope.user = 'visitor';
         $scope.terminalBody = '';
         $scope.path = '/home'
         $scope.command = '';
         $scope.commandParts = [];
+        $scope.commandHistory = [];
+        var commandHistoryIndex = 0;
         $scope.readyForInput = false;
         $scope.showTerminal = true;
         $scope.showTop = false;
-        $scope.commands;
+        $scope.commandStructure;  //full valid command json structure
+        $scope.commands;          //list of valid commands
+
+        getCommandStructure();
+        function getCommandStructure()
+        {
+            CommandDataSource.getCommandStructure()
+                .success(function(commands)
+                {
+                    $scope.commandStructure = commands.data;
+                    console.log('command structure', $scope.commandStructure);
+                })
+                .error(function(error){
+                    console.log("Failed to get command structure from factory: " + error.message);
+                });
+        }
 
         getCommands();
         function getCommands()
         {
-            CommandDataSource.getCommandStructure()
+            CommandDataSource.getAllCommands()
                 .success(function(commands)
                 {
                     $scope.commands = commands.data;
@@ -39,7 +56,6 @@ angular.module('mainApp')
                     console.log("Failed to get commands from factory: " + error.message);
                 });
         }
-
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -71,10 +87,12 @@ angular.module('mainApp')
         {
             console.log('body', $scope.terminalBody);
             if ($scope.terminalBody !== '') newTerminalLine();
+            $scope.commandHistory.push($scope.command);
+            console.log('added command, history:', $scope.commandHistory);
             addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
             $scope.commandParts = ($scope.command).split(" ");
 
-            if (checkValidity($scope.commandParts))
+            if (CommandUtility.checkValidity($scope.commandParts))
             {
                 if($scope.commandParts[0] === "ls") { ls();}
                 else if ($scope.commandParts[0] === "cd") { cd();}
@@ -120,9 +138,9 @@ angular.module('mainApp')
         function getCommandByName(name)
         {
             var cmd;
-            for(var i = 0; i < $scope.commands.length; i++)
+            for(var i = 0; i < $scope.commandStructure.length; i++)
             {
-                cmd = $scope.commands[i];
+                cmd = $scope.commandStructure[i];
                 if (cmd.command == name) {
                     return cmd;
                 }
@@ -134,7 +152,7 @@ angular.module('mainApp')
             var arg1 = $scope.commandParts[1];
             var arg2 = $scope.commandParts[2];
             if(arg1 == 'terminal') {
-                if (arg2 == 'top') {
+                if (arg2 == '-top') {
                     if ($scope.showTop) {
                         addLineNoDelay("The terminal is already on the top of the view.");
                     }
@@ -145,7 +163,7 @@ angular.module('mainApp')
                     }
 
                     $scope.showTop = true;
-                } else if (arg2 == 'bottom') {
+                } else if (arg2 == '-bottom') {
                     if (!$scope.showTop) {
                         addLineNoDelay("The terminal is already on the bottom of the view.");
                     }
@@ -164,45 +182,88 @@ angular.module('mainApp')
             }
         }
 
-        function checkValidity(inputArray)
-        {
-            var isValid = false;
-            var size = inputArray.length;
-            var piece, cmd;
-            for(var i = 0; i < size; i++)
-            {
-                piece = inputArray[i];
-                console.log(piece);
-                for(var j = 0; j < $scope.commands.length; j++)
-                {
-                    cmd = $scope.commands[j].command;
-                    if (piece == cmd)
-                    {
-                        isValid = true;
-                        break;
-                    }
-                }
-            }
-            console.log(isValid);
-            return isValid;
-        }
-
         $scope.captureKeyPress = function(event)
         {
+            //console.log(event);
+            //console.log($scope.commandHistory);
+
+                //enter
             if(event.which === 13)
             {
                 event.preventDefault();
                 console.log($scope.command);
                 executeCommand();
                 $scope.command = '';
+                commandHistoryIndex = $scope.commandHistory.length;
+
+                //up
+            } else if(event.which === 38)
+            {
+                event.preventDefault();
+                console.log('up');
+                if(commandHistoryIndex !== 0) { commandHistoryIndex--; }
+                $scope.command =  $scope.commandHistory[commandHistoryIndex];
+                console.log($scope.command);
+
+                //down
+            } else if(event.which === 40)
+            {
+                event.preventDefault();
+                console.log('down');
+                if(commandHistoryIndex !== $scope.commandHistory.length - 1) { commandHistoryIndex++; }
+                $scope.command =  $scope.commandHistory[commandHistoryIndex];
+                console.log($scope.command);
+
+                //tab
+            } else if(event.which === 9)
+            {
+                event.preventDefault();
+                console.log('tab');
+
+                $scope.commandParts = ($scope.command).split(" ");
+                var userCommand = $scope.commandParts[0];
+                var toComplete = $scope.commandParts[$scope.commandParts.length - 1];
+                if(userCommand == toComplete)
+                {
+
+                }
+
+                var isOption = false;
+                if (toComplete.indexOf('-') !== -1)
+                {
+                    isOption = true;
+                    toComplete.replace('-', '');
+
+                }
+                var choices = CommandUtility.autocompleteCommandPiece(userCommand, toComplete, isOption);
+                console.log(choices);
+                if (choices.length > 0)
+                {
+                    if(choices.length == 1)
+                    {
+                        console.log('made it');
+                        $scope.command = $scope.command.replace(toComplete, choices[0]);
+                    } else
+                    {
+                        var retStr = '';
+                        for(var i = 0; i < choices.length; i++)
+                        {
+                            retStr += choices[i] + ' ';
+                        }
+                        newTerminalLine();
+                        addLineNoDelay(retStr);
+                    }
+                }
+
             }
-
         };
 
-        $scope.determineTerminalPosition = function()
-        {
 
-        };
+
+
+
+
+
 
         $scope.toggleTerminal = function()
         {
@@ -211,14 +272,15 @@ angular.module('mainApp')
 
         $scope.init = function()
         {
+            var ms = 0;
             var introText = 'Hello, I\'m Tyler Southmayd. Welcome to my personal website.                          \n';
-            introText += 'You have control over the website through this terminal, type \"help pseubuntu\" for more information.'
-            addLineNoDelay(introText,15);
+            introText += 'You have control over the website through this terminal.'
+            addLineWithCharDelay(introText,ms);
             $scope.path= $location.path();
             $timeout(function()
             {
                 $scope.readyForInput = true;
-            }, introText.length*0);
+            }, introText.length*ms);
         };
 
         $scope.init();

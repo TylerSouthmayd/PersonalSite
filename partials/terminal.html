@@ -30,7 +30,7 @@
                                         <span class="terminal-command-line-label">
                                             {{user}}@pseubuntu{{path}}:
                                         </span>
-                                        <input type="text" class="terminal-command-line test" ng-model="command"  ng-keypress="captureKeyPress($event);" maxlength="100"/>
+                                        <input type="text" class="terminal-command-line test" ng-model="command"  ng-keydown="captureKeyPress($event);" maxlength="100"/>
                                     </div>
                                 </div>
                             </div>
