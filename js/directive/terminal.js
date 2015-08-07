@@ -24,7 +24,7 @@ angular.module('mainApp')
         $scope.commandHistory = [];
         var commandHistoryIndex = 0;
         $scope.readyForInput = false;
-        $scope.showTerminal = true;
+        $scope.showTerminal = false;
         $scope.showTop = false;
         $scope.commandStructure;  //full valid command json structure
         $scope.commands;          //list of valid commands
@@ -43,19 +43,19 @@ angular.module('mainApp')
                 });
         }
 
-        getCommands();
-        function getCommands()
-        {
-            CommandDataSource.getAllCommands()
-                .success(function(commands)
-                {
-                    $scope.commands = commands.data;
-                    console.log('commands', $scope.commands);
-                })
-                .error(function(error){
-                    console.log("Failed to get commands from factory: " + error.message);
-                });
-        }
+//        getCommands();
+//        function getCommands()
+//        {
+//            CommandDataSource.getAllCommands()
+//                .success(function(commands)
+//                {
+//                    $scope.commands = commands.data;
+//                    console.log('commands', $scope.commands);
+//                })
+//                .error(function(error){
+//                    console.log("Failed to get commands from factory: " + error.message);
+//                });
+//        }
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -92,8 +92,9 @@ angular.module('mainApp')
             addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
             $scope.commandParts = ($scope.command).split(" ");
 
-            if (CommandUtility.checkValidity($scope.commandParts))
+            if (CommandUtility.isCommandLineValid($scope.command))
             {
+
                 if($scope.commandParts[0] === "ls") { ls();}
                 else if ($scope.commandParts[0] === "cd") { cd();}
                 else if ($scope.commandParts[0] === "view") { view();}
@@ -218,24 +219,25 @@ angular.module('mainApp')
             } else if(event.which === 9)
             {
                 event.preventDefault();
-                console.log('tab');
+                console.log('tab', $scope.command);
 
                 $scope.commandParts = ($scope.command).split(" ");
                 var userCommand = $scope.commandParts[0];
                 var toComplete = $scope.commandParts[$scope.commandParts.length - 1];
-                if(userCommand == toComplete)
-                {
-
-                }
-
-                var isOption = false;
-                if (toComplete.indexOf('-') !== -1)
-                {
-                    isOption = true;
-                    toComplete.replace('-', '');
-
-                }
-                var choices = CommandUtility.autocompleteCommandPiece(userCommand, toComplete, isOption);
+//                if(userCommand == toComplete)
+//                {
+//
+//                }
+//
+//                var isOption = false;
+//                if (toComplete.indexOf('-') !== -1)
+//                {
+//                    isOption = true;
+//                    toComplete.replace('-', '');
+//
+//                }
+//                var choices = CommandUtility.autocompleteCommandPiece(userCommand, toComplete, isOption);
+                var choices = CommandUtility.autocompleteCommandLine($scope.command);
                 console.log(choices);
                 if (choices.length > 0)
                 {
@@ -257,13 +259,18 @@ angular.module('mainApp')
 
             }
         };
-
-
-
-
-
-
-
+        function getCommandByName(cmd)
+        {
+            for(var i = 0; i < $scope.commandStructure.length; i++)
+            {
+                if($scope.commandStructure[i].command == cmd)
+                {
+                    //console.log('getCommandByName', $scope.commandStructure[i]);
+                    return $scope.commandStructure[i];
+                }
+            }
+            return null;
+        }
 
         $scope.toggleTerminal = function()
         {
@@ -272,9 +279,8 @@ angular.module('mainApp')
 
         $scope.init = function()
         {
-            var ms = 0;
-            var introText = 'Hello, I\'m Tyler Southmayd. Welcome to my personal website.                          \n';
-            introText += 'You have control over the website through this terminal.'
+            var ms = 15;
+            var introText = 'You have control over the website through this terminal.';
             addLineWithCharDelay(introText,ms);
             $scope.path= $location.path();
             $timeout(function()

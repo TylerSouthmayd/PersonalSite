@@ -2,9 +2,9 @@
  * Created by Tyler on 8/2/2015.
  */
 
-mainApp.factory('CommandUtility', CommmandUtility);
+mainApp.factory('CommandUtility', CommandUtility);
 
-function CommmandUtility(CommandDataSource)
+function CommandUtility(CommandDataSource)
 {
     var CommandUtility = [];
     var commandStructure;
@@ -17,28 +17,87 @@ function CommmandUtility(CommandDataSource)
         }
     );
 
-    CommandUtility.checkValidity = function(inputArray)
+    CommandUtility.getCommandStructure = function()
     {
-        var isValid = false;
-        var size = inputArray.length;
-        var piece, cmd;
-        for(var i = 0; i < size; i++)
-        {
-            piece = inputArray[i];
-            console.log(piece);
-            for(var j = 0; j < $scope.commandStructure.length; j++)
+        var cmdStruct = [];
+        CommandDataSource.getCommandStructure()
+            .success(function(commands)
             {
-                cmd = $scope.commandStructure[j].command;
-                if (piece == cmd)
+                cmdStruct = commands.data;
+                console.log('command structure', commandStructure);
+            }
+        );
+        return cmdStruct;
+    };
+
+    CommandUtility.isCommandLineValid = function(command)
+    {
+        var commandParts = (command).split(" ");
+        var isValid = true;
+        var cmd = commandParts[0];
+        if (isValidCommand(cmd))
+        {
+            //var skipnext = false;
+            for (var i = 1; i < commandParts.length; i++) {
+                //if(skipnext) else do it
+                if(i == commandParts.length - 1)
                 {
-                    isValid = true;
-                    break;
+//                    console.log('isValidArgumentStart:', isValidArgumentStart(cmd, commandParts[i]));
+//                    console.log('isValidOptionStart:', isValidOptionStart(cmd, commandParts[i]));
+                    if((isValidArgumentStart(cmd, commandParts[i]) == false) && (isValidOptionStart(cmd, commandParts[i]) == false))
+                    {
+                        isValid = false;
+
+                    }
+                } else if (!isValidArgument(cmd, commandParts[i]) && !isValidOption(cmd, commandParts[i]))
+                {
+                    isValid = false;
+                    //if valid arg, check next for option
+                }
+            }
+        } else {
+            isValid = false;
+        }
+        console.log('isCommandLineValid:', isValid);
+        return isValid;
+    };
+
+    //WAS WORKING HERE
+    CommandUtility.autocompleteCommandLine = function(command)
+    {
+        var commandParts = (command).split(" ");
+        var userCommand = commandParts[0];
+        var toComplete = commandParts[commandParts.length - 1];
+        var autocompleteOptions = [];
+        var terminalString = '';
+        if(CommandUtility.isCommandLineValid(command))
+        {
+            var cmd = getCommandByName(userCommand);
+            if(commandParts.length == 1)
+            {
+                cmdguts = getCommandArgsAndOpts(userCommand);
+
+                if(cmd.arguments.length > 0)
+                {
+                    terminalString += 'Available Arguments: ' + arrayToString(cmdguts[0]) + ' '
+                }
+                if(cmd.options.length > 0)
+                {
+                    terminalString += 'Available Options: ' + arrayToString(cmdguts[1]);
+                }
+                autocompleteOptions.push(terminalString);
+            } else
+            {
+                var startedArg = isValidArgumentStart(userCommand, toComplete)
+                if(startedArg !== false)
+                {
+                    autocompleteOptions.push(startedArg);
                 }
             }
         }
-        console.log(isValid);
-        return isValid;
-    }
+
+        return autocompleteOptions;
+    };
 
     CommandUtility.autocompleteCommand = function(command)
     {
@@ -136,7 +195,64 @@ function CommmandUtility(CommandDataSource)
         return false;
     }
 
+    function isValidOption(cmdName, optName)
+    {
+        var command = getCommandByName(cmdName);
+        for(var i = 0; i < command.options.length; i++)
+        {
+            var curr = command.options[i].option;
+            if(optName == curr)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    function isValidOptionStart(cmdName, optPiece)
+    {
+        var autocompleteChoices = [];
+        var command = getCommandByName(cmdName);
+        for(var i = 0; i < command.options.length; i++)
+        {
+            var curr = command.options[i].option;
+            if(curr.indexOf(optPiece) == 0)
+            {
+                autocompleteChoices.push(curr);
+            }
+        }
+        return autocompleteChoices.length > 0 ? autocompleteChoices : false;
+    }
+
+    function isValidArgument(cmdName, argName)
+    {
+        var command = getCommandByName(cmdName);
+        //console.log('isValidArgument Command: ', command);
+        for(var i = 0; i < command.arguments.length; i++)
+        {
+            var curr = command.arguments[i].argument;
+            if(argName == curr)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function isValidArgumentStart(cmdName, argPiece)
+    {
+        var autocompleteChoices = [];
+        var command = getCommandByName(cmdName);
+        for(var i = 0; i < command.arguments.length; i++)
+        {
+            var curr = command.arguments[i].argument;
+            if(curr.indexOf(argPiece) == 0)
+            {
+                autocompleteChoices.push(curr);
+            }
+        }
+        return autocompleteChoices.length > 0 ? autocompleteChoices : false;
+    }
 
     function getCommandByName(name)
     {
@@ -148,6 +264,16 @@ function CommmandUtility(CommandDataSource)
                 return cmd;
             }
         }
+    }
+
+    function arrayToString(array)
+    {
+        var str = '';
+        for(var i = 0; i < array.length; i++)
+        {
+            str += array[i] + ' ';
+        }
+        return str;
     }
 
     return CommandUtility;
