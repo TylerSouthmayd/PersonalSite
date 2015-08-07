@@ -8,6 +8,7 @@ html
 
 }
 body {
+    background: rgb(0,0,0);
     /*background-image: url("../img/bg.jpg");*/
 }
 
@@ -148,4 +149,21 @@ body {
 {
     font-family: Ubuntu;
     font-size: 16px;
+}
+
+.intro-text
+{
+    font-family: Ubuntu;
+    color: white;
+    font-size: 7em;
+}
+.intro-text-area
+{
+    height: 500px;
+    width: inherit;
+    background: inherit;
+    resize:none;
+    margin: 0 !important;
+    border: none !important;
+    outline: none;
 }
