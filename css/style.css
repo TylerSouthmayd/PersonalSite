@@ -157,9 +157,15 @@ body {
     color: white;
     font-size: 7em;
 }
+.intro-text-sm
+{
+    font-family: Ubuntu;
+    color: white;
+    font-size: 1.5em;
+}
 .intro-text-area
 {
-    height: 500px;
+    height: 300px;
     width: inherit;
     background: inherit;
     resize:none;

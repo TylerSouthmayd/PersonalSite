@@ -62,6 +62,11 @@ function CommandUtility(CommandDataSource)
         return isValid;
     };
 
+    CommandUtility.validateCommand = function(commandParts)
+    {
+        
+    };
+
     //WAS WORKING HERE
     CommandUtility.autocompleteCommandLine = function(command)
     {

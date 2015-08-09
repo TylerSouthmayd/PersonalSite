@@ -153,6 +153,7 @@ angular.module('mainApp')
             var arg1 = $scope.commandParts[1];
             var arg2 = $scope.commandParts[2];
             if(arg1 == 'terminal') {
+                newTerminalLine();
                 if (arg2 == '-top') {
                     if ($scope.showTop) {
                         addLineNoDelay("The terminal is already on the top of the view.");
