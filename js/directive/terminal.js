@@ -234,23 +234,10 @@ angular.module('mainApp')
                 console.log('tab', $scope.command);
 
                 $scope.commandParts = ($scope.command).split(" ");
-                var userCommand = $scope.commandParts[0];
                 var toComplete = $scope.commandParts[$scope.commandParts.length - 1];
-//                if(userCommand == toComplete)
-//                {
-//
-//                }
-//
-//                var isOption = false;
-//                if (toComplete.indexOf('-') !== -1)
-//                {
-//                    isOption = true;
-//                    toComplete.replace('-', '');
-//
-//                }
-//                var choices = CommandUtility.autocompleteCommandPiece(userCommand, toComplete, isOption);
-                var choices = CommandUtility.autocompleteCommandLine($scope.command);
-                console.log(choices);
+                var choices = CommandUtility.tab($scope.command);
+                console.log('choices', choices);
+
                 if (choices.length > 0)
                 {
                     if(choices.length == 1)
@@ -259,6 +246,8 @@ angular.module('mainApp')
                         $scope.command = $scope.command.replace(toComplete, choices[0]);
                     } else
                     {
+                        newTerminalLine();
+                        addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
                         var retStr = '';
                         for(var i = 0; i < choices.length; i++)
                         {
@@ -294,14 +283,14 @@ angular.module('mainApp')
 
 //            $timeout(function()
 //            {
-//                cmd = 'cd resume';
-//                cmd1 = 'move terminal -t';
-//                cmd2 = 'move terminal --top';
-//                cmd3 = 'move terminal --top -b';
-//                cmd4 = 'clar';
-//                cmd5 = 'move terml --bottom';
-//                cmd6 = 'move terminal';
-//                cmd7 = 'clear';
+//                var cmd = 'cd resume';
+//                var cmd1 = 'move terminal -t';
+//                var cmd2 = 'move terminal --top';
+//                var cmd3 = 'move terminal --top -b';
+//                var cmd4 = 'clar';
+//                var cmd5 = 'move terml --bottom';
+//                var cmd6 = 'move terminal';
+//                var cmd7 = 'clear';
 //                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
 //                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
 //                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
@@ -312,11 +301,29 @@ angular.module('mainApp')
 //                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
 //
 //            }, 2500);
+//            $timeout(function()
+//            {
+//                var cmd = 'cd res';
+//                var cmd1 = 'move';
+//                var cmd2 = 'move terminal';
+//                var cmd3 = 'move terminal --t';
+//                var cmd4 = 'c';
+//                var cmd5 = 'cd';
+//                var cmd6 = 'move terminl';
+//                console.log(cmd, CommandUtility.tab(cmd));
+//                console.log(cmd1, CommandUtility.tab(cmd1));
+//                console.log(cmd2, CommandUtility.tab(cmd2));
+//                console.log(cmd3, CommandUtility.tab(cmd3));
+//                console.log(cmd4, CommandUtility.tab(cmd4));
+//                console.log(cmd5, CommandUtility.tab(cmd5));
+//                console.log(cmd6, CommandUtility.tab(cmd6));
+//
+//            }, 1500);
         }
 
         $scope.init = function()
         {
-            var ms = 15;
+            var ms = 0;
             var introText = 'You have control over the website through this terminal.';
             addLineWithCharDelay(introText,ms);
             $scope.path= $location.path();

@@ -83,7 +83,7 @@ function CommandUtility(CommandDataSource)
             commandParts.shift();
             while(commandParts.length > 0 && result.error == false)
             {
-                if(hasOptStart(commandParts[0]) && currArg == null)  //switch null cond to cmdOptApplied if want to accept options not immediately after command
+                if(hasOptStart(commandParts[0]) && currArg == null)  //switch null cond to cmdOptApplied if want to accept options not immediately after the command
                 {
                     var success = false;
                     for(var i = 0; i < cmd.options.length; i++)
@@ -155,6 +155,64 @@ function CommandUtility(CommandDataSource)
         return optString.indexOf('-') == 0;
     }
 
+    CommandUtility.tab = function(command)
+    {
+        var commandParts = (command).split(" ");
+        var choices = [];
+        if(isValidCommand(commandParts[0]))
+        {
+            var cmd = getCommandByName(commandParts[0]);
+            //console.log('cmd', cmd);
+            var toComplete = commandParts[commandParts.length - 1];
+            if(commandParts.length == 1)
+            {
+                var cmdguts = getCommandArgsAndOpts(cmd.command);
+                choices = choices.concat(cmdguts);
+            } else
+            {
+                var dependency = commandParts[commandParts.length - 2];
+                if (dependency == commandParts[0])
+                {
+                    if(hasOptStart(toComplete))
+                    {
+                        var res = isValidCommandOptionStart(cmd.command, toComplete)
+                        if(res !== false)
+                        {
+                            choices = choices.concat(res);
+                        }
+                    } else
+                    {
+                        //console.log('guess');
+                        var res = isValidArgumentStart(cmd.command, toComplete);
+                        //console.log('res', res);
+                        if(res !== false)
+                        {
+                            choices = choices.concat(res);
+                            //console.log('choices', choices);
+                        }
+                    }
+                } else
+                {
+                    var arg = getArgByName(cmd, dependency);
+                    //console.log('arg', arg);
+                    var res = isValidArgumentOptionStart(arg, toComplete);
+                    if(res !== false)
+                    {
+                        choices = choices.concat(res);
+                    }
+                }
+
+            }
+        } else
+        {
+            var res = isValidCommandStart(commandParts[0]);
+            if (res !== false)
+            {
+                choices = choices.concat(res);
+            }
+        }
+        return choices;
+    };
     //WAS WORKING HERE
     CommandUtility.autocompleteCommandLine = function(command)
     {
@@ -277,15 +335,35 @@ function CommandUtility(CommandDataSource)
 
     function isValidCommandStart(cmdName)
     {
+        var choices = [];
         for(var i = 0; i < commandStructure.length; i++)
         {
             var curr = commandStructure[i].command;
             if(curr.indexOf(cmdName) == 0)
             {
-                return curr;
+                choices.push(curr);
             }
         }
-        return false;
+        return choices.length > 0 ? choices : false;
+    }
+
+    function isValidCommandOptionStart(cmdName, optPiece)
+    {
+        var command = getCommandByName(cmdName);
+        var choices = [];
+        for(var i = 0; i < command.options.length; i++)
+        {
+            var curr = command.options[i];
+            if((curr.option).indexOf(optPiece) == 0)
+            {
+                choices.push(curr.option);
+            }
+            if((curr.option_short).indexOf(optPiece) == 0)
+            {
+                choices.push(curr.option_short);
+            }
+        }
+        return choices.length > 0 ? choices : false;
     }
 
     function isValidCommandOption(cmdName, optName)
@@ -300,6 +378,24 @@ function CommandUtility(CommandDataSource)
             }
         }
         return false;
+    }
+
+    function isValidArgumentOptionStart(arg, optPiece)
+    {
+        var choices = [];
+        for(var i = 0; i < arg.options.length; i++)
+        {
+            var curr = arg.options[i];
+            if((curr.option).indexOf(optPiece) == 0)
+            {
+                choices.push(curr.option);
+            }
+            if((curr.option_short).indexOf(optPiece) == 0)
+            {
+                choices.push(curr.option_short);
+            }
+        }
+        return choices.length > 0 ? choices : false;
     }
 
     function isValidArgumentOption(cmdName, optName)
@@ -371,6 +467,19 @@ function CommandUtility(CommandDataSource)
                 return cmd;
             }
         }
+    }
+
+    function getArgByName(cmd, argName)
+    {
+        var curr;
+        for(var i = 0; i < cmd.arguments.length; i++)
+        {
+            curr = cmd.arguments[i].argument;
+            if (curr == argName) {
+                return cmd.arguments[i];
+            }
+        }
+        return false;
     }
 
     function arrayToString(array)
