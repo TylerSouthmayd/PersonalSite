@@ -51,38 +51,60 @@ class Command extends SQLUtil {
         $commandStructure = array();
         $commands = Command::getAllCommands();
         $arguments = Argument::getAllArguments();
-        $options = Option::getAllOptions();
+        $commandOptions = CommandOption::getAllCommandOptions();
+        $argumentOptions = ArgumentOption::getAllArgumentOptions();
+
         foreach($commands as $cmd)
         {
             $args = array();
-            $opts = array();
+            $cmdOpts = array();
+            $argOpts = array();
 
             foreach($arguments as $arg)
             {
                 if ($arg["command_name"] == $cmd["name"])
                 {
+
+                    foreach($argumentOptions as $argOpt)
+                    {
+                        if($argOpt["argument_name"] == $arg["argument_name"])
+                        {
+                            array_push($argOpts, array(
+                                "option" => $argOpt["argument_option_name"],
+                                "option_short" => $argOpt["argument_option_short_name"],
+                                "option_id" => $argOpt["argument_option_id"]
+                            ));
+                        }
+                    }
+                    if($arg["requires_option"] == 0) { $needsOp = false; } else { $needsOp = true; }
+
                     array_push($args, array(
                         "argument" => $arg["argument_name"],
-                        "argument_id" => $arg["argument_id"]
+                        "argument_id" => $arg["argument_id"],
+                        "options" => $argOpts,
+                        "requires_option" => $needsOp
                     ));
 
                 }
             }
-            foreach($options as $opt)
+            foreach($commandOptions as $cmdOpt)
             {
-                if($opt["command_name"] == $cmd["name"])
+                if($cmdOpt["command_name"] == $cmd["name"])
                 {
-                    array_push($opts, array(
-                       "option" => $opt["option_name"],
-                       "option_id" => $opt["option_id"]
+                    array_push($cmdOpts, array(
+                       "option" => $cmdOpt["command_option_name"],
+                       "option_short" => $cmdOpt["command_option_short_name"],
+                       "option_id" => $cmdOpt["command_option_id"]
                     ));
                 }
             }
+            if($cmd["requires_option"] == 0) { $needsOp = false; } else { $needsOp = true; }
             array_push($commandStructure, array(
                 "command_id" => $cmd["id"],
                 "command" => $cmd["name"],
                 "arguments" => $args,
-                "options" => $opts
+                "options" => $cmdOpts,
+                "requires_option" => $needsOp
             ));
         }
         return $commandStructure;

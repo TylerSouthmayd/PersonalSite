@@ -10,19 +10,19 @@ class ArgumentOption extends SQLUtil {
     const TABLE = "argument_option";
 
     private $name;
-    private $command;
+    private $argument;
 
     function __construct()
     {
         parent::__construct();
         $this->name = '';
-        $this->command = '';
+        $this->$argument = '';
     }
 
     public static function getAllArgumentOptions()
     {
         $dbutil = new SQLUtil();
-        $sql = "SELECT A.name AS argument_name, A.id AS argument_option_id, O.name AS argument_option_name, O.id AS argument_id FROM argument A, argument_option O WHERE O.argument_id = A.id";
+        $sql = "SELECT A.name AS argument_name, A.id AS argument_option_id, O.name AS argument_option_name, O.id AS argument_id, O.short_name AS argument_option_short_name FROM argument A, argument_option O WHERE O.argument_id = A.id";
 
         $res = $dbutil->executeSql($sql);
         $retArr = parent::interpretQueryResponse($res);
@@ -42,6 +42,6 @@ class ArgumentOption extends SQLUtil {
     public function setName($newName) { $this->name = $newName; }
     public function getName() { return $this->name; }
 
-    public function setCommand($cmd) { $this->command = $cmd; }
-    public function getCommand() { return $this->command; }
+    public function setArgument($arg) { $this->argument = $arg; }
+    public function getArgument() { return $this->argument; }
 } 

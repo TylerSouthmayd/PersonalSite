@@ -8,7 +8,8 @@
 
 require_once("../objects/Command.php");
 require_once("../objects/Argument.php");
-require_once("../objects/Option.php");
+require_once("../objects/CommandOption.php");
+require_once("../objects/ArgumentOption.php");
 
 $json = null;
 $cmd = new Command();
