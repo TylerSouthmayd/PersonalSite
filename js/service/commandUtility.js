@@ -64,8 +64,96 @@ function CommandUtility(CommandDataSource)
 
     CommandUtility.validateCommand = function(commandParts)
     {
-        
+        var result = {
+            commandInfo: {command: null, option: null},
+            argumentInfo: {argument: null, option: null},
+            error: false,
+            errorMsg: ''
+        };
+
+        var cmd = commandParts[0];
+        var currArg = null;
+        var cmdOptApplied = false;
+        var argOptionApplied = false;
+
+        if(isValidCommand(cmd))
+        {
+            cmd = getCommandByName(cmd);
+            result.commandInfo.command = cmd;
+            commandParts.shift();
+            while(commandParts.length > 0 && result.error == false)
+            {
+                if(hasOptStart(commandParts[0]) && currArg == null)  //switch null cond to cmdOptApplied if want to accept options not immediately after command
+                {
+                    var success = false;
+                    for(var i = 0; i < cmd.options.length; i++)
+                    {
+                        if(cmd.options[i].option == commandParts[0] || cmd.options[i].option_short == commandParts[0])
+                        {
+                            result.commandInfo.option = cmd.options[i];
+                            cmdOptApplied = true;
+                            success = true;
+                            break;
+                        } //need to set error if miss
+                    }
+                    if(success == false) { result.error = true; result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for command \'' + cmd.command + '\''; }
+                } else if (hasOptStart(commandParts[0]))
+                {
+                    var success = false;
+                    if(!argOptionApplied)
+                    {
+                        for (var i = 0; i < currArg.options.length; i++)
+                        {
+                            if (currArg.options[i].option == commandParts[0] || currArg.options[i].option_short == commandParts[0])
+                            {
+                                result.argumentInfo.option = currArg.options[i];
+                                success = true;
+                                argOptionApplied = true;
+                                break;
+                            }
+                        }
+                        if (success == false) { result.error = true; result.errorMsg = 'Invalid option ' + commandParts[0] + ' for argument ' + currArg.argument; }
+                    } else
+                    {
+                        result.error = true;
+                        result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for argument \'' + currArg.argument + '\': already assigned option \'' + result.argumentInfo.option.option + '\'';
+                    }
+                } else
+                {
+                    var success = false;
+                    for(var i = 0; i < cmd.arguments.length; i++)
+                    {
+                        if(cmd.arguments[i].argument == commandParts[0])
+                        {
+                            result.argumentInfo.argument = cmd.arguments[i];
+                            currArg = cmd.arguments[i];
+                            success = true;
+                            break;
+                        }
+                    }
+                    if(success == false) { result.error = true; result.errorMsg = 'Invalid argument \'' + commandParts[0] + '\' for command \'' + cmd.command + '\''; }
+                }
+                commandParts.shift();
+            }
+            if(!argOptionApplied && currArg !== null && currArg.requires_option == true  && result.error == false)
+            {
+                result.error = true;
+                result.errorMsg = 'Missing option for argument \'' + currArg.argument + '\'';
+            }
+        } else  { result.error = true; result.errorMsg = 'Invalid command \'' + commandParts[0] + '\''; }
+        if(!cmdOptApplied && cmd.requires_option == true)
+        {
+            result.error = true;
+            result.errorMsg = 'Missing option for command \'' + cmd.command + '\'';
+        }
+        return result;
+
     };
+
+    function hasOptStart(optString)
+    {
+        return optString.indexOf('-') == 0;
+    }
 
     //WAS WORKING HERE
     CommandUtility.autocompleteCommandLine = function(command)
@@ -200,7 +288,21 @@ function CommandUtility(CommandDataSource)
         return false;
     }
 
-    function isValidOption(cmdName, optName)
+    function isValidCommandOption(cmdName, optName)
+    {
+        var command = getCommandByName(cmdName);
+        for(var i = 0; i < command.options.length; i++)
+        {
+            var curr = command.options[i].option;
+            if(optName == curr)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function isValidArgumentOption(cmdName, optName)
     {
         var command = getCommandByName(cmdName);
         for(var i = 0; i < command.options.length; i++)

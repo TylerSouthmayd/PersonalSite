@@ -70,21 +70,21 @@ class Command extends SQLUtil {
                         if($argOpt["argument_name"] == $arg["argument_name"])
                         {
                             array_push($argOpts, array(
+                                "option_id" => $argOpt["argument_option_id"],
                                 "option" => $argOpt["argument_option_name"],
                                 "option_short" => $argOpt["argument_option_short_name"],
-                                "option_id" => $argOpt["argument_option_id"]
+                                "argument_id" => $argOpt["argument_id"]
                             ));
                         }
                     }
                     if($arg["requires_option"] == 0) { $needsOp = false; } else { $needsOp = true; }
 
                     array_push($args, array(
-                        "argument" => $arg["argument_name"],
                         "argument_id" => $arg["argument_id"],
+                        "argument" => $arg["argument_name"],
                         "options" => $argOpts,
                         "requires_option" => $needsOp
                     ));
-
                 }
             }
             foreach($commandOptions as $cmdOpt)
@@ -92,9 +92,9 @@ class Command extends SQLUtil {
                 if($cmdOpt["command_name"] == $cmd["name"])
                 {
                     array_push($cmdOpts, array(
+                       "option_id" => $cmdOpt["command_option_id"],
                        "option" => $cmdOpt["command_option_name"],
-                       "option_short" => $cmdOpt["command_option_short_name"],
-                       "option_id" => $cmdOpt["command_option_id"]
+                       "option_short" => $cmdOpt["command_option_short_name"]
                     ));
                 }
             }
