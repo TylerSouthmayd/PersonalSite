@@ -30,38 +30,6 @@ function CommandUtility(CommandDataSource)
         return cmdStruct;
     };
 
-    CommandUtility.isCommandLineValid = function(command)
-    {
-        var commandParts = (command).split(" ");
-        var isValid = true;
-        var cmd = commandParts[0];
-        if (isValidCommand(cmd))
-        {
-            //var skipnext = false;
-            for (var i = 1; i < commandParts.length; i++) {
-                //if(skipnext) else do it
-                if(i == commandParts.length - 1)
-                {
-//                    console.log('isValidArgumentStart:', isValidArgumentStart(cmd, commandParts[i]));
-//                    console.log('isValidOptionStart:', isValidOptionStart(cmd, commandParts[i]));
-                    if((isValidArgumentStart(cmd, commandParts[i]) == false) && (isValidOptionStart(cmd, commandParts[i]) == false))
-                    {
-                        isValid = false;
-
-                    }
-                } else if (!isValidArgument(cmd, commandParts[i]) && !isValidOption(cmd, commandParts[i]))
-                {
-                    isValid = false;
-                    //if valid arg, check next for option
-                }
-            }
-        } else {
-            isValid = false;
-        }
-        console.log('isCommandLineValid:', isValid);
-        return isValid;
-    };
-
     CommandUtility.validateCommand = function(commandParts)
     {
         var result = {
@@ -212,92 +180,6 @@ function CommandUtility(CommandDataSource)
             }
         }
         return choices;
-    };
-    //WAS WORKING HERE
-    CommandUtility.autocompleteCommandLine = function(command)
-    {
-        var commandParts = (command).split(" ");
-        var userCommand = commandParts[0];
-        var toComplete = commandParts[commandParts.length - 1];
-        var autocompleteOptions = [];
-        var terminalString = '';
-        if(CommandUtility.isCommandLineValid(command))
-        {
-            var cmd = getCommandByName(userCommand);
-            if(commandParts.length == 1)
-            {
-                cmdguts = getCommandArgsAndOpts(userCommand);
-
-                if(cmd.arguments.length > 0)
-                {
-                    terminalString += 'Available Arguments: ' + arrayToString(cmdguts[0]) + ' '
-                }
-                if(cmd.options.length > 0)
-                {
-                    terminalString += 'Available Options: ' + arrayToString(cmdguts[1]);
-                }
-                autocompleteOptions.push(terminalString);
-            } else
-            {
-                var startedArg = isValidArgumentStart(userCommand, toComplete)
-                if(startedArg !== false)
-                {
-                    autocompleteOptions.push(startedArg);
-                }
-            }
-        }
-
-        return autocompleteOptions;
-    };
-
-    CommandUtility.autocompleteCommand = function(command)
-    {
-        var cmd = getCommandByName(command);
-        var autocompleteOptions = [];
-
-        if(isValidCommand(cmd))
-        {
-            autocompleteOptions = getCommandArgsAndOpts(cmd);
-            console.log('valid command args/opts: ', autocompleteOptions);
-            return autocompleteOptions;
-        } else if(!isValidCommandStart(cmd))
-        {
-
-        }
-    };
-
-    CommandUtility.autocompleteCommandPiece = function(command, piece, isOption)
-    {
-
-        var cmd = getCommandByName(command);
-        var autocompleteOptions = [];
-        //console.log(cmd, piece, isOption);
-        if(cmd !== null)
-        {
-            if(isOption)
-            {
-                for(var i = 0; i < cmd.options.length; i++)
-                {
-                    var opt = cmd.options[i].option;
-                    if (opt.indexOf(piece) !== -1)
-                    {
-                        autocompleteOptions.push(opt);
-                    }
-                }
-            } else
-            {
-                for(var i = 0; i < cmd.arguments.length; i++)
-                {
-                    var arg = cmd.arguments[i].argument;
-                    console.log('indexOfPiece:', arg.indexOf(piece));
-                    if (arg.indexOf(piece) >= 0)
-                    {
-                        autocompleteOptions.push(arg);
-                    }
-                }
-            }
-        }
-        return autocompleteOptions;
     };
 
     //param: string cmd name

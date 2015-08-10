@@ -27,7 +27,6 @@ angular.module('mainApp')
         $scope.showTerminal = true;
         $scope.showTop = false;
         $scope.commandStructure;  //full valid command json structure
-        $scope.commands;          //list of valid commands
 
         getCommandStructure();
         function getCommandStructure()
@@ -42,20 +41,6 @@ angular.module('mainApp')
                     console.log("Failed to get command structure from factory: " + error.message);
                 });
         }
-
-//        getCommands();
-//        function getCommands()
-//        {
-//            CommandDataSource.getAllCommands()
-//                .success(function(commands)
-//                {
-//                    $scope.commands = commands.data;
-//                    console.log('commands', $scope.commands);
-//                })
-//                .error(function(error){
-//                    console.log("Failed to get commands from factory: " + error.message);
-//                });
-//        }
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -103,15 +88,6 @@ angular.module('mainApp')
                 else if (cmd === "clear") { clear();}
                 else if (cmd === "move") { move(res); }
             }
-//            if (CommandUtility.isCommandLineValid($scope.command))
-//            {
-//
-//                if($scope.commandParts[0] === "ls") { ls();}
-//                else if ($scope.commandParts[0] === "cd") { cd();}
-//                else if ($scope.commandParts[0] === "view") { view();}
-//                else if ($scope.commandParts[0] === "clear") { clear();}
-//                else if ($scope.commandParts[0] === "move") { move(); }
-//            }
             else
             {
                 newTerminalLine();
@@ -260,18 +236,6 @@ angular.module('mainApp')
 
             }
         };
-//        function getCommandByName(cmd)
-//        {
-//            for(var i = 0; i < $scope.commandStructure.length; i++)
-//            {
-//                if($scope.commandStructure[i].command == cmd)
-//                {
-//                    //console.log('getCommandByName', $scope.commandStructure[i]);
-//                    return $scope.commandStructure[i];
-//                }
-//            }
-//            return null;
-//        }
 
         $scope.toggleTerminal = function()
         {
@@ -332,13 +296,10 @@ angular.module('mainApp')
                 $scope.readyForInput = true;
             }, introText.length*ms);
             test();
-
         };
 
         $scope.init();
     };
-
-
 
     return terminalSetup;
 
