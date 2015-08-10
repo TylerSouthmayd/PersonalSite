@@ -22,7 +22,7 @@ class ArgumentOption extends SQLUtil {
     public static function getAllArgumentOptions()
     {
         $dbutil = new SQLUtil();
-        $sql = "SELECT A.name AS argument_name, A.id AS argument_option_id, O.name AS argument_option_name, O.id AS argument_id, O.short_name AS argument_option_short_name FROM argument A, argument_option O WHERE O.argument_id = A.id";
+        $sql = "SELECT A.name AS argument_name, A.id AS argument_id, O.name AS argument_option_name, O.id AS argument_option_id, O.short_name AS argument_option_short_name FROM argument A, argument_option O WHERE O.argument_id = A.id";
 
         $res = $dbutil->executeSql($sql);
         $retArr = parent::interpretQueryResponse($res);

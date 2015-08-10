@@ -2,7 +2,7 @@
  * Created by Tyler on 7/23/2015.
  */
 angular.module('mainApp')
-.directive('terminal', function (CommandDataSource)
+.directive('terminal', function ()
 {
     var terminalSetup = [];
 
@@ -18,13 +18,13 @@ angular.module('mainApp')
     {
         $scope.user = 'visitor';
         $scope.terminalBody = '';
-        $scope.path = '/home'
+        $scope.path = '/home';
         $scope.command = '';
         $scope.commandParts = [];
         $scope.commandHistory = [];
         var commandHistoryIndex = 0;
         $scope.readyForInput = false;
-        $scope.showTerminal = false;
+        $scope.showTerminal = true;
         $scope.showTop = false;
         $scope.commandStructure;  //full valid command json structure
         $scope.commands;          //list of valid commands
@@ -92,25 +92,40 @@ angular.module('mainApp')
             addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
             $scope.commandParts = ($scope.command).split(" ");
 
-            if (CommandUtility.isCommandLineValid($scope.command))
+            var res = CommandUtility.validateCommand($scope.commandParts);
+            console.log(res);
+            if (res.error == false)
             {
-
-                if($scope.commandParts[0] === "ls") { ls();}
-                else if ($scope.commandParts[0] === "cd") { cd();}
-                else if ($scope.commandParts[0] === "view") { view();}
-                else if ($scope.commandParts[0] === "clear") { clear();}
-                else if ($scope.commandParts[0] === "move") { move(); }
-            } else
+                var cmd = res.commandInfo.command.command;
+                console.log('cmd', cmd);
+                if(cmd === "ls") { ls();}
+                else if (cmd === "cd") { cd(res);}
+                else if (cmd === "clear") { clear();}
+                else if (cmd === "move") { move(res); }
+            }
+//            if (CommandUtility.isCommandLineValid($scope.command))
+//            {
+//
+//                if($scope.commandParts[0] === "ls") { ls();}
+//                else if ($scope.commandParts[0] === "cd") { cd();}
+//                else if ($scope.commandParts[0] === "view") { view();}
+//                else if ($scope.commandParts[0] === "clear") { clear();}
+//                else if ($scope.commandParts[0] === "move") { move(); }
+//            }
+            else
             {
                 newTerminalLine();
-                addLineNoDelay('Invalid Command: ' + $scope.commandParts[0]);
+                addLineNoDelay(res.errorMsg);
             }
 
         }
 
         function ls()
         {
+            console.log('l3s');
+            console.log('info1');
             var info = getCommandByName("cd");
+            console.log('info2', info);
 
             newTerminalLine();
             for(var i = 0; i < info.arguments.length; i++)
@@ -118,21 +133,16 @@ angular.module('mainApp')
                 addLineNoDelay(info.arguments[i].argument + ' ');
             }
         }
-        function view()
+        function cd(res)
         {
-            if ($scope.commandParts[1] === "resume")
-            {
-                //todo
-            }
-        }
-        function cd()
-        {
-            $scope.path = '/' + $scope.commandParts[1];
+            console.log('cd', res.argumentInfo.argument.argument);
+            $scope.path = '/' + res.argumentInfo.argument.argument;
             $location.path($scope.path);
         }
 
         function clear()
         {
+            console.log('clear');
             $scope.terminalBody = '';
             //$scope.terminalBody = $scope.terminalBody.slice(0, $scope.terminalBody.length - 1);
         }
@@ -148,13 +158,15 @@ angular.module('mainApp')
             }
         }
 
-        function move()
+        function move(res)
         {
-            var arg1 = $scope.commandParts[1];
-            var arg2 = $scope.commandParts[2];
+            console.log('move');
+            var arg1 = res.argumentInfo.argument.argument;
+            var arg2 = res.argumentInfo.option.option;
+            console.log('arg1', arg1, 'arg2', arg2);
             if(arg1 == 'terminal') {
                 newTerminalLine();
-                if (arg2 == '-top') {
+                if (arg2 == '--top' || arg2 == '-t') {
                     if ($scope.showTop) {
                         addLineNoDelay("The terminal is already on the top of the view.");
                     }
@@ -163,9 +175,8 @@ angular.module('mainApp')
                         newTerminalLine();
                         addLineNoDelay("Moving terminal to top of the view.");
                     }
-
                     $scope.showTop = true;
-                } else if (arg2 == '-bottom') {
+                } else if (arg2 == '--bottom' || arg2 == '-b') {
                     if (!$scope.showTop) {
                         addLineNoDelay("The terminal is already on the bottom of the view.");
                     }
@@ -223,23 +234,10 @@ angular.module('mainApp')
                 console.log('tab', $scope.command);
 
                 $scope.commandParts = ($scope.command).split(" ");
-                var userCommand = $scope.commandParts[0];
                 var toComplete = $scope.commandParts[$scope.commandParts.length - 1];
-//                if(userCommand == toComplete)
-//                {
-//
-//                }
-//
-//                var isOption = false;
-//                if (toComplete.indexOf('-') !== -1)
-//                {
-//                    isOption = true;
-//                    toComplete.replace('-', '');
-//
-//                }
-//                var choices = CommandUtility.autocompleteCommandPiece(userCommand, toComplete, isOption);
-                var choices = CommandUtility.autocompleteCommandLine($scope.command);
-                console.log(choices);
+                var choices = CommandUtility.tab($scope.command);
+                console.log('choices', choices);
+
                 if (choices.length > 0)
                 {
                     if(choices.length == 1)
@@ -248,6 +246,8 @@ angular.module('mainApp')
                         $scope.command = $scope.command.replace(toComplete, choices[0]);
                     } else
                     {
+                        newTerminalLine();
+                        addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
                         var retStr = '';
                         for(var i = 0; i < choices.length; i++)
                         {
@@ -260,27 +260,70 @@ angular.module('mainApp')
 
             }
         };
-        function getCommandByName(cmd)
-        {
-            for(var i = 0; i < $scope.commandStructure.length; i++)
-            {
-                if($scope.commandStructure[i].command == cmd)
-                {
-                    //console.log('getCommandByName', $scope.commandStructure[i]);
-                    return $scope.commandStructure[i];
-                }
-            }
-            return null;
-        }
+//        function getCommandByName(cmd)
+//        {
+//            for(var i = 0; i < $scope.commandStructure.length; i++)
+//            {
+//                if($scope.commandStructure[i].command == cmd)
+//                {
+//                    //console.log('getCommandByName', $scope.commandStructure[i]);
+//                    return $scope.commandStructure[i];
+//                }
+//            }
+//            return null;
+//        }
 
         $scope.toggleTerminal = function()
         {
             $scope.showTerminal = !$scope.showTerminal;
         };
+        function test()
+        {
+            //console.log('hasOptStart', hasOptStart('-t'), hasOptStart('4-'), hasOptStart('--bottom'));
+
+//            $timeout(function()
+//            {
+//                var cmd = 'cd resume';
+//                var cmd1 = 'move terminal -t';
+//                var cmd2 = 'move terminal --top';
+//                var cmd3 = 'move terminal --top -b';
+//                var cmd4 = 'clar';
+//                var cmd5 = 'move terml --bottom';
+//                var cmd6 = 'move terminal';
+//                var cmd7 = 'clear';
+//                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
+//                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
+//                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
+//                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
+//                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
+//                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
+//                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
+//                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
+//
+//            }, 2500);
+//            $timeout(function()
+//            {
+//                var cmd = 'cd res';
+//                var cmd1 = 'move';
+//                var cmd2 = 'move terminal';
+//                var cmd3 = 'move terminal --t';
+//                var cmd4 = 'c';
+//                var cmd5 = 'cd';
+//                var cmd6 = 'move terminl';
+//                console.log(cmd, CommandUtility.tab(cmd));
+//                console.log(cmd1, CommandUtility.tab(cmd1));
+//                console.log(cmd2, CommandUtility.tab(cmd2));
+//                console.log(cmd3, CommandUtility.tab(cmd3));
+//                console.log(cmd4, CommandUtility.tab(cmd4));
+//                console.log(cmd5, CommandUtility.tab(cmd5));
+//                console.log(cmd6, CommandUtility.tab(cmd6));
+//
+//            }, 1500);
+        }
 
         $scope.init = function()
         {
-            var ms = 15;
+            var ms = 0;
             var introText = 'You have control over the website through this terminal.';
             addLineWithCharDelay(introText,ms);
             $scope.path= $location.path();
@@ -288,6 +331,8 @@ angular.module('mainApp')
             {
                 $scope.readyForInput = true;
             }, introText.length*ms);
+            test();
+
         };
 
         $scope.init();
