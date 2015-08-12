@@ -22,8 +22,7 @@ function HomeController($scope, $timeout)
         addOutroLineWithCharDelay(outroString, 75);
         $timeout(function()
         {
-            outroString = '\nOr don\'t...                                                                                  '
-                         +'\nLeaving is an option, too.';
+            outroString = '\nOr don\'t...';
             addOutroLineWithCharDelay(outroString, 75);
         },75*(outroString.length));
     },75*(introString.length));

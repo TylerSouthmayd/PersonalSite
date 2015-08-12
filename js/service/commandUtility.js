@@ -62,7 +62,7 @@ function CommandUtility(CommandDataSource)
                             cmdOptApplied = true;
                             success = true;
                             break;
-                        } //need to set error if miss
+                        }
                     }
                     if(success == false) { result.error = true; result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for command \'' + cmd.command + '\''; }
                 } else if (hasOptStart(commandParts[0]))

@@ -27,6 +27,7 @@ angular.module('mainApp')
         $scope.showTerminal = true;
         $scope.showTop = false;
         $scope.commandStructure;  //full valid command json structure
+        $scope.commandsPretty;
 
         getCommandStructure();
         function getCommandStructure()
@@ -35,12 +36,18 @@ angular.module('mainApp')
                 .success(function(commands)
                 {
                     $scope.commandStructure = commands.data;
+                    $scope.commandsPretty = JSON.stringify($scope.commandStructure, null, 10);
                     console.log('command structure', $scope.commandStructure);
                 })
                 .error(function(error){
                     console.log("Failed to get command structure from factory: " + error.message);
                 });
         }
+
+        $scope.toggleHelpModal = function()
+        {
+            $('#helpModal').modal('toggle');
+        };
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -87,6 +94,7 @@ angular.module('mainApp')
                 else if (cmd === "cd") { cd(res);}
                 else if (cmd === "clear") { clear();}
                 else if (cmd === "move") { move(res); }
+                else if (cmd === "help") { help(); }
             }
             else
             {
@@ -116,6 +124,10 @@ angular.module('mainApp')
             $location.path($scope.path);
         }
 
+        function help()
+        {
+            $scope.toggleHelpModal();
+        }
         function clear()
         {
             console.log('clear');
@@ -287,7 +299,7 @@ angular.module('mainApp')
 
         $scope.init = function()
         {
-            var ms = 0;
+            var ms = 15;
             var introText = 'You have control over the website through this terminal.';
             addLineWithCharDelay(introText,ms);
             $scope.path= $location.path();
