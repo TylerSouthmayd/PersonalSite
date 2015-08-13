@@ -20,6 +20,7 @@ angular.module('mainApp')
         $scope.terminalBody = '';
         $scope.path = '/home';
         $scope.command = '';
+        $scope.manPage = '';
         $scope.commandParts = [];
         $scope.commandHistory = [];
         var commandHistoryIndex = 0;
@@ -48,6 +49,7 @@ angular.module('mainApp')
         {
             $('#helpModal').modal('toggle');
         };
+
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -95,6 +97,7 @@ angular.module('mainApp')
                 else if (cmd === "clear") { clear();}
                 else if (cmd === "move") { move(res); }
                 else if (cmd === "help") { help(); }
+                else if (cmd === "man") { man(res)}
             }
             else
             {
@@ -134,6 +137,34 @@ angular.module('mainApp')
             $scope.terminalBody = '';
             //$scope.terminalBody = $scope.terminalBody.slice(0, $scope.terminalBody.length - 1);
         }
+
+        function man(res)
+        {
+            console.log('man', res,'../../man/' + res.argumentInfo.argument.argument + '.txt');
+            updateManPage('../../man/' + res.argumentInfo.argument.argument + '.txt');
+            newTerminalLine();
+            addLineNoDelay($scope.manPage);
+        }
+
+        function updateManPage(command)
+        {
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", command, false);
+            rawFile.onreadystatechange = function ()
+            {
+                if(rawFile.readyState === 4)
+                {
+                    if(rawFile.status === 200 || rawFile.status == 0)
+                    {
+                        var allText = rawFile.responseText;
+                        $scope.manPage = allText;
+                    }
+                }
+            };
+            //return manPage;
+            rawFile.send(null);
+        }
+
         function getCommandByName(name)
         {
             var cmd;
@@ -257,15 +288,15 @@ angular.module('mainApp')
         {
             //console.log('hasOptStart', hasOptStart('-t'), hasOptStart('4-'), hasOptStart('--bottom'));
 
-//            $timeout(function()
-//            {
+            $timeout(function()
+            {
 //                var cmd = 'cd resume';
 //                var cmd1 = 'move terminal -t';
 //                var cmd2 = 'move terminal --top';
 //                var cmd3 = 'move terminal --top -b';
 //                var cmd4 = 'clar';
 //                var cmd5 = 'move terml --bottom';
-//                var cmd6 = 'move terminal';
+                var cmd6 = 'move';
 //                var cmd7 = 'clear';
 //                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
 //                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
@@ -273,10 +304,10 @@ angular.module('mainApp')
 //                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
 //                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
 //                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
-//                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
+                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
 //                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
 //
-//            }, 2500);
+            }, 2500);
 //            $timeout(function()
 //            {
 //                var cmd = 'cd res';
@@ -295,6 +326,8 @@ angular.module('mainApp')
 //                console.log(cmd6, CommandUtility.tab(cmd6));
 //
 //            }, 1500);
+//            getManPage("../../man/ls.txt");
+//            getManPage("../../man/clear.txt");
         }
 
         $scope.init = function()
