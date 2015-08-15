@@ -30,6 +30,8 @@ angular.module('mainApp')
         $scope.commandStructure;  //full valid command json structure
         $scope.commandsPretty;
 
+        $scope.grid;
+
         getCommandStructure();
         function getCommandStructure()
         {
@@ -50,6 +52,11 @@ angular.module('mainApp')
             $('#helpModal').modal('toggle');
         };
 
+        $scope.$on('Update Grid', function(event, args)
+        {
+            $scope.grid = args;
+            console.log('$scope.grid', $scope.grid);
+        });
 
         //@Param - String line to add to console output
         //       - int delay (ms)

@@ -17,6 +17,11 @@ mainApp.config(['$routeProvider', function ($routeProvider)
                 controller: 'HomeController',
                 templateUrl: 'views/resume.html'
             }
+        ).  when ('/sandbox',
+            {
+                controller: 'HomeController',
+                templateUrl: 'views/sandbox.html'
+            }
         ).
             otherwise(
             {
