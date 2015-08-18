@@ -8,18 +8,19 @@
 
 require_once("../SQLUtil.php");
 
-class Command extends SQLUtil {
+class Command {
 
     const TABLE = "command";
 
     private $name;
     private $arguments;
+    private $dbutil;
 
     function __construct()
     {
-        parent::__construct();
         $this->name = '';
         $this->arguments = array();
+        $this->dbUtil = array();
     }
 
     public function printCommand()
@@ -32,7 +33,7 @@ class Command extends SQLUtil {
         $dbutil = new SQLUtil();
 
         $res = $dbutil->selectAllFromTable(self::TABLE);
-        $retArr = parent::interpretQueryResponse($res);
+        $retArr = $dbutil::interpretQueryResponse($res);
         return $retArr;
     }
 
@@ -42,7 +43,7 @@ class Command extends SQLUtil {
         $where = "name = " . "\"" . $name . "\"";
 
         $res = $dbutil->selectAllFromTableWhere(self::TABLE, $where);
-        $retArr = parent::interpretQueryResponse($res);
+        $retArr = $dbutil::interpretQueryResponse($res);
         return $retArr;
     }
 
@@ -82,6 +83,7 @@ class Command extends SQLUtil {
                     array_push($args, array(
                         "argument_id" => $arg["argument_id"],
                         "argument" => $arg["argument_name"],
+                        "argument_tier" => $arg["argument_tier"],
                         "options" => $argOpts,
                         "requires_option" => $needsOp
                     ));
@@ -116,7 +118,7 @@ class Command extends SQLUtil {
         $sql = "SELECT C.name AS command_name, C.id AS command_id, A.name AS argument_name, A.id AS argument_id FROM command C LEFT JOIN argument A ON C.id = A.command_id";
 
         $res = $dbutil->executeSql($sql);
-        $retArr = parent::interpretQueryResponse($res);
+        $retArr = $dbutil::interpretQueryResponse($res);
         return $retArr;
     }
 
