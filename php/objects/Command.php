@@ -90,7 +90,8 @@ class Command {
                             "command_name" => $arg["command_name"],
                             "has_child" => $arg["requires_argument_child"] == '0' ? false : true,
                             "options" => $argOpts,
-                            "requires_option" => $needsOp
+                            "requires_option" => $needsOp,
+                            "tier" => 1
                         ));
                     } else if($arg["argument_tier"] == 2)
                     {
@@ -100,7 +101,8 @@ class Command {
                             "argument_parent_id" => $arg["argument_parent"],
                             "has_child" => $arg["requires_argument_child"] == '0' ? false : true,
                             "options" => $argOpts,
-                            "requires_option" => $needsOp
+                            "requires_option" => $needsOp,
+                            "tier" => 2
                         ));
                     }
 //                    else if($arg["argument_tier"] == 3)
