@@ -27,7 +27,10 @@ class Argument {
     public static function getAllArguments()
     {
         $dbutil = new SQLUtil();
-        $sql = "SELECT C.name AS command_name, C.id AS command_id, A.name AS argument_name, A.id AS argument_id, A.requires_option, A.argument_tier FROM command C, argument A WHERE A.command_id = C.id";
+        $sql = "SELECT C.name AS command_name, C.id AS command_id, A.name AS argument_name, A.id AS argument_id, A.requires_option,
+                A.requires_argument_child, A.argument_tier, A.argument_parent, A.user_defined
+                FROM command C, argument A
+                WHERE A.command_id = C.id";
 
         $res = $dbutil->executeSql($sql);
         $retArr = $dbutil::interpretQueryResponse($res);
