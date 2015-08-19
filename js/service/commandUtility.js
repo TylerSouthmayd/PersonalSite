@@ -34,7 +34,8 @@ function CommandUtility(CommandDataSource)
     {
         var result = {
             commandInfo: {command: null, option: null},
-            argumentInfo: {argument: null, option: null},
+            argumentInfo: {tier1_arg: null, tier1_option: null, tier2_arg: null, tier2_option: null},
+            userDefinedArgument: false,
             error: false,
             errorMsg: ''
         };
@@ -43,62 +44,115 @@ function CommandUtility(CommandDataSource)
         var currArg = null;
         var cmdOptApplied = false;
         var argOptionApplied = false;
+        var tier1Applied = false;
+        var tier2Applied = false;
 
         if(isValidCommand(cmd))
         {
             cmd = getCommandByName(cmd);
             result.commandInfo.command = cmd;
             commandParts.shift();
+            var success;
             while(commandParts.length > 0 && result.error == false)
             {
-                if(hasOptStart(commandParts[0]) && currArg == null)  //switch null cond to cmdOptApplied if want to accept options not immediately after the command
+                success = false;
+                if(hasOptStart(commandParts[0]))  //switch null cond to cmdOptApplied if want to accept options not immediately after the command
                 {
-                    var success = false;
-                    for(var i = 0; i < cmd.options.length; i++)
+                    if(currArg !== null && !argOptionApplied)
                     {
-                        if(cmd.options[i].option == commandParts[0] || cmd.options[i].option_short == commandParts[0])
+                        if(!argOptionApplied)
                         {
-                            result.commandInfo.option = cmd.options[i];
-                            cmdOptApplied = true;
-                            success = true;
-                            break;
-                        }
-                    }
-                    if(success == false) { result.error = true; result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for command \'' + cmd.command + '\''; }
-                } else if (hasOptStart(commandParts[0]))
-                {
-                    var success = false;
-                    if(!argOptionApplied)
-                    {
-                        for (var i = 0; i < currArg.options.length; i++)
-                        {
-                            if (currArg.options[i].option == commandParts[0] || currArg.options[i].option_short == commandParts[0])
+                            for (var i = 0; i < currArg.options.length; i++)
                             {
-                                result.argumentInfo.option = currArg.options[i];
+                                curr = currArg.options[i];
+                                if (curr.option == commandParts[0] || curr.option_short == commandParts[0])
+                                {
+                                    success = true;
+                                    argOptionApplied = true;
+                                    if(currArg.tier == 1) { result.argumentInfo.tier1_option = currArg.options[i]; }
+                                    else if(currArg.tier == 2) { result.argumentInfo.tier2_option = currArg.options[i]; }
+                                    break;
+                                }
+                            }
+                            if (success == false) { result.error = true; result.errorMsg = 'Invalid option ' + commandParts[0] + ' for argument ' + currArg.argument; }
+                        } else
+                        {
+                            result.error = true;
+                            result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for argument \'' + currArg.argument + '\': already assigned option \'' + result.argumentInfo.option.option + '\'';
+                        }
+
+                    } else if(currArg == null && !cmdOptApplied)
+                    {
+                        for(var i = 0; i < cmd.options.length; i++)
+                        {
+                            if(cmd.options[i].option == commandParts[0] || cmd.options[i].option_short == commandParts[0])
+                            {
+                                result.commandInfo.option = cmd.options[i];
+                                cmdOptApplied = true;
                                 success = true;
-                                argOptionApplied = true;
                                 break;
                             }
                         }
-                        if (success == false) { result.error = true; result.errorMsg = 'Invalid option ' + commandParts[0] + ' for argument ' + currArg.argument; }
-                    } else
-                    {
-                        result.error = true;
-                        result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for argument \'' + currArg.argument + '\': already assigned option \'' + result.argumentInfo.option.option + '\'';
                     }
+
+                    if(success == false) { result.error = true; result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for command \'' + cmd.command + '\''; }
                 } else
                 {
-                    var success = false;
-                    for(var i = 0; i < cmd.arguments.length; i++)
+                    var curr;
+                    //check tier
+                    if (!tier1Applied)
                     {
-                        if(cmd.arguments[i].argument == commandParts[0])
+                        //get the tier 1 argument, set it as current argument
+                        for(var i = 0; i < cmd.tier1_arguments.length; i++)
                         {
-                            result.argumentInfo.argument = cmd.arguments[i];
-                            currArg = cmd.arguments[i];
-                            success = true;
-                            break;
+                            curr = cmd.tier1_arguments[i];
+                            if(curr.argument == commandParts[0])
+                            {
+                                result.argumentInfo.tier1_arg = curr;
+                                currArg = curr;
+                                tier1Applied = true;
+                                if(curr.has_child)
+                                {
+                                    if(commandParts.length > 0)
+                                    {
+                                        var currTier2;
+                                        for(var j = 0; j < cmd.tier2_arguments.length; j++)
+                                        {
+                                            currTier2 = cmd.tier2_arguments[j];
+                                            if(currTier2.argument_parent_id == currArg.argument_id)
+                                            {
+                                                result.argumentInfo.tier2_arg = curr;
+                                                tier2Applied = true;
+                                                currArg = currTier2;
+                                            }
+                                        }
+                                    } else
+                                    {
+                                        result.error = true; result.errorMsg = 'Missing required argument for argument \'' + curr.argument + '\'';
+                                        break;
+                                    }
+                                }
+                                success = true;
+                                break;
+                            }
+                        }
+                    } else if (!tier2Applied)
+                    {
+                        //get the tier 2 argument if any
+                        for(var i = 0; i < cmd.tier2_arguments.length; i++)
+                        {
+                            curr = cmd.tier2_arguments[i];
+                            if(curr.argument_parent_id == currArg.argument_id)
+                            {
+                                result.argumentInfo.tier2_arg = curr;
+                                currArg = curr;
+                                success = true;
+                                tier2Applied = true;
+                                break;
+                            }
                         }
                     }
+
                     if(success == false) { result.error = true; result.errorMsg = 'Invalid argument \'' + commandParts[0] + '\' for command \'' + cmd.command + '\''; }
                 }
                 commandParts.shift();
@@ -143,7 +197,7 @@ function CommandUtility(CommandDataSource)
                 {
                     if(hasOptStart(toComplete))
                     {
-                        var res = isValidCommandOptionStart(cmd.command, toComplete)
+                        var res = isValidCommandOptionStart(cmd.command, toComplete);
                         if(res !== false)
                         {
                             choices = choices.concat(res);
@@ -151,7 +205,7 @@ function CommandUtility(CommandDataSource)
                     } else
                     {
                         //console.log('guess');
-                        var res = isValidArgumentStart(cmd.command, toComplete);
+                        var res = isValidCommandArgumentStart(cmd.command, toComplete);
                         //console.log('res', res);
                         if(res !== false)
                         {
@@ -161,15 +215,28 @@ function CommandUtility(CommandDataSource)
                     }
                 } else
                 {
-                    var arg = getArgByName(cmd, dependency);
-                    //console.log('arg', arg);
-                    var res = isValidArgumentOptionStart(arg, toComplete);
-                    if(res !== false)
+                    if(!hasOptStart(dependency))
                     {
-                        choices = choices.concat(res);
+                        var arg = getArgByName(cmd, dependency);
+                        if(hasOptStart(toComplete))
+                        {
+                            //console.log('arg', arg);
+
+                            var res = isValidArgumentOptionStart(arg, toComplete);
+                            if (res !== false)
+                            {
+                                choices = choices.concat(res);
+                            }
+                        } else
+                        {
+                            var res = isValidArgumentTierStart(cmd.command, arg, toComplete);
+                            if (res !== false)
+                            {
+                                choices = choices.concat(res);
+                            }
+                        }
                     }
                 }
-
             }
         } else
         {
@@ -324,13 +391,13 @@ function CommandUtility(CommandDataSource)
         return false;
     }
 
-    function isValidArgumentStart(cmdName, argPiece)
+    function isValidCommandArgumentStart(cmdName, argPiece)
     {
         var autocompleteChoices = [];
         var command = getCommandByName(cmdName);
-        for(var i = 0; i < command.arguments.length; i++)
+        for(var i = 0; i < command.tier1_arguments.length; i++)
         {
-            var curr = command.arguments[i].argument;
+            var curr = command.tier1_arguments[i].argument;
             if(curr.indexOf(argPiece) == 0)
             {
                 autocompleteChoices.push(curr);
@@ -338,6 +405,30 @@ function CommandUtility(CommandDataSource)
         }
         return autocompleteChoices.length > 0 ? autocompleteChoices : false;
     }
+
+    function isValidArgumentTierStart(cmdName, argParent, argPiece)
+    {
+        var autocompleteChoices = [];
+        var cmd = getCommandByName(cmdName);
+        if (argParent.tier == 1)
+        {
+            var curr;
+            for(var i = 0; i < cmd.tier2_arguments.length; i++)
+            {
+                curr = cmd.tier2_arguments[i];
+                if(curr.argument_parent_id == argParent.argument_id)
+                {
+                    autocompleteChoices.push(curr.argument);
+                }
+            }
+        } else if (argParent.tier == 2)
+        {
+            //TODO
+        }
+        return autocompleteChoices.length > 0 ? autocompleteChoices : false;
+    }
+
+
 
     function getCommandByName(name)
     {
@@ -354,11 +445,18 @@ function CommandUtility(CommandDataSource)
     function getArgByName(cmd, argName)
     {
         var curr;
-        for(var i = 0; i < cmd.arguments.length; i++)
+        for(var i = 0; i < cmd.tier1_arguments.length; i++)
         {
-            curr = cmd.arguments[i].argument;
+            curr = cmd.tier1_arguments[i].argument;
             if (curr == argName) {
-                return cmd.arguments[i];
+                return cmd.tier1_arguments[i];
+            }
+        }
+        for(var j = 0; i < cmd.tier2_arguments.length; j++)
+        {
+            curr = cmd.tier2_arguments[j].argument;
+            if (curr == argName) {
+                return cmd.tier2_arguments[j];
             }
         }
         return false;

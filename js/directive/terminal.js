@@ -122,15 +122,15 @@ angular.module('mainApp')
             console.log('info2', info);
 
             newTerminalLine();
-            for(var i = 0; i < info.arguments.length; i++)
+            for(var i = 0; i < info.tier1_arguments.length; i++)
             {
-                addLineNoDelay(info.arguments[i].argument + ' ');
+                addLineNoDelay(info.tier1_arguments[i].argument + ' ');
             }
         }
         function cd(res)
         {
-            console.log('cd', res.argumentInfo.argument.argument);
-            $scope.path = '/' + res.argumentInfo.argument.argument;
+            console.log('cd', res.argumentInfo.tier1_arg);
+            $scope.path = '/' + res.argumentInfo.tier1_arg.argument;
             $location.path($scope.path);
         }
 
@@ -269,7 +269,9 @@ angular.module('mainApp')
                     if(choices.length == 1)
                     {
                         console.log('made it');
-                        $scope.command = $scope.command.replace(toComplete, choices[0]);
+                        //$scope.command = $scope.command.replace(toComplete, choices[0]);
+                        $scope.command = $scope.command.substring(0, $scope.command.lastIndexOf(toComplete)) + choices[0];
+                        //ewString = oldString.substring(0,oldString.lastIndexOf("_"))
                     } else
                     {
                         newTerminalLine();
@@ -297,23 +299,23 @@ angular.module('mainApp')
 
             $timeout(function()
             {
-//                var cmd = 'cd resume';
-//                var cmd1 = 'move terminal -t';
-//                var cmd2 = 'move terminal --top';
-//                var cmd3 = 'move terminal --top -b';
-//                var cmd4 = 'clar';
-//                var cmd5 = 'move terml --bottom';
+                var cmd = 'cd resume';
+                var cmd1 = 'move terminal -t';
+                var cmd2 = 'move terminal --top';
+                var cmd3 = 'move terminal --top -b';
+                var cmd4 = 'clar';
+                var cmd5 = 'move terml --bottom';
                 var cmd6 = 'move';
-//                var cmd7 = 'clear';
-//                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
-//                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
-//                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
-//                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
-//                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
-//                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
+                var cmd7 = 'clear';
+                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
+                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
+                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
+                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
+                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
+                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
                 console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
-//                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
-//
+                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
+
             }, 2500);
 //            $timeout(function()
 //            {

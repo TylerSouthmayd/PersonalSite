@@ -57,7 +57,9 @@ class Command {
 
         foreach($commands as $cmd)
         {
-            $args = array();
+            $tier1Args = array();
+            $tier2Args = array();
+//            $tier3Args = array();
             $cmdOpts = array();
             $argOpts = array();
 
@@ -80,13 +82,42 @@ class Command {
                     }
                     if($arg["requires_option"] == 0) { $needsOp = false; } else { $needsOp = true; }
 
-                    array_push($args, array(
-                        "argument_id" => $arg["argument_id"],
-                        "argument" => $arg["argument_name"],
-                        "argument_tier" => $arg["argument_tier"],
-                        "options" => $argOpts,
-                        "requires_option" => $needsOp
-                    ));
+                    if($arg["argument_tier"] == 1)
+                    {
+                        array_push($tier1Args, array(
+                            "argument_id" => $arg["argument_id"],
+                            "argument" => $arg["argument_name"],
+                            "command_name" => $arg["command_name"],
+                            "has_child" => $arg["requires_argument_child"] == '0' ? false : true,
+                            "options" => $argOpts,
+                            "requires_option" => $needsOp,
+                            "tier" => 1
+                        ));
+                    } else if($arg["argument_tier"] == 2)
+                    {
+                        array_push($tier2Args, array(
+                            "argument_id" => $arg["argument_id"],
+                            "argument" => $arg["argument_name"],
+                            "argument_parent_id" => $arg["argument_parent"],
+                            "has_child" => $arg["requires_argument_child"] == '0' ? false : true,
+                            "options" => $argOpts,
+                            "requires_option" => $needsOp,
+                            "tier" => 2
+                        ));
+                    }
+//                    else if($arg["argument_tier"] == 3)
+//                    {
+//                        array_push($tier3Args, array(
+//                            "argument_id" => $arg["argument_id"],
+//                            "argument" => $arg["argument_name"],
+//                            "argument_parent_id" => $arg["argument_parent"],
+//                            "argument_parent" => $arg["command_name"],
+//                            "has_child" => $arg["requires_argument_child"] == '0' ? false : true,
+//                            "options" => $argOpts,
+//                            "requires_option" => $needsOp
+//                        ));
+//                    }
+
                 }
             }
             foreach($commandOptions as $cmdOpt)
@@ -104,7 +135,9 @@ class Command {
             array_push($commandStructure, array(
                 "command_id" => $cmd["id"],
                 "command" => $cmd["name"],
-                "arguments" => $args,
+                "tier1_arguments" => $tier1Args,
+                "tier2_arguments" => $tier2Args,
+//                "tier3_arguments" => $tier3Args,
                 "options" => $cmdOpts,
                 "requires_option" => $needsOp
             ));
