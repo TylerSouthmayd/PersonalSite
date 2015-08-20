@@ -7,7 +7,7 @@ mainApp.factory('BroadcastUtility', function($rootScope)
     service.message = 'init';
 
     /* * ***** Properties ***** (things to $on)
-     * 'stipListUpdate' - fired from FreeFormStipController after custom stip insert
+     * 'Update Grid Broadcasted'
      *
      *
      *
