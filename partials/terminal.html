@@ -1,4 +1,4 @@
-<div class="navbar" ng-class="{'navbar-fixed-top': showTop, 'navbar-fixed-bottom': !showTop}">
+<div class="navbar" ng-class="{'navbar-fixed-top': showTop, 'navbar-fixed-bottom': !showTop}" ng-click="focusCommandLine();">
     <div class="row">
         <div class="col-sm-2 col-sm-offset-8">
             <div class = "text-center">
@@ -30,7 +30,7 @@
                                         <span class="terminal-command-line-label">
                                             {{user}}@pseubuntu{{path}}:
                                         </span>
-                                        <input type="text" class="terminal-command-line test" ng-model="command"  ng-keydown="captureKeyPress($event);" maxlength="100"/>
+                                        <input id="commandLine" type="text" class="terminal-command-line test" ng-model="command"  ng-keydown="captureKeyPress($event);" maxlength="100"/>
                                     </div>
                                 </div>
                             </div>

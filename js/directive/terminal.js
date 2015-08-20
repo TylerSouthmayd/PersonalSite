@@ -11,7 +11,6 @@ angular.module('mainApp')
 
     terminalSetup.link = function(scope, elem, attr)
     {
-        //console.log(scope, elem, attr);
     };
 
     terminalSetup.controller = function($scope, $timeout, $location, CommandDataSource, CommandUtility)
@@ -25,7 +24,7 @@ angular.module('mainApp')
         $scope.commandHistory = [];
         var commandHistoryIndex = 0;
         $scope.readyForInput = false;
-        $scope.showTerminal = true;
+        $scope.showTerminal = false;
         $scope.showTop = false;
         $scope.commandStructure;  //full valid command json structure
         $scope.commandsPretty;
@@ -292,6 +291,19 @@ angular.module('mainApp')
         $scope.toggleTerminal = function()
         {
             $scope.showTerminal = !$scope.showTerminal;
+            if($scope.showTerminal)
+            {
+                $scope.focusCommandLine();
+            }
+        };
+
+        $scope.focusCommandLine = function()
+        {
+            $timeout(function()
+            {
+                console.log('commandLine' + $('#commandLine'));
+                $('#commandLine').focus();
+            },0);
         };
         function test()
         {
