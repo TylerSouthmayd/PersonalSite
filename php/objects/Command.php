@@ -91,6 +91,7 @@ class Command {
                             "has_child" => $arg["requires_argument_child"] == '0' ? false : true,
                             "options" => $argOpts,
                             "requires_option" => $needsOp,
+                            "user_defined" => $arg["user_defined"] == '0' ? false : true,
                             "tier" => 1
                         ));
                     } else if($arg["argument_tier"] == 2)
@@ -102,6 +103,7 @@ class Command {
                             "has_child" => $arg["requires_argument_child"] == '0' ? false : true,
                             "options" => $argOpts,
                             "requires_option" => $needsOp,
+                            "user_defined" => $arg["user_defined"] == '0' ? false : true,
                             "tier" => 2
                         ));
                     }

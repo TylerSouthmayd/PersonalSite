@@ -34,8 +34,7 @@ function CommandUtility(CommandDataSource)
     {
         var result = {
             commandInfo: {command: null, option: null},
-            argumentInfo: {tier1_arg: null, tier1_option: null, tier2_arg: null, tier2_option: null},
-            userDefinedArgument: false,
+            argumentInfo: {tier1_arg: null, tier1_option: null,tier2_arg: null, tier2_option: null, tier2_isUserValue: false},
             error: false,
             errorMsg: ''
         };
@@ -120,8 +119,18 @@ function CommandUtility(CommandDataSource)
                                         for(var j = 0; j < cmd.tier2_arguments.length; j++)
                                         {
                                             currTier2 = cmd.tier2_arguments[j];
-                                            if(currTier2.argument_parent_id == currArg.argument_id)
+                                            if((currTier2.argument_parent_id == currArg.argument_id && currTier2.user_defined) || (currTier2.argument == commandParts[1]))
                                             {
+                                                currArg = currTier2;
+                                                if(currArg.user_defined)
+                                                {
+                                                    console.log('user defined string');
+                                                    result.argumentInfo.tier2_isUserValue = true;
+//                                                    currArg.
+                                                } else
+                                                {
+
+                                                }
                                                 result.argumentInfo.tier2_arg = currTier2;
                                                 tier2Applied = true;
                                                 currArg = currTier2;
