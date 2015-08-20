@@ -299,22 +299,28 @@ angular.module('mainApp')
 
             $timeout(function()
             {
-                var cmd = 'cd resume';
-                var cmd1 = 'move terminal -t';
-                var cmd2 = 'move terminal --top';
-                var cmd3 = 'move terminal --top -b';
-                var cmd4 = 'clar';
-                var cmd5 = 'move terml --bottom';
-                var cmd6 = 'move';
-                var cmd7 = 'clear';
-                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
-                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
-                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
-                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
-                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
-                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
-                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
-                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
+//                var cmd = 'cd resume';
+//                var cmd1 = 'move terminal -t';
+//                var cmd2 = 'move terminal --top';
+//                var cmd3 = 'move terminal --top -b';
+//                var cmd4 = 'clar';
+//                var cmd5 = 'move terml --bottom';
+//                var cmd6 = 'move';
+//                var cmd7 = 'clear';
+//                var cmd8 = 'create row row_name';
+                var cmd9 = 'create -t row row_name';
+                var cmd10 = 'create row row_name -t';
+//                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
+//                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
+//                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
+//                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
+//                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
+//                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
+//                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
+//                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
+//                console.log(cmd8, CommandUtility.validateCommand(cmd8.split(' ')));
+                console.log(cmd9, CommandUtility.validateCommand(cmd9.split(' ')));
+                console.log(cmd10, CommandUtility.validateCommand(cmd10.split(' ')));
 
             }, 2500);
 //            $timeout(function()

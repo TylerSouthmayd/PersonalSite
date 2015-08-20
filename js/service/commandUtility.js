@@ -81,7 +81,8 @@ function CommandUtility(CommandDataSource)
                             result.errorMsg = 'Invalid option \'' + commandParts[0] + '\' for argument \'' + currArg.argument + '\': already assigned option \'' + result.argumentInfo.option.option + '\'';
                         }
 
-                    } else if(currArg == null && !cmdOptApplied)
+                    }
+                    if(!cmdOptApplied)
                     {
                         for(var i = 0; i < cmd.options.length; i++)
                         {
@@ -113,7 +114,7 @@ function CommandUtility(CommandDataSource)
                                 tier1Applied = true;
                                 if(curr.has_child)
                                 {
-                                    if(commandParts.length > 0)
+                                    if(commandParts.length > 1)
                                     {
                                         var currTier2;
                                         for(var j = 0; j < cmd.tier2_arguments.length; j++)
@@ -121,9 +122,12 @@ function CommandUtility(CommandDataSource)
                                             currTier2 = cmd.tier2_arguments[j];
                                             if(currTier2.argument_parent_id == currArg.argument_id)
                                             {
-                                                result.argumentInfo.tier2_arg = curr;
+                                                result.argumentInfo.tier2_arg = currTier2;
                                                 tier2Applied = true;
                                                 currArg = currTier2;
+                                                success = true;
+                                                commandParts.shift();
+                                                break;
                                             }
                                         }
                                     } else
@@ -136,7 +140,7 @@ function CommandUtility(CommandDataSource)
                                 break;
                             }
                         }
-                    } else if (!tier2Applied)
+                    } else if (!tier2Applied && tier1Applied)
                     {
                         //get the tier 2 argument if any
                         for(var i = 0; i < cmd.tier2_arguments.length; i++)
@@ -147,6 +151,7 @@ function CommandUtility(CommandDataSource)
                                 result.argumentInfo.tier2_arg = curr;
                                 currArg = curr;
                                 success = true;
+                                console.log('made tier 2 apply2');
                                 tier2Applied = true;
                                 break;
                             }
@@ -193,6 +198,8 @@ function CommandUtility(CommandDataSource)
             } else
             {
                 var dependency = commandParts[commandParts.length - 2];
+                if(hasOptStart(dependency)) { dependency = commandParts[commandParts.length - 3]; }
+
                 if (dependency == commandParts[0])
                 {
                     if(hasOptStart(toComplete))
@@ -204,13 +211,11 @@ function CommandUtility(CommandDataSource)
                         }
                     } else
                     {
-                        //console.log('guess');
                         var res = isValidCommandArgumentStart(cmd.command, toComplete);
                         //console.log('res', res);
                         if(res !== false)
                         {
                             choices = choices.concat(res);
-                            //console.log('choices', choices);
                         }
                     }
                 } else
@@ -220,8 +225,6 @@ function CommandUtility(CommandDataSource)
                         var arg = getArgByName(cmd, dependency);
                         if(hasOptStart(toComplete))
                         {
-                            //console.log('arg', arg);
-
                             var res = isValidArgumentOptionStart(arg, toComplete);
                             if (res !== false)
                             {
