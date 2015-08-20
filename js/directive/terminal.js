@@ -147,8 +147,8 @@ angular.module('mainApp')
 
         function man(res)
         {
-            console.log('man', res,'../../man/' + res.argumentInfo.argument.argument + '.txt');
-            updateManPage('../../man/' + res.argumentInfo.argument.argument + '.txt');
+            console.log('man', res,'../../man/' + res.argumentInfo.tier1_arg.argument + '.txt');
+            updateManPage('../../man/' + res.argumentInfo.tier1_arg.argument + '.txt');
             newTerminalLine();
             addLineNoDelay($scope.manPage);
         }
@@ -187,8 +187,8 @@ angular.module('mainApp')
         function move(res)
         {
             console.log('move');
-            var arg1 = res.argumentInfo.argument.argument;
-            var arg2 = res.argumentInfo.option.option;
+            var arg1 = res.argumentInfo.tier1_arg.argument;
+            var arg2 = res.argumentInfo.tier1_option.option;
             console.log('arg1', arg1, 'arg2', arg2);
             if(arg1 == 'terminal') {
                 newTerminalLine();
@@ -230,7 +230,7 @@ angular.module('mainApp')
             if(event.which === 13)
             {
                 event.preventDefault();
-                console.log($scope.command);
+                console.log('enter', $scope.command);
                 executeCommand();
                 $scope.command = '';
                 commandHistoryIndex = $scope.commandHistory.length;
