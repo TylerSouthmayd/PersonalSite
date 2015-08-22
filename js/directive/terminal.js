@@ -301,7 +301,7 @@ angular.module('mainApp')
         {
             $timeout(function()
             {
-                console.log('commandLine' + $('#commandLine'));
+                console.log('commandLine', $('#commandLine'));
                 $('#commandLine').focus();
             },0);
         };
