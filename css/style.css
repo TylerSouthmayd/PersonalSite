@@ -155,7 +155,7 @@ body {
 {
     font-family: Ubuntu;
     color: white;
-    font-size: 7em;
+    font-size: 5em;
 }
 .intro-text-sm
 {
@@ -165,11 +165,15 @@ body {
 }
 .intro-text-area
 {
-    height: 300px;
+    height: 350px;
     width: inherit;
     background: inherit;
     resize:none;
     margin: 0 !important;
     border: none !important;
     outline: none;
+}
+.dotless
+{
+    list-style-type: none;
 }
