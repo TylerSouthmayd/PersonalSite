@@ -34,7 +34,7 @@ function CommandUtility(CommandDataSource)
     {
         var result = {
             commandInfo: {command: null, option: null},
-            argumentInfo: {tier1_arg: null, tier1_option: null,tier2_arg: null, tier2_option: null, tier2_isUserValue: false},
+            argumentInfo: {tier1_arg: null, tier1_option: null,tier2_arg: null, tier2_option: null, tier2_userValue: false},
             error: false,
             errorMsg: ''
         };
@@ -124,8 +124,8 @@ function CommandUtility(CommandDataSource)
                                                 currArg = currTier2;
                                                 if(currArg.user_defined)
                                                 {
-                                                    console.log('user defined string');
-                                                    result.argumentInfo.tier2_isUserValue = true;
+                                                    console.log('user defined string', currArg, commandParts[0], commandParts[1]);
+                                                    result.argumentInfo.tier2_userValue = commandParts[1];
 //                                                    currArg.
                                                 } else
                                                 {

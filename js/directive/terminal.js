@@ -29,6 +29,14 @@ angular.module('mainApp')
         $scope.commandStructure;  //full valid command json structure
         $scope.commandsPretty;
 
+        $scope.grids = [
+
+        ];
+        $scope.currentGrid = {
+            name: '',
+            rows: []
+        };
+
         $scope.grid;
 
         getCommandStructure();
@@ -103,7 +111,8 @@ angular.module('mainApp')
                 else if (cmd === "clear") { clear();}
                 else if (cmd === "move") { move(res); }
                 else if (cmd === "help") { help(); }
-                else if (cmd === "man") { man(res)}
+                else if (cmd === "man") { man(res); }
+                else if (cmd === "create") { create(res); }
             }
             else
             {
@@ -169,6 +178,23 @@ angular.module('mainApp')
             };
             //return manPage;
             rawFile.send(null);
+        }
+
+        function create(res)
+        {
+            console.log('create', res);
+            if(res.argumentInfo.tier1_arg.argument == 'grid')
+            {
+                $scope.grids.push({
+                    name: res.argumentInfo.tier2_userValue,
+                    rows: []
+                });
+                console.log('grids', $scope.grids);
+            } else if (res.argumentInfo.tier1_arg.argument == 'row')
+            {
+                $scope.currentGrid.rows.push(res.argumentInfo.tier2_userValue);
+                console.log('current grid', $scope.currentGrid);
+            }
         }
 
         function getCommandByName(name)
@@ -309,32 +335,32 @@ angular.module('mainApp')
         {
             //console.log('hasOptStart', hasOptStart('-t'), hasOptStart('4-'), hasOptStart('--bottom'));
 
-            $timeout(function()
-            {
-                var cmd = 'cd resume';
-                var cmd1 = 'move terminal -t';
-                var cmd2 = 'move terminal --top';
-                var cmd3 = 'move terminal --top -b';
-                var cmd4 = 'clar';
-                var cmd5 = 'move terml --bottom';
-                var cmd6 = 'move';
-                var cmd7 = 'clear';
-                var cmd8 = 'create row row_name';
-                var cmd9 = 'create -t row row_name';
-                var cmd10 = 'create row row_name -t';
-                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
-                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
-                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
-                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
-                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
-                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
-                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
-                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
-                console.log(cmd8, CommandUtility.validateCommand(cmd8.split(' ')));
-                console.log(cmd9, CommandUtility.validateCommand(cmd9.split(' ')));
-                console.log(cmd10, CommandUtility.validateCommand(cmd10.split(' ')));
-
-            }, 2500);
+//            $timeout(function()
+//            {
+//                var cmd = 'cd resume';
+//                var cmd1 = 'move terminal -t';
+//                var cmd2 = 'move terminal --top';
+//                var cmd3 = 'move terminal --top -b';
+//                var cmd4 = 'clar';
+//                var cmd5 = 'move terml --bottom';
+//                var cmd6 = 'move';
+//                var cmd7 = 'clear';
+//                var cmd8 = 'create row row_name';
+//                var cmd9 = 'create -t row row_name';
+//                var cmd10 = 'create row row_name -t';
+//                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
+//                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
+//                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
+//                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
+//                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
+//                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
+//                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
+//                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
+//                console.log(cmd8, CommandUtility.validateCommand(cmd8.split(' ')));
+//                console.log(cmd9, CommandUtility.validateCommand(cmd9.split(' ')));
+//                console.log(cmd10, CommandUtility.validateCommand(cmd10.split(' ')));
+//
+//            }, 2500);
 //            $timeout(function()
 //            {
 //                var cmd = 'cd res';
