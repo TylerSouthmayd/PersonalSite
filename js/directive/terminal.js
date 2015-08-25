@@ -113,6 +113,7 @@ angular.module('mainApp')
                 else if (cmd === "help") { help(); }
                 else if (cmd === "man") { man(res); }
                 else if (cmd === "create") { create(res); }
+                else if (cmd === "git") { git(res); }
             }
             else
             {
@@ -195,6 +196,12 @@ angular.module('mainApp')
                 $scope.currentGrid.rows.push(res.argumentInfo.tier2_userValue);
                 console.log('current grid', $scope.currentGrid);
             }
+        }
+
+        function git(res)
+        {
+            var win = window.open('https://github.com/TylerSouthmayd/PersonalSite', '_blank');
+            win.focus();
         }
 
         function getCommandByName(name)
