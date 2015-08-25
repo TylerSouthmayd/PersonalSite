@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 17, 2015 at 01:57 AM
+-- Generation Time: Aug 25, 2015 at 02:42 AM
 -- Server version: 5.5.43
 -- PHP Version: 5.4.41-0+deb7u1
 
@@ -30,33 +30,31 @@ CREATE TABLE IF NOT EXISTS `argument` (
   `name` text NOT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `requires_option` tinyint(1) NOT NULL DEFAULT '0',
+  `requires_argument_child` tinyint(4) NOT NULL DEFAULT '0',
   `command_id` int(11) NOT NULL,
   `argument_tier` int(11) NOT NULL DEFAULT '1',
-  `argument_parent` int(11) NOT NULL,
+  `argument_parent` int(11) NOT NULL DEFAULT '0',
+  `user_defined` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `command_id` (`command_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `argument`
 --
 
-INSERT INTO `argument` (`name`, `id`, `requires_option`, `command_id`, `argument_tier`, `argument_parent`) VALUES
-('resume', 1, 0, 2, 1, 0),
-('pseubuntu', 2, 0, 4, 1, 0),
-('home', 3, 0, 2, 1, 0),
-('terminal', 5, 1, 5, 1, 0),
-('clear', 6, 0, 6, 1, 0),
-('ls', 7, 0, 6, 1, 0),
-('sandbox', 8, 0, 2, 1, 0),
-('show', 9, 0, 7, 1, 0),
-('remove', 10, 0, 7, 1, 0),
-('clear', 11, 0, 7, 1, 0),
-('row', 12, 0, 7, 2, 9),
-('element', 13, 0, 7, 3, 0),
-('add', 14, 0, 7, 1, 0),
-('row', 15, 0, 7, 2, 10),
-('row', 16, 0, 7, 2, 11);
+INSERT INTO `argument` (`name`, `id`, `requires_option`, `requires_argument_child`, `command_id`, `argument_tier`, `argument_parent`, `user_defined`) VALUES
+('resume', 1, 0, 0, 2, 1, 0, 0),
+('pseubuntu', 2, 0, 0, 4, 1, 0, 0),
+('home', 3, 0, 0, 2, 1, 0, 0),
+('terminal', 5, 1, 0, 5, 1, 0, 0),
+('clear', 6, 0, 0, 6, 1, 0, 0),
+('ls', 7, 0, 0, 6, 1, 0, 0),
+('sandbox', 8, 0, 0, 2, 1, 0, 0),
+('grid', 17, 0, 1, 8, 1, 0, 0),
+('row', 18, 0, 1, 8, 1, 0, 0),
+('grid_name', 19, 0, 0, 8, 2, 17, 1),
+('row_name', 20, 0, 0, 8, 2, 18, 1);
 
 -- --------------------------------------------------------
 
@@ -92,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `command` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `requires_option` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `command`
@@ -105,7 +103,7 @@ INSERT INTO `command` (`name`, `id`, `requires_option`) VALUES
 ('help', 4, 0),
 ('move', 5, 0),
 ('man', 6, 0),
-('grid', 7, 0);
+('create', 8, 0);
 
 -- --------------------------------------------------------
 
@@ -127,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `command_option` (
 --
 
 INSERT INTO `command_option` (`id`, `name`, `short_name`, `command_id`) VALUES
-(3, '--top', '-t', 5),
+(3, '--top', '-t', 8),
 (4, '--bottom', '-b', 5);
 
 --
