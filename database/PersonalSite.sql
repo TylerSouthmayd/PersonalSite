@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Aug 25, 2015 at 02:42 AM
+-- Generation Time: Sep 14, 2015 at 05:40 PM
 -- Server version: 5.5.43
 -- PHP Version: 5.4.41-0+deb7u1
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `command` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `requires_option` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `command`
@@ -103,7 +103,8 @@ INSERT INTO `command` (`name`, `id`, `requires_option`) VALUES
 ('help', 4, 0),
 ('move', 5, 0),
 ('man', 6, 0),
-('create', 8, 0);
+('create', 8, 0),
+('git', 9, 0);
 
 -- --------------------------------------------------------
 
