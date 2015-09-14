@@ -5,7 +5,10 @@
  * Date: 7/11/2015
  * Time: 8:41 PM
  */
+
+require_once("../SQLUtil.php");
 require_once("../objects/Command.php");
+
 $json = null;
 $commands = Command::getAllCommands();
 

@@ -86,6 +86,14 @@ angular.module('mainApp')
             $scope.terminalBody += line;
         }
 
+        function addArray(arr)
+        {
+            for(var i = 0; i < arr.length; i++)
+            {
+                var curr = arr[i];
+                $scope.terminalBody += curr + ' ';
+            }
+        }
         function newTerminalLine()
         {
             addLineNoDelay('\n');
@@ -293,30 +301,50 @@ angular.module('mainApp')
 
                 $scope.commandParts = ($scope.command).split(" ");
                 var toComplete = $scope.commandParts[$scope.commandParts.length - 1];
-                var choices = CommandUtility.tab($scope.command);
-                console.log('choices', choices);
-
-                if (choices.length > 0)
-                {
-                    if(choices.length == 1)
+//                $timeout(function()
+//                {
+                    var choices = CommandUtility.tab($scope.command);
+                    console.log('choices', choices);
+                    if (choices.length > 0)
                     {
-                        console.log('made it');
-                        //$scope.command = $scope.command.replace(toComplete, choices[0]);
-                        $scope.command = $scope.command.substring(0, $scope.command.lastIndexOf(toComplete)) + choices[0];
-                        //ewString = oldString.substring(0,oldString.lastIndexOf("_"))
-                    } else
-                    {
-                        newTerminalLine();
-                        addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
-                        var retStr = '';
-                        for(var i = 0; i < choices.length; i++)
+                        if(choices.length == 1)
                         {
-                            retStr += choices[i] + ' ';
+                            console.log('made it');
+                            //$scope.command = $scope.command.replace(toComplete, choices[0]);
+                            $scope.command = $scope.command.substring(0, $scope.command.lastIndexOf(toComplete)) + choices[0];
+                            //ewString = oldString.substring(0,oldString.lastIndexOf("_"))
+                        } else
+                        {
+                            newTerminalLine();
+                            addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
+                            var retStr = '';
+                            for(var i = 0; i < choices.length; i++)
+                            {
+                                retStr += choices[i] + ' ';
+                            }
+                            newTerminalLine();
+                            addLineNoDelay(retStr);
                         }
-                        newTerminalLine();
-                        addLineNoDelay(retStr);
+                    } else if (choices.length == 0)
+                    {
+                        $timeout(function() {
+                            console.log('commandutility choices', CommandUtility.choices);
+                            if(CommandUtility.choices.length > 0)
+                            {
+                                if (CommandUtility.choices.length == 1)
+                                {
+                                    $scope.command += ' ' + CommandUtility.choices[0];
+                                } else
+                                {
+                                    newTerminalLine();
+                                    addArray(CommandUtility.choices);
+                                }
+                            }
+                        }, 200);
                     }
-                }
+//                }, 0);
+
+
 
             }
         };
@@ -395,6 +423,11 @@ angular.module('mainApp')
             var ms = 15;
             var introText = 'You have control over the website through this terminal.';
             addLineWithCharDelay(introText,ms);
+            CommandDataSource.getArgumentChildren(18, function(res)
+            {
+                console.log('argument children', res);
+            });
+
             $scope.path= $location.path();
             $timeout(function()
             {
