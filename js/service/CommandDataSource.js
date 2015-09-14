@@ -23,5 +23,12 @@ function CommandDataSource($http)
         return $http.get(urlBase + "commandStructure.php");
     };
 
+    factory.getArgumentChildren = function(argId, callback)
+    {
+        return $http.get(urlBase + "argumentChildren.php", { params: {argId: argId}})
+            .success(callback)
+            .error(function() {console.log('error')});
+    };
+
     return factory;
 }

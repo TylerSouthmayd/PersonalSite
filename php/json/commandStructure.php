@@ -6,6 +6,7 @@
  * Time: 6:23 PM
  */
 
+require_once("../SQLUtil.php");
 require_once("../objects/Command.php");
 require_once("../objects/Argument.php");
 require_once("../objects/CommandOption.php");

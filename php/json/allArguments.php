@@ -6,7 +6,9 @@
  * Time: 2:04 AM
  */
 
+require_once("../SQLUtil.php");
 require_once("../objects/Argument.php");
+
 $json = null;
 $args = Argument::getAllArguments();
 
