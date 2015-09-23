@@ -19,6 +19,7 @@ class Argument {
     private $info;
     private $children;
     private $parentArgument;
+    private $options;
 
     function __construct($id)
     {
@@ -49,6 +50,12 @@ class Argument {
         $where = "argument_parent = " . "\"" . $this->id . "\"";
         $this->children = $this->dbUtil->selectAllFromTableWhere(self::TABLE, $where);
         $this->children = $this->dbUtil->interpretQueryResponse($this->children);
+
+        $where = "argument_id = " . "\"" . $this->id . "\"";
+        $this->options = $this->dbUtil->selectAllFromTableWhere("argument_option", $where);
+        $this->options = $this->dbUtil->interpretQueryResponse($this->options);
+
+        $this->children = array_merge($this->children, $this->options);
     }
 
     private function setParentArgument()
