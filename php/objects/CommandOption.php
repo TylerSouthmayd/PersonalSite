@@ -6,7 +6,7 @@
  * Time: 12:08 PM
  */
 
-require_once("../SQLUtil.php");
+//require_once("../SQLUtil.php");
 
 class CommandOption {
 

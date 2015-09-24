@@ -8,6 +8,7 @@ function CommandUtility(CommandDataSource)
 {
     var CommandUtility = [];
     var commandStructure;
+    CommandUtility.choices = [];
 
     CommandDataSource.getCommandStructure()
         .success(function(commands)
@@ -34,7 +35,7 @@ function CommandUtility(CommandDataSource)
     {
         var result = {
             commandInfo: {command: null, option: null},
-            argumentInfo: {tier1_arg: null, tier1_option: null,tier2_arg: null, tier2_option: null, tier2_isUserValue: false},
+            argumentInfo: {tier1_arg: null, tier1_option: null,tier2_arg: null, tier2_option: null, tier2_userValue: false},
             error: false,
             errorMsg: ''
         };
@@ -124,8 +125,8 @@ function CommandUtility(CommandDataSource)
                                                 currArg = currTier2;
                                                 if(currArg.user_defined)
                                                 {
-                                                    console.log('user defined string');
-                                                    result.argumentInfo.tier2_isUserValue = true;
+                                                    console.log('user defined string', currArg, commandParts[0], commandParts[1]);
+                                                    result.argumentInfo.tier2_userValue = commandParts[1];
 //                                                    currArg.
                                                 } else
                                                 {
@@ -194,7 +195,9 @@ function CommandUtility(CommandDataSource)
     CommandUtility.tab = function(command)
     {
         var commandParts = (command).split(" ");
-        var choices = [];
+        CommandUtility.choices = [];
+        var res;
+        var arg;
         if(isValidCommand(commandParts[0]))
         {
             var cmd = getCommandByName(commandParts[0]);
@@ -203,7 +206,7 @@ function CommandUtility(CommandDataSource)
             if(commandParts.length == 1)
             {
                 var cmdguts = getCommandArgsAndOpts(cmd.command);
-                choices = choices.concat(cmdguts);
+                CommandUtility.choices = CommandUtility.choices.concat(cmdguts);
             } else
             {
                 var dependency = commandParts[commandParts.length - 2];
@@ -213,52 +216,86 @@ function CommandUtility(CommandDataSource)
                 {
                     if(hasOptStart(toComplete))
                     {
-                        var res = isValidCommandOptionStart(cmd.command, toComplete);
-                        if(res !== false)
-                        {
-                            choices = choices.concat(res);
-                        }
+                        res = isValidCommandOptionStart(cmd.command, toComplete);
                     } else
                     {
-                        var res = isValidCommandArgumentStart(cmd.command, toComplete);
+                        res = isValidCommandArgumentStart(cmd.command, toComplete);
                         //console.log('res', res);
-                        if(res !== false)
+                    }
+                    if(res !== false)
+                    {
+                        //if res = complete, do complete for tier
+                        //else push choices
+                        console.log('Command Dependency Res: ', res);
+                        if(res[0] == toComplete && !hasOptStart(toComplete))
                         {
-                            choices = choices.concat(res);
-                        }
+                            arg = getArgByName(cmd, toComplete);
+                            console.log('show more');
+                            CommandDataSource.getArgumentChildren(arg.argument_id, function(children)
+                            {
+                                children = children.children;
+                                console.log('children', children, 'arg', arg);
+                                var childArr = [];
+                                for(var i = 0; i < children.length; i++)
+                                {
+                                    childArr.push(children[i].name);
+                                }
+                                console.log('childArr', childArr);
+                                CommandUtility.choices = CommandUtility.choices.concat(childArr);
+                                console.log('choices start', CommandUtility.choices);
+
+                                return CommandUtility.choices;
+                            });
+                        } else CommandUtility.choices = CommandUtility.choices.concat(res);
                     }
                 } else
                 {
+
+                    arg = getArgByName(cmd, dependency);
+                    console.log('arg', arg);
                     if(!hasOptStart(dependency))
                     {
-                        var arg = getArgByName(cmd, dependency);
                         if(hasOptStart(toComplete))
                         {
-                            var res = isValidArgumentOptionStart(arg, toComplete);
-                            if (res !== false)
-                            {
-                                choices = choices.concat(res);
-                            }
+                            res = isValidArgumentOptionStart(arg, toComplete);
                         } else
                         {
-                            var res = isValidArgumentTierStart(cmd.command, arg, toComplete);
-                            if (res !== false)
-                            {
-                                choices = choices.concat(res);
-                            }
+                            res = isValidArgumentTierStart(cmd.command, arg, toComplete);
                         }
+                    }
+                    if(res !== false)
+                    {
+                        //if res = complete, do complete for tier
+                        //else push choices
+                        console.log('Arg Dependency Res: ', res);
+                        if(res[0] == toComplete && !hasOptStart(toComplete))
+                        {
+                            console.log('show more');
+                            CommandDataSource.getArgumentChildren(arg.argument_id, function(children)
+                            {
+                                var childArr = [];
+                                for(var i = 0; i < children.length; i++)
+                                {
+                                   childArr.push(children[i].argument);
+                                }
+                                console.log('childArr', childArr);
+                                CommandUtility.choices = CommandUtility.choices.concat(childArr);
+
+                            });
+                        } else CommandUtility.choices = CommandUtility.choices.concat(res);
                     }
                 }
             }
         } else
         {
-            var res = isValidCommandStart(commandParts[0]);
+            res = isValidCommandStart(commandParts[0]);
             if (res !== false)
             {
-                choices = choices.concat(res);
+                CommandUtility.choices = CommandUtility.choices.concat(res);
             }
         }
-        return choices;
+        console.log('choices end', CommandUtility.choices);
+        return CommandUtility.choices;
     };
 
     //param: string cmd name
@@ -268,9 +305,9 @@ function CommandUtility(CommandDataSource)
         var args = [];
         var opts = [];
         var command = getCommandByName(cmd);
-        for(var i = 0; i < command.arguments.length; i++)
+        for(var i = 0; i < command.tier1_arguments.length; i++)
         {
-            args.push(command.arguments[i].argument);
+            args.push(command.tier1_arguments[i].argument);
 
         }
         for(var i = 0; i < command.options.length; i++)
@@ -279,6 +316,12 @@ function CommandUtility(CommandDataSource)
         }
         ret.push(args, opts);
         return ret;
+    }
+
+    function getArgumentArgsAndOpts(cmd, argName)
+    {
+        var arg = getArgByName(cmd, argName);
+
     }
 
     function isValidCommand(cmdName)

@@ -29,6 +29,14 @@ angular.module('mainApp')
         $scope.commandStructure;  //full valid command json structure
         $scope.commandsPretty;
 
+        $scope.grids = [
+
+        ];
+        $scope.currentGrid = {
+            name: '',
+            rows: []
+        };
+
         $scope.grid;
 
         getCommandStructure();
@@ -78,6 +86,14 @@ angular.module('mainApp')
             $scope.terminalBody += line;
         }
 
+        function addArray(arr)
+        {
+            for(var i = 0; i < arr.length; i++)
+            {
+                var curr = arr[i];
+                $scope.terminalBody += curr + ' ';
+            }
+        }
         function newTerminalLine()
         {
             addLineNoDelay('\n');
@@ -103,7 +119,9 @@ angular.module('mainApp')
                 else if (cmd === "clear") { clear();}
                 else if (cmd === "move") { move(res); }
                 else if (cmd === "help") { help(); }
-                else if (cmd === "man") { man(res)}
+                else if (cmd === "man") { man(res); }
+                else if (cmd === "create") { create(res); }
+                else if (cmd === "git") { git(res); }
             }
             else
             {
@@ -169,6 +187,29 @@ angular.module('mainApp')
             };
             //return manPage;
             rawFile.send(null);
+        }
+
+        function create(res)
+        {
+            console.log('create', res);
+            if(res.argumentInfo.tier1_arg.argument == 'grid')
+            {
+                $scope.grids.push({
+                    name: res.argumentInfo.tier2_userValue,
+                    rows: []
+                });
+                console.log('grids', $scope.grids);
+            } else if (res.argumentInfo.tier1_arg.argument == 'row')
+            {
+                $scope.currentGrid.rows.push(res.argumentInfo.tier2_userValue);
+                console.log('current grid', $scope.currentGrid);
+            }
+        }
+
+        function git(res)
+        {
+            var win = window.open('https://github.com/TylerSouthmayd/PersonalSite', '_blank');
+            win.focus();
         }
 
         function getCommandByName(name)
@@ -260,30 +301,50 @@ angular.module('mainApp')
 
                 $scope.commandParts = ($scope.command).split(" ");
                 var toComplete = $scope.commandParts[$scope.commandParts.length - 1];
-                var choices = CommandUtility.tab($scope.command);
-                console.log('choices', choices);
-
-                if (choices.length > 0)
-                {
-                    if(choices.length == 1)
+//                $timeout(function()
+//                {
+                    var choices = CommandUtility.tab($scope.command);
+                    console.log('choices', choices);
+                    if (choices.length > 0)
                     {
-                        console.log('made it');
-                        //$scope.command = $scope.command.replace(toComplete, choices[0]);
-                        $scope.command = $scope.command.substring(0, $scope.command.lastIndexOf(toComplete)) + choices[0];
-                        //ewString = oldString.substring(0,oldString.lastIndexOf("_"))
-                    } else
-                    {
-                        newTerminalLine();
-                        addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
-                        var retStr = '';
-                        for(var i = 0; i < choices.length; i++)
+                        if(choices.length == 1)
                         {
-                            retStr += choices[i] + ' ';
+                            console.log('made it');
+                            //$scope.command = $scope.command.replace(toComplete, choices[0]);
+                            $scope.command = $scope.command.substring(0, $scope.command.lastIndexOf(toComplete)) + choices[0];
+                            //ewString = oldString.substring(0,oldString.lastIndexOf("_"))
+                        } else
+                        {
+                            newTerminalLine();
+                            addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
+                            var retStr = '';
+                            for(var i = 0; i < choices.length; i++)
+                            {
+                                retStr += choices[i] + ' ';
+                            }
+                            newTerminalLine();
+                            addLineNoDelay(retStr);
                         }
-                        newTerminalLine();
-                        addLineNoDelay(retStr);
+                    } else if (choices.length == 0)
+                    {
+                        $timeout(function() {
+                            console.log('commandutility choices', CommandUtility.choices);
+                            if(CommandUtility.choices.length > 0)
+                            {
+                                if (CommandUtility.choices.length == 1)
+                                {
+                                    $scope.command += ' ' + CommandUtility.choices[0];
+                                } else
+                                {
+                                    newTerminalLine();
+                                    addArray(CommandUtility.choices);
+                                }
+                            }
+                        }, 200);
                     }
-                }
+//                }, 0);
+
+
 
             }
         };
@@ -309,32 +370,32 @@ angular.module('mainApp')
         {
             //console.log('hasOptStart', hasOptStart('-t'), hasOptStart('4-'), hasOptStart('--bottom'));
 
-            $timeout(function()
-            {
-                var cmd = 'cd resume';
-                var cmd1 = 'move terminal -t';
-                var cmd2 = 'move terminal --top';
-                var cmd3 = 'move terminal --top -b';
-                var cmd4 = 'clar';
-                var cmd5 = 'move terml --bottom';
-                var cmd6 = 'move';
-                var cmd7 = 'clear';
-                var cmd8 = 'create row row_name';
-                var cmd9 = 'create -t row row_name';
-                var cmd10 = 'create row row_name -t';
-                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
-                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
-                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
-                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
-                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
-                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
-                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
-                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
-                console.log(cmd8, CommandUtility.validateCommand(cmd8.split(' ')));
-                console.log(cmd9, CommandUtility.validateCommand(cmd9.split(' ')));
-                console.log(cmd10, CommandUtility.validateCommand(cmd10.split(' ')));
-
-            }, 2500);
+//            $timeout(function()
+//            {
+//                var cmd = 'cd resume';
+//                var cmd1 = 'move terminal -t';
+//                var cmd2 = 'move terminal --top';
+//                var cmd3 = 'move terminal --top -b';
+//                var cmd4 = 'clar';
+//                var cmd5 = 'move terml --bottom';
+//                var cmd6 = 'move';
+//                var cmd7 = 'clear';
+//                var cmd8 = 'create row row_name';
+//                var cmd9 = 'create -t row row_name';
+//                var cmd10 = 'create row row_name -t';
+//                console.log(cmd, CommandUtility.validateCommand(cmd.split(' ')));
+//                console.log(cmd1, CommandUtility.validateCommand(cmd1.split(' ')));
+//                console.log(cmd2, CommandUtility.validateCommand(cmd2.split(' ')));
+//                console.log(cmd3, CommandUtility.validateCommand(cmd3.split(' ')));
+//                console.log(cmd4, CommandUtility.validateCommand(cmd4.split(' ')));
+//                console.log(cmd5, CommandUtility.validateCommand(cmd5.split(' ')));
+//                console.log(cmd6, CommandUtility.validateCommand(cmd6.split(' ')));
+//                console.log(cmd7, CommandUtility.validateCommand(cmd7.split(' ')));
+//                console.log(cmd8, CommandUtility.validateCommand(cmd8.split(' ')));
+//                console.log(cmd9, CommandUtility.validateCommand(cmd9.split(' ')));
+//                console.log(cmd10, CommandUtility.validateCommand(cmd10.split(' ')));
+//
+//            }, 2500);
 //            $timeout(function()
 //            {
 //                var cmd = 'cd res';
@@ -362,6 +423,11 @@ angular.module('mainApp')
             var ms = 15;
             var introText = 'You have control over the website through this terminal.';
             addLineWithCharDelay(introText,ms);
+            CommandDataSource.getArgumentChildren(18, function(res)
+            {
+                console.log('argument children', res);
+            });
+
             $scope.path= $location.path();
             $timeout(function()
             {
