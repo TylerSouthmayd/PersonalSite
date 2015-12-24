@@ -19,11 +19,11 @@ function HomeController($scope, $timeout)
     $timeout(function()
     {
         var outroString = "Click the button to start manipulating what you see.                                                                                             ";
-        addOutroLineWithCharDelay(outroString, 75);
+        addOutroLineWithCharDelay(outroString, 40);
         $timeout(function()
         {
-            outroString = '\nOr don\'t...';
-            addOutroLineWithCharDelay(outroString, 75);
+            outroString = '\nTry \'cd resume\' or press tab so see available commands.';
+            addOutroLineWithCharDelay(outroString, 40);
         },75*(outroString.length));
     },75*(introString.length));
 
