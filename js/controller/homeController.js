@@ -13,17 +13,17 @@ function HomeController($scope, $timeout)
     };
     $scope.introText = '';
     $scope.outroText = '';
-    var introString = "Hello, I'm Tyler Southmayd. \nWelcome to my personal website...                    ";
+    var introString = "Hello, I'm Tyler Southmayd. \nWelcome to my personal website...         ";
 
     addIntroLineWithCharDelay(introString, 75);
     $timeout(function()
     {
-        var outroString = "Click the button to start manipulating what you see.                                                                                             ";
-        addOutroLineWithCharDelay(outroString, 40);
+        var outroString = "Click the button to start manipulating what you see.   ";
+        addOutroLineWithCharDelay(outroString, 75);
         $timeout(function()
         {
-            outroString = '\nTry \'cd resume\' or press tab so see available commands.';
-            addOutroLineWithCharDelay(outroString, 40);
+            outroString = '\nTry \'cd resume\' or press tab to see available commands.';
+            addOutroLineWithCharDelay(outroString, 75);
         },75*(outroString.length));
     },75*(introString.length));
 
