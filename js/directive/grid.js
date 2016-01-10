@@ -11,27 +11,47 @@ angular.module('mainApp')
 
     gridSetup.link = function(scope, elem, attr)
     {
-        //console.log(scope, elem, attr);
-    };
-
-    gridSetup.controller = function($scope, $timeout, BroadcastUtility)
-    {
-        $scope.grid;
-        $scope.index = 1;
-
-        $scope.$watch('grid', function()
+        console.log(scope, elem, attr);
+        scope.$on('Update Grid', function(event, args)
         {
-            if ($scope.grid !== undefined) { BroadcastUtility.updateGrid($scope.grid); }
+            console.log('event', event, 'args', args);
+            scope.method = args.method;
+            scope.component = args.component;
+            switch(scope.method)
+            {
+                case('add'):
+                    scope.grid.push({name: scope.component, url: '/partials/projects/' + scope.component + '.html'});
+                    break;
+                case('rm'):
+                    for(var i = 0; i < scope.grid.length; i++)
+                    {
+                        if(scope.grid[i].name == scope.component)
+                        {
+                            scope.grid.splice(i,1);
+                            //if removing all dont break
+                            break;
+                        }
+                    }
+                    break;
+            }
+            console.log('$scope.grid', scope.grid);
         });
 
-        $scope.init = function()
+        scope.init = function()
         {
-            $timeout(function()
-            {
-                $scope.grid='test' + 1;
-            }, 2000);
+            scope.grid = [];
+            scope.gridComponent = '';
+            scope.index = 1;
+//            $timeout(function()
+//            {
+//            }, 2000);
         };
-        $scope.init();
+        scope.init();
+    };
+
+    gridSetup.controller = function($scope, $timeout)
+    {
+
 
     };
 

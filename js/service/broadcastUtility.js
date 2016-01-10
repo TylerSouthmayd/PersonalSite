@@ -3,7 +3,7 @@
  */
 mainApp.factory('BroadcastUtility', function($rootScope)
 {
-    var service = [];
+    var service = {};
     service.message = 'init';
 
     /* * ***** Properties ***** (things to $on)
@@ -20,7 +20,7 @@ mainApp.factory('BroadcastUtility', function($rootScope)
         //console.log('grid', grid);
 
         service.broadcastPropertyChanged('Update Grid', grid);
-        console.log('Update Grid Broadcasted');
+//        console.log('Update Grid Broadcasted');
     };
 
     service.broadcastPropertyChanged = function(property, args)

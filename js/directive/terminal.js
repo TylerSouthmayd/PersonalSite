@@ -13,7 +13,7 @@ angular.module('mainApp')
     {
     };
 
-    terminalSetup.controller = function($scope, $timeout, $location, CommandDataSource, CommandUtility)
+    terminalSetup.controller = function($scope, $timeout, $location, CommandDataSource, CommandUtility, BroadcastUtility)
     {
         $scope.user = 'visitor';
         $scope.terminalBody = '';
@@ -37,7 +37,6 @@ angular.module('mainApp')
             rows: []
         };
 
-        $scope.grid;
 
         getCommandStructure();
         function getCommandStructure()
@@ -59,11 +58,22 @@ angular.module('mainApp')
             $('#helpModal').modal('toggle');
         };
 
-        $scope.$on('Update Grid', function(event, args)
+        $scope.$watch('grid', function()
         {
-            $scope.grid = args;
-            console.log('$scope.grid', $scope.grid);
-        });
+//            console.log('made it to watch');
+            if ($scope.grid !== undefined) { BroadcastUtility.updateGrid($scope.grid); }
+        },true);
+
+        $scope.updateGrid = function()
+        {
+//            console.log($scope.grid);
+//            var test = {'property': $scope.i};
+//            $scope.grid = test;
+//            $scope.i++;
+//            console.log($scope.grid);
+//            $scope.grid.test = 'property' + $scope.i;
+//            $scope.i++;
+        };
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -101,15 +111,15 @@ angular.module('mainApp')
 
         function executeCommand()
         {
-            console.log('body', $scope.terminalBody);
+//            console.log('body', $scope.terminalBody);
             if ($scope.terminalBody !== '') newTerminalLine();
             $scope.commandHistory.push($scope.command);
-            console.log('added command, history:', $scope.commandHistory);
+//            console.log('added command, history:', $scope.commandHistory);
             addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + $scope.command);
             $scope.commandParts = ($scope.command).split(" ");
 
             var res = CommandUtility.validateCommand($scope.commandParts);
-            console.log(res);
+//            console.log(res);
             if (res.error == false)
             {
                 var cmd = res.commandInfo.command.command;
@@ -122,6 +132,8 @@ angular.module('mainApp')
                 else if (cmd === "man") { man(res); }
                 else if (cmd === "create") { create(res); }
                 else if (cmd === "git") { git(res); }
+                else if (cmd === "add") { add(res); }
+                else if (cmd === "rm") { rm(res); }
             }
             else
             {
@@ -261,6 +273,83 @@ angular.module('mainApp')
             }
         }
 
+        function add(res)
+        {
+            newTerminalLine();
+            console.log('add', res);
+            console.log('path', $location.path());
+            if($location.path() !== '/sandbox')
+            {
+                addLineNoDelay('Changing directory to  \'\\sandbox\'');
+                newTerminalLine();
+                $scope.path = '/sandbox';
+                $location.path($scope.path);
+            }
+            $timeout(function()
+            {
+                addLineNoDelay('Adding copy of \'' + res.argumentInfo.tier1_arg.argument + '\' component');
+                newTerminalLine();
+                switch(res.argumentInfo.tier1_arg.argument)
+                {
+                    case "ProjectHeader":
+                        $scope.grid= {method: "add", component: "ProjectHeader"};
+                        break;
+                    case "TylerSouthmayd.com":
+                        $scope.grid = {method: "add", component: "TylerSouthmayd.com"};
+                        break;
+                    case "RaspberryPi":
+                        $scope.grid = {method: "add", component: "RaspberryPi"};
+                        break;
+                    case "UConnSmash.com":
+                        $scope.grid = {method: "add", component: "UConnSmash.com"};
+                        break;
+                    case "Chinook":
+                        $scope.grid = {method: "add", component: "Chinook"};
+                        break;
+                    case "HTMLEditor":
+                        $scope.grid = {method: "add", component: "HTMLEditor"};
+                        break;
+                }
+            },350);
+        }
+
+        function rm(res)
+        {
+            newTerminalLine();
+            console.log('add', res);
+            console.log('path', $location.path());
+            if($location.path() !== '/sandbox')
+            {
+                addLineNoDelay('You can only remove items you have added to the \'\\sandbox\' page');
+                newTerminalLine();
+            } else
+            {
+                addLineNoDelay('Attempting to remove copy of \'' + res.argumentInfo.tier1_arg.argument + '\' component');
+                newTerminalLine();
+                switch(res.argumentInfo.tier1_arg.argument)
+                {
+                    case "ProjectHeader":
+                        $scope.grid={method: "rm", component: "ProjectHeader"};
+                        break;
+                    case "TylerSouthmayd.com":
+                        $scope.grid = {method: "rm", component: "TylerSouthmayd.com"};
+                        break;
+                    case "RaspberryPi":
+                        $scope.grid = {method: "rm", component: "RaspberryPi"};
+                        break;
+                    case "UConnSmash.com":
+                        $scope.grid = {method: "rm", component: "UConnSmash.com"};
+                        break;
+                    case "Chinook":
+                        $scope.grid = {method: "rm", component: "Chinook"};
+                        break;
+                    case "HTMLEditor":
+                        $scope.grid = {method: "rm", component: "HTMLEditor"};
+                        break;
+                }
+            }
+        }
+
         $scope.captureKeyPress = function(event)
         {
             //console.log(event);
@@ -362,7 +451,7 @@ angular.module('mainApp')
         {
             $timeout(function()
             {
-                console.log('commandLine', $('#commandLine'));
+//                console.log('commandLine', $('#commandLine'));
                 $('#commandLine').focus();
             },0);
         };
@@ -422,6 +511,8 @@ angular.module('mainApp')
         {
             var ms = 15;
             var introText = 'You have control over the website through this terminal.';
+            $scope.grid = {};
+            $scope.i = 1;
             addLineWithCharDelay(introText,ms);
             CommandDataSource.getArgumentChildren(18, function(res)
             {
@@ -432,7 +523,9 @@ angular.module('mainApp')
             $timeout(function()
             {
                 $scope.readyForInput = true;
+                $scope.updateGrid();
             }, introText.length*ms);
+
             test();
         };
 
