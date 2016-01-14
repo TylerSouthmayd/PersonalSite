@@ -260,7 +260,9 @@ function CommandUtility(CommandDataSource)
                             res = isValidArgumentOptionStart(arg, toComplete);
                         } else
                         {
+                            console.log('testsetestset: ', cmd.command, arg, toComplete);
                             res = isValidArgumentTierStart(cmd.command, arg, toComplete);
+                            console.log('test res:', res);
                         }
                     }
                     if(res !== false)
@@ -471,7 +473,8 @@ function CommandUtility(CommandDataSource)
             for(var i = 0; i < cmd.tier2_arguments.length; i++)
             {
                 curr = cmd.tier2_arguments[i];
-                if(curr.argument_parent_id == argParent.argument_id)
+                console.log('curr', curr);
+                if(curr.argument_parent_id == argParent.argument_id && curr.argument.indexOf(argPiece) == 0)
                 {
                     autocompleteChoices.push(curr.argument);
                 }
