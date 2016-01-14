@@ -36,7 +36,7 @@ angular.module('mainApp')
                     {
                         scope.grid.push({
                             name: scope.component,
-                            url: '/partials/projects/' + scope.component + '.html'
+                            url: '/partials/' + scope.component + '.html'
                         });
                     }
                     break;

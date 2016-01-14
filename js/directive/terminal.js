@@ -24,7 +24,7 @@ angular.module('mainApp')
         $scope.commandHistory = [];
         var commandHistoryIndex = 0;
         $scope.readyForInput = false;
-        $scope.showTerminal = false;
+        $scope.showTerminal = true;
         $scope.showTop = false;
         $scope.commandStructure;  //full valid command json structure
         $scope.commandsPretty;
@@ -119,7 +119,7 @@ angular.module('mainApp')
             $scope.commandParts = ($scope.command).split(" ");
 
             var res = CommandUtility.validateCommand($scope.commandParts);
-//            console.log(res);
+            console.log('validation result', res);
             if (res.error == false)
             {
                 var cmd = res.commandInfo.command.command;
@@ -289,29 +289,35 @@ angular.module('mainApp')
             {
                 addLineNoDelay('Adding copy of \'' + res.argumentInfo.tier1_arg.argument + '\' component');
                 newTerminalLine();
-                switch(res.argumentInfo.tier1_arg.argument)
+                if(res.argumentInfo.tier1_arg.argument == 'project')
                 {
-                    case "ProjectHeader":
-                        $scope.grid= {method: "add", component: "ProjectHeader"};
-                        break;
-                    case "TylerSouthmayd.com":
-                        $scope.grid = {method: "add", component: "TylerSouthmayd.com"};
-                        break;
-                    case "RaspberryPi":
-                        $scope.grid = {method: "add", component: "RaspberryPi"};
-                        break;
-                    case "UConnSmash.com":
-                        $scope.grid = {method: "add", component: "UConnSmash.com"};
-                        break;
-                    case "Chinook":
-                        $scope.grid = {method: "add", component: "Chinook"};
-                        break;
-                    case "HTMLEditor":
-                        $scope.grid = {method: "add", component: "HTMLEditor"};
-                        break;
-                    case ".":
-                        $scope.grid = {method: "add", component: "."};
-                        break;
+                    switch(res.argumentInfo.tier2_arg.argument)
+                    {
+                        case "ProjectHeader":
+                            $scope.grid = {method: "add", component: "projects/ProjectHeader"};
+                            break;
+                        case "TylerSouthmayd.com":
+                            $scope.grid = {method: "add", component: "projects/TylerSouthmayd.com"};
+                            break;
+                        case "RaspberryPi":
+                            $scope.grid = {method: "add", component: "projects/RaspberryPi"};
+                            break;
+                        case "UConnSmash.com":
+                            $scope.grid = {method: "add", component: "projects/UConnSmash.com"};
+                            break;
+                        case "Chinook":
+                            $scope.grid = {method: "add", component: "projects/Chinook"};
+                            break;
+                        case "HTMLEditor":
+                            $scope.grid = {method: "add", component: "projects/HTMLEditor"};
+                            break;
+                        case ".":
+                            $scope.grid = {method: "add", component: "."};
+                            break;
+                    }
+                } else
+                {
+                    $scope.grid = {method: "add", component: res.argumentInfo.tier1_arg.argument};
                 }
             },350);
         }

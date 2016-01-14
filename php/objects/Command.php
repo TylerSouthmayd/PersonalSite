@@ -31,8 +31,8 @@ class Command {
     public static function getAllCommands()
     {
         $dbutil = new SQLUtil();
-
-        $res = $dbutil->selectAllFromTable(self::TABLE);
+        $where = ' active = \'1\' ';
+        $res = $dbutil->selectAllFromTableWhere(self::TABLE, $where);
         $retArr = $dbutil::interpretQueryResponse($res);
         return $retArr;
     }
