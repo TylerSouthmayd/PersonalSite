@@ -14,7 +14,7 @@ function CommandUtility(CommandDataSource)
         .success(function(commands)
         {
             commandStructure = commands.data;
-            console.log('command structure', commandStructure);
+            //console.log('command structure', commandStructure);
         }
     );
 
@@ -25,7 +25,7 @@ function CommandUtility(CommandDataSource)
             .success(function(commands)
             {
                 cmdStruct = commands.data;
-                console.log('command structure', commandStructure);
+                //console.log('command structure', commandStructure);
             }
         );
         return cmdStruct;
@@ -294,7 +294,7 @@ function CommandUtility(CommandDataSource)
                 CommandUtility.choices = CommandUtility.choices.concat(res);
             }
         }
-        console.log('choices end', CommandUtility.choices);
+//        console.log('choices end', CommandUtility.choices);
         return CommandUtility.choices;
     };
 

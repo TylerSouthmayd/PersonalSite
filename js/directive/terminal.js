@@ -309,6 +309,9 @@ angular.module('mainApp')
                     case "HTMLEditor":
                         $scope.grid = {method: "add", component: "HTMLEditor"};
                         break;
+                    case ".":
+                        $scope.grid = {method: "add", component: "."};
+                        break;
                 }
             },350);
         }
@@ -346,6 +349,10 @@ angular.module('mainApp')
                     case "HTMLEditor":
                         $scope.grid = {method: "rm", component: "HTMLEditor"};
                         break;
+                    case ".":
+                        $scope.grid = {method: "rm", component: "."};
+                        break;
+
                 }
             }
         }
@@ -514,11 +521,6 @@ angular.module('mainApp')
             $scope.grid = {};
             $scope.i = 1;
             addLineWithCharDelay(introText,ms);
-            CommandDataSource.getArgumentChildren(18, function(res)
-            {
-                console.log('argument children', res);
-            });
-
             $scope.path= $location.path();
             $timeout(function()
             {
