@@ -333,32 +333,39 @@ angular.module('mainApp')
                 newTerminalLine();
             } else
             {
-                addLineNoDelay('Attempting to remove copy of \'' + res.argumentInfo.tier1_arg.argument + '\' component');
+                addLineNoDelay('Attempting to remove copy of \'' + (res.argumentInfo.tier2_arg.argument || 'every') + '\' component');
                 newTerminalLine();
-                switch(res.argumentInfo.tier1_arg.argument)
-                {
-                    case "ProjectHeader":
-                        $scope.grid={method: "rm", component: "ProjectHeader"};
-                        break;
-                    case "TylerSouthmayd.com":
-                        $scope.grid = {method: "rm", component: "TylerSouthmayd.com"};
-                        break;
-                    case "RaspberryPi":
-                        $scope.grid = {method: "rm", component: "RaspberryPi"};
-                        break;
-                    case "UConnSmash.com":
-                        $scope.grid = {method: "rm", component: "UConnSmash.com"};
-                        break;
-                    case "Chinook":
-                        $scope.grid = {method: "rm", component: "Chinook"};
-                        break;
-                    case "HTMLEditor":
-                        $scope.grid = {method: "rm", component: "HTMLEditor"};
-                        break;
-                    case ".":
-                        $scope.grid = {method: "rm", component: "."};
-                        break;
 
+                if(res.argumentInfo.tier1_arg.argument == 'project')
+                {
+                    switch (res.argumentInfo.tier2_arg.argument)
+                    {
+                        case "ProjectHeader":
+                            $scope.grid = {method: "rm", component: "projects/ProjectHeader"};
+                            break;
+                        case "TylerSouthmayd.com":
+                            $scope.grid = {method: "rm", component: "projects/TylerSouthmayd.com"};
+                            break;
+                        case "RaspberryPi":
+                            $scope.grid = {method: "rm", component: "projects/RaspberryPi"};
+                            break;
+                        case "UConnSmash.com":
+                            $scope.grid = {method: "rm", component: "projects/UConnSmash.com"};
+                            break;
+                        case "Chinook":
+                            $scope.grid = {method: "rm", component: "projects/Chinook"};
+                            break;
+                        case "HTMLEditor":
+                            $scope.grid = {method: "rm", component: "projects/HTMLEditor"};
+                            break;
+                        case ".":
+                            $scope.grid = {method: "rm", component: "."};
+                            break;
+
+                    }
+                } else
+                {
+                    $scope.grid = {method: "rm", component: res.argumentInfo.tier1_arg.argument};
                 }
             }
         }

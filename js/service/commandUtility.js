@@ -201,6 +201,7 @@ function CommandUtility(CommandDataSource)
     CommandUtility.tab = function(command)
     {
         var commandParts = (command).split(" ");
+        console.log('tab command parts', commandParts);
         CommandUtility.choices = [];
         var res;
         var arg;
@@ -212,6 +213,7 @@ function CommandUtility(CommandDataSource)
             if(commandParts.length == 1)
             {
                 var cmdguts = getCommandArgsAndOpts(cmd.command);
+                console.log('guts', cmdguts);
                 CommandUtility.choices = CommandUtility.choices.concat(cmdguts);
             } else
             {
@@ -310,26 +312,22 @@ function CommandUtility(CommandDataSource)
     function getCommandArgsAndOpts(cmd)
     {
         var ret = [];
-        var args = [];
-        var opts = [];
         var command = getCommandByName(cmd);
         for(var i = 0; i < command.tier1_arguments.length; i++)
         {
-            args.push(command.tier1_arguments[i].argument);
+            ret.push(command.tier1_arguments[i].argument);
 
         }
         for(var i = 0; i < command.options.length; i++)
         {
-            opts.push(command.options[i].option);
+            ret.push(command.options[i].option);
         }
-        ret.push(args, opts);
         return ret;
     }
 
     function getArgumentArgsAndOpts(cmd, argName)
     {
         var arg = getArgByName(cmd, argName);
-
     }
 
     function isValidCommand(cmdName)

@@ -68,7 +68,8 @@ angular.module('mainApp')
                 {name: "RaspberryPi", url: '/partials/projects/RaspberryPi.html'},
                 {name: "UConnSmash.com", url: '/partials/projects/UConnSmash.com.html'},
                 {name: "Chinook", url: '/partials/projects/Chinook.html'},
-                {name: "HTMLEditor", url: '/partials/projects/HTMLEditor.html'}
+                {name: "HTMLEditor", url: '/partials/projects/HTMLEditor.html'},
+                {name: "Navbar", url: '/partials/navigation.html'}
             ];
             console.log('gridchoices: ', scope.gridChoices);
         };
