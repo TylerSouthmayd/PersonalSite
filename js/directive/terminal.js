@@ -127,7 +127,7 @@ angular.module('mainApp')
                 if(cmd === "ls") { ls();}
                 else if (cmd === "cd") { cd(res);}
                 else if (cmd === "clear") { clear();}
-                else if (cmd === "move") { move(res); }
+                else if (cmd === "mv") { mv(res); }
                 else if (cmd === "help") { help(); }
                 else if (cmd === "man") { man(res); }
                 else if (cmd === "create") { create(res); }
@@ -236,7 +236,7 @@ angular.module('mainApp')
             }
         }
 
-        function move(res)
+        function mv(res)
         {
             console.log('move');
             var arg1 = res.argumentInfo.tier1_arg.argument;
@@ -376,6 +376,7 @@ angular.module('mainApp')
             if(event.which === 13)
             {
                 event.preventDefault();
+                $scope.command = ($scope.command).toLowerCase();
                 console.log('enter', $scope.command);
                 executeCommand();
                 $scope.command = '';

@@ -8,8 +8,20 @@ html
 
 }
 body {
-    background: rgb(42, 15, 50);
+    /*background: rgb(42, 15, 50);*/
+    /*background: #8B2E0E;*/
+    background: #23110c;
     /*background-image: url("../img/bg.jpg");*/
+
+    background-position: 15% 60%;
+    /*background-position: 15%; good alt*/
+    background-image: url("../img/suru-desktop-wallpaper-ubuntu-vivid.jpg");
+
+}
+
+#helpDialog
+{
+    width: 900px;
 }
 
 .main-container

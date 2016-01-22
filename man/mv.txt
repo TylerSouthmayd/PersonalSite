@@ -1,0 +1,10 @@
+NAME
+       mv - move
+SYNOPSIS
+       mv [ARGUMENT] [OPTION]
+DESCRIPTION
+       Used in a literal sense - applies the specified option to the content piece argument to reposition items on the view.
+ARGUMENTS / Options
+       terminal / -t,--top,-b,--bottom
+
+

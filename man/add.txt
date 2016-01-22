@@ -1,0 +1,16 @@
+NAME
+       add - add a piece of content to the view
+SYNOPSIS
+       add [ARGUMENT1]
+       add [ARGUMENT1] [ARGUMENT2]
+       add .
+DESCRIPTION
+       Used to add chosen pieces of visual content to the display.
+       Once added, the component can be removed using the 'rm' command.
+       The 'add' command is only supported on the '/sandbox' page. You will be redirected to '/sandbox' if you try to use it elsewhere.
+ARGUMENT1 / ARGUMENT2
+    project / ProjectHeader, TylerSouthmayd.com, UConnSmash,com, RaspberryPi, Chinook, HTMLEditor
+        ex: 'add project TylerSouthmayd.com'
+    Navbar - add navigation to the page
+        ex: 'add Navbar'
+    . - add every piece of content to the page

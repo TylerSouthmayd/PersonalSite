@@ -22,7 +22,7 @@ function HomeController($scope, $timeout)
         addOutroLineWithCharDelay(outroString, 75);
         $timeout(function()
         {
-            outroString = '\nTry \'cd resume\' or press tab to see available commands.';
+            outroString = '\nTry \'help\', \'cd resume\', or press tab to see available commands.';
             addOutroLineWithCharDelay(outroString, 75);
         },75*(outroString.length));
     },75*(introString.length));
