@@ -8,7 +8,7 @@ html
 
 }
 body {
-    background: rgb(0,0,0);
+    background: rgb(42, 15, 50);
     /*background-image: url("../img/bg.jpg");*/
 }
 
@@ -193,6 +193,30 @@ body {
 
 .project-panel
 {
-    margin-top: 5px;
+    position:relative;
+    margin-top: 10px;
     height: 425px;
+}
+
+/*
+
+====== Zoom effect ======
+
+*/
+.popout {
+    animation: popout .5s ease;
+    -webkit-animation: popout .5s ease;
+    -moz-animation-fill-mode: forwards;
+    -webkit-animation-fill-mode: forwards;
+    /*z-index: -1;*/
+}
+@keyframes popout {
+    from{transform:scale(1)}
+    80%{transform:scale(1.15)}
+    to{transform:scale(1.1)}
+}
+@-webkit-keyframes popout {
+    from{-webkit-transform:scale(1)}
+    80%{-webkit-transform:scale(1.15)}
+    to{-webkit-transform:scale(1.1)}
 }

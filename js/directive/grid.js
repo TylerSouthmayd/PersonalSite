@@ -29,14 +29,16 @@ angular.module('mainApp')
                         {
                             scope.grid.push({
                                 name: scope.gridChoices[i].name,
-                                url: scope.gridChoices[i].url
+                                url: scope.gridChoices[i].url,
+                                poppable: scope.gridChoices[i].poppable || false
                             });
                         }
                     } else
                     {
                         scope.grid.push({
                             name: scope.component,
-                            url: '/partials/' + scope.component + '.html'
+                            url: '/partials/' + scope.component + '.html',
+                            poppable: (scope.component).indexOf('projects/') == 0
                         });
                     }
                     break;
@@ -57,19 +59,28 @@ angular.module('mainApp')
             console.log('$scope.grid', scope.grid);
         });
 
+        scope.popout = function(id, component)
+        {
+            console.log('popout id:', id, component);
+            if(component.poppable == true)
+            {
+                $('#'+id).toggleClass('popout');
+            }
+        };
+
         scope.init = function()
         {
             scope.grid = [];
             scope.gridComponent = '';
             scope.index = 1;
             scope.gridChoices = [
-                {name: "ProjectHeader" , url: '/partials/projects/ProjectHeader.html'},
-                {name: "TylerSouthmayd.com" , url: '/partials/projects/TylerSouthmayd.com.html'},
-                {name: "RaspberryPi", url: '/partials/projects/RaspberryPi.html'},
-                {name: "UConnSmash.com", url: '/partials/projects/UConnSmash.com.html'},
-                {name: "Chinook", url: '/partials/projects/Chinook.html'},
-                {name: "HTMLEditor", url: '/partials/projects/HTMLEditor.html'},
-                {name: "Navbar", url: '/partials/navigation.html'}
+                {name: "Navbar", url: '/partials/Navbar.html', poppable: false},
+                {name: "ProjectHeader" , url: '/partials/projects/ProjectHeader.html', poppable: false},
+                {name: "TylerSouthmayd.com" , url: '/partials/projects/TylerSouthmayd.com.html', poppable: true},
+                {name: "RaspberryPi", url: '/partials/projects/RaspberryPi.html', poppable: true},
+                {name: "UConnSmash.com", url: '/partials/projects/UConnSmash.com.html', poppable: true},
+                {name: "Chinook", url: '/partials/projects/Chinook.html', poppable: true},
+                {name: "HTMLEditor", url: '/partials/projects/HTMLEditor.html', poppable: true}
             ];
             console.log('gridchoices: ', scope.gridChoices);
         };

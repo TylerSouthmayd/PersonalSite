@@ -333,9 +333,7 @@ angular.module('mainApp')
                 newTerminalLine();
             } else
             {
-                addLineNoDelay('Attempting to remove copy of \'' + (res.argumentInfo.tier2_arg.argument || 'every') + '\' component');
                 newTerminalLine();
-
                 if(res.argumentInfo.tier1_arg.argument == 'project')
                 {
                     switch (res.argumentInfo.tier2_arg.argument)
@@ -361,7 +359,6 @@ angular.module('mainApp')
                         case ".":
                             $scope.grid = {method: "rm", component: "."};
                             break;
-
                     }
                 } else
                 {

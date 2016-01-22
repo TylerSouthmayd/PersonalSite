@@ -5,7 +5,11 @@ mainApp.controller('NavigationController', NavigationController);
 
 function NavigationController($scope, $location)
 {
-    $scope.pageLinks = [{"label" : "Home", "path" : "/home"},{"label" : "Resume","path" : "/resume"}];
+    $scope.pageLinks = [
+        {"label" : "Intro", "path" : "/home"},
+        {"label" : "Resume","path" : "/resume"},
+        {"label" : "Sandbox","path" : "/sandbox"}
+    ];
     $scope.isActive = function (viewLocation) {
         return viewLocation === $location.url();
     }
