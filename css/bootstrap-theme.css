@@ -1,3 +1,79 @@
+
+/* ORANGE */
+.navbar-default {
+    background-color: #514c52;
+    border-color: #dd4814;
+}
+.navbar-default .navbar-brand {
+    color: #f7f7f7;
+}
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
+    color: #000000;
+}
+.navbar-default .navbar-text {
+    color: #f7f7f7;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #f7f7f7;
+}
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #000000;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu {
+    background-color: #514c52;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a {
+    color: #f7f7f7;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:hover,
+.navbar-default .navbar-nav > li > .dropdown-menu > li > a:focus {
+    color: #000000;
+    background-color: #dd4814;
+}
+.navbar-default .navbar-nav > li > .dropdown-menu > li > .divider {
+    background-color: #514c52;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    color: #000000;
+    background-color: #dd4814;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #000000;
+    background-color: #dd4814;
+}
+.navbar-default .navbar-toggle {
+    border-color: #dd4814;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #dd4814;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #f7f7f7;
+}
+.navbar-default .navbar-collapse,
+.navbar-default .navbar-form {
+    border-color: #f7f7f7;
+}
+.navbar-default .navbar-link {
+    color: #f7f7f7;
+}
+.navbar-default .navbar-link:hover {
+    color: #000000;
+}
+
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #f7f7f7;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #000000;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > .active > a, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:hover, .navbar-default .navbar-nav .open .dropdown-menu > .active > a:focus {
+        color: #000000;
+        background-color: #dd4814;
+    }
+}
+/* PURPLE
 .navbar-default {
     background-color: #313131;
     border-color: #570a78;
@@ -71,11 +147,13 @@
         background-color: #570a78;
     }
 }
-
+*/
 /*          NAVBAR END */
 .panel-default > .panel-heading {
     color: white;
     /*background-color: #DD4814;*/
     background-color: #DD4814;
+
+    /*background-color: rgba(81,76,85,0.58);*/
     border-color: #070707;
 }

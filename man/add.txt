@@ -9,8 +9,8 @@ DESCRIPTION
        Once added, the component can be removed using the 'rm' command.
        The 'add' command is only supported on the '/sandbox' page. You will be redirected to '/sandbox' if you try to use it elsewhere.
 ARGUMENT1 / ARGUMENT2
-    project / ProjectHeader, TylerSouthmayd.com, UConnSmash,com, RaspberryPi, Chinook, HTMLEditor
-        ex: 'add project TylerSouthmayd.com'
-    Navbar - add navigation to the page
-        ex: 'add Navbar'
+    project / projectheader, tylersouthmayd.com, uconnsmash,com, raspberrypi, chinook, htmleditor
+        ex: 'add project tylersouthmayd.com'
+    navbar
+        ex: 'add navbar'
     . - add every piece of content to the page

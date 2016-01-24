@@ -18,7 +18,7 @@ function HomeController($scope, $timeout)
     addIntroLineWithCharDelay(introString, 75);
     $timeout(function()
     {
-        var outroString = "Click the button to start manipulating what you see.   ";
+        var outroString = "Open the terminal to start manipulating what you see.   ";
         addOutroLineWithCharDelay(outroString, 75);
         $timeout(function()
         {

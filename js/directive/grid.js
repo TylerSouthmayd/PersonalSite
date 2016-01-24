@@ -74,13 +74,13 @@ angular.module('mainApp')
             scope.gridComponent = '';
             scope.index = 1;
             scope.gridChoices = [
-                {name: "Navbar", url: '/partials/Navbar.html', poppable: false},
-                {name: "ProjectHeader" , url: '/partials/projects/ProjectHeader.html', poppable: false},
-                {name: "TylerSouthmayd.com" , url: '/partials/projects/TylerSouthmayd.com.html', poppable: true},
-                {name: "RaspberryPi", url: '/partials/projects/RaspberryPi.html', poppable: true},
-                {name: "UConnSmash.com", url: '/partials/projects/UConnSmash.com.html', poppable: true},
-                {name: "Chinook", url: '/partials/projects/Chinook.html', poppable: true},
-                {name: "HTMLEditor", url: '/partials/projects/HTMLEditor.html', poppable: true}
+                {name: "navbar", url: '/partials/navbar.html', poppable: false},
+                {name: "projectheader" , url: '/partials/projects/projectheader.html', poppable: false},
+                {name: "tylersouthmayd.com" , url: '/partials/projects/tylersouthmayd.com.html', poppable: true},
+                {name: "raspberrypi", url: '/partials/projects/raspberrypi.html', poppable: true},
+                {name: "uconnsmash.com", url: '/partials/projects/uconnsmash.com.html', poppable: true},
+                {name: "chinook", url: '/partials/projects/chinook.html', poppable: true},
+                {name: "htmleditor", url: '/partials/projects/htmleditor.html', poppable: true}
             ];
             console.log('gridchoices: ', scope.gridChoices);
         };

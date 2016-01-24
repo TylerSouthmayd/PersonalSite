@@ -10,13 +10,18 @@ html
 body {
     /*background: rgb(42, 15, 50);*/
     /*background: #8B2E0E;*/
-    background: #23110c;
+    /*background: #23110c;*/
     /*background-image: url("../img/bg.jpg");*/
 
-    background-position: 15% 60%;
+    background-attachment: fixed;
+    /*background-position: 65% 100%;*/
     /*background-position: 15%; good alt*/
-    background-image: url("../img/suru-desktop-wallpaper-ubuntu-vivid.jpg");
+    /*background-image: url("../img/suru-desktop-wallpaper-ubuntu-vivid.jpg");*/
 
+    /*background-image: url("../img/ubuntu1204ltswallpapers-large_000.jpg");*/
+
+    background-position: 75% 95%;
+    background-image: url("../img/DAZai.jpg");
 }
 
 #helpDialog
@@ -61,19 +66,7 @@ body {
     /*background-image: url("../img/WhiteTilesAtop.png");*/
     height:300px;
 }
-.side-bar
-{
-    background-color: green;
-    /*-webkit-transition: 2s linear;*/
-    /*to only change opacity*/
-    /*-webkit-transition: opacity 1s linear*/
-    /*-moz-transition: 2s linear;*/
-    /*-o-transition: 2s linear;*/
-    /*transition: 2s linear;*/
-    opacity: 1;
-    height: 700px;
-    border: 5px solid black;
-}
+
 .header-text
 {
     color: black;
@@ -89,26 +82,30 @@ body {
     background-color: transparent;
 }
 
-.black-terminal
+.curve-borders
 {
-    background-color: darkgray;
-    border-radius: 10px;
-    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.8);
-    margin-top: 20px;
-    color:white;
+    border-radius: 7px 7px 7px 7px;
 }
-
 .curve-top-border
 {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
 }
 
 .curve-bottom-border
 {
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
 }
+
+.terminal
+{
+    background-color: darkgray;
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.8);
+    color:white;
+    padding:0;
+}
+
 .terminal-head
 {
     background: #333333
@@ -117,8 +114,8 @@ body {
 {
     background: #5E2750;
     min-height: 200px;
-    max-height: 350px;
-    overflow-y: auto;
+    max-height: 550px;
+    overflow-y: hidden;
 }
 
 .terminal-history:focus,
@@ -130,7 +127,7 @@ body {
 .terminal-command-line
 {
     background: inherit;
-    width: 80%;
+    width: 75%;
     height: inherit;
     margin: 0 !important;
     border: none !important;
@@ -139,7 +136,7 @@ body {
 .terminal-command-line-label
 {
 
-    width: 20%;
+    width: 25%;
     height: inherit;
     background: inherit;
     margin: 0 !important;
@@ -150,7 +147,7 @@ body {
 {
     width: inherit;
     min-height:25px;
-    max-height:300px;
+    max-height:450px;
     resize:none;
     margin: 0 !important;
     border: none !important;
@@ -167,13 +164,13 @@ body {
 {
     font-family: Ubuntu;
     color: white;
-    font-size: 5em;
+    font-size: 4em;
 }
 .intro-text-sm
 {
     font-family: Ubuntu;
     color: white;
-    font-size: 1.5em;
+    font-size: 1.4em;
 }
 .intro-text-area
 {
@@ -208,6 +205,11 @@ body {
     position:relative;
     margin-top: 10px;
     height: 425px;
+    color: white;
+    /*background-color: #DD4814;*/
+    /*background-color: #514C52;*/
+    background-color: rgba(81,76,85,0.58);
+    border-color: #070707;
 }
 
 /*
@@ -231,4 +233,21 @@ body {
     from{-webkit-transform:scale(1)}
     80%{-webkit-transform:scale(1.15)}
     to{-webkit-transform:scale(1.1)}
+}
+.popout > .container > .panel
+{
+    box-shadow: 3px 3px 5px #040823;
+}
+#resume
+{
+    background: white;
+    margin-top:55px;
+    margin-bottom:65px;
+}
+
+#terminalbutton
+{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
 }

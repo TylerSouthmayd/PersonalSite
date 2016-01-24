@@ -24,7 +24,7 @@ angular.module('mainApp')
         $scope.commandHistory = [];
         var commandHistoryIndex = 0;
         $scope.readyForInput = false;
-        $scope.showTerminal = true;
+        $scope.showTerminal = false;
         $scope.showTop = false;
         $scope.commandStructure;  //full valid command json structure
         $scope.commandsPretty;
@@ -277,7 +277,6 @@ angular.module('mainApp')
         {
             newTerminalLine();
             console.log('add', res);
-            console.log('path', $location.path());
             if($location.path() !== '/sandbox')
             {
                 addLineNoDelay('Changing directory to  \'\\sandbox\'');
@@ -287,29 +286,28 @@ angular.module('mainApp')
             }
             $timeout(function()
             {
-                addLineNoDelay('Adding copy of \'' + res.argumentInfo.tier1_arg.argument + '\' component');
-                newTerminalLine();
+
                 if(res.argumentInfo.tier1_arg.argument == 'project')
                 {
                     switch(res.argumentInfo.tier2_arg.argument)
                     {
-                        case "ProjectHeader":
-                            $scope.grid = {method: "add", component: "projects/ProjectHeader"};
+                        case "projectheader":
+                            $scope.grid = {method: "add", component: "projects/projectheader"};
                             break;
-                        case "TylerSouthmayd.com":
-                            $scope.grid = {method: "add", component: "projects/TylerSouthmayd.com"};
+                        case "tylersouthmayd.com":
+                            $scope.grid = {method: "add", component: "projects/tylersouthmayd.com"};
                             break;
-                        case "RaspberryPi":
-                            $scope.grid = {method: "add", component: "projects/RaspberryPi"};
+                        case "raspberrypi":
+                            $scope.grid = {method: "add", component: "projects/raspberrypi"};
                             break;
-                        case "UConnSmash.com":
-                            $scope.grid = {method: "add", component: "projects/UConnSmash.com"};
+                        case "uconnsmash.com":
+                            $scope.grid = {method: "add", component: "projects/uconnsmash.com"};
                             break;
-                        case "Chinook":
-                            $scope.grid = {method: "add", component: "projects/Chinook"};
+                        case "chinook":
+                            $scope.grid = {method: "add", component: "projects/chinook"};
                             break;
-                        case "HTMLEditor":
-                            $scope.grid = {method: "add", component: "projects/HTMLEditor"};
+                        case "htmleditor":
+                            $scope.grid = {method: "add", component: "projects/htmleditor"};
                             break;
                         case ".":
                             $scope.grid = {method: "add", component: "."};
@@ -318,43 +316,43 @@ angular.module('mainApp')
                 } else
                 {
                     $scope.grid = {method: "add", component: res.argumentInfo.tier1_arg.argument};
+
                 }
+                addLineNoDelay('Adding copy of \'' + $scope.grid.component + '\' component');
             },350);
         }
 
         function rm(res)
         {
             newTerminalLine();
-            console.log('add', res);
-            console.log('path', $location.path());
+            console.log('rm', res);
             if($location.path() !== '/sandbox')
             {
                 addLineNoDelay('You can only remove items you have added to the \'\\sandbox\' page');
                 newTerminalLine();
             } else
             {
-                newTerminalLine();
                 if(res.argumentInfo.tier1_arg.argument == 'project')
                 {
                     switch (res.argumentInfo.tier2_arg.argument)
                     {
-                        case "ProjectHeader":
-                            $scope.grid = {method: "rm", component: "projects/ProjectHeader"};
+                        case "projectheader":
+                            $scope.grid = {method: "rm", component: "projects/projectheader"};
                             break;
-                        case "TylerSouthmayd.com":
-                            $scope.grid = {method: "rm", component: "projects/TylerSouthmayd.com"};
+                        case "tylersouthmayd.com":
+                            $scope.grid = {method: "rm", component: "projects/tylersouthmayd.com"};
                             break;
-                        case "RaspberryPi":
-                            $scope.grid = {method: "rm", component: "projects/RaspberryPi"};
+                        case "raspberrypi":
+                            $scope.grid = {method: "rm", component: "projects/raspberrypi"};
                             break;
-                        case "UConnSmash.com":
-                            $scope.grid = {method: "rm", component: "projects/UConnSmash.com"};
+                        case "uconnsmash.com":
+                            $scope.grid = {method: "rm", component: "projects/uconnsmash.com"};
                             break;
-                        case "Chinook":
-                            $scope.grid = {method: "rm", component: "projects/Chinook"};
+                        case "chinook":
+                            $scope.grid = {method: "rm", component: "projects/chinook"};
                             break;
-                        case "HTMLEditor":
-                            $scope.grid = {method: "rm", component: "projects/HTMLEditor"};
+                        case "htmleditor":
+                            $scope.grid = {method: "rm", component: "projects/htmleditor"};
                             break;
                         case ".":
                             $scope.grid = {method: "rm", component: "."};
@@ -364,6 +362,7 @@ angular.module('mainApp')
                 {
                     $scope.grid = {method: "rm", component: res.argumentInfo.tier1_arg.argument};
                 }
+                addLineNoDelay('Removing copy of \'' + $scope.grid.component + '\' component');
             }
         }
 
@@ -458,11 +457,14 @@ angular.module('mainApp')
 
         $scope.toggleTerminal = function()
         {
-            $scope.showTerminal = !$scope.showTerminal;
-            if($scope.showTerminal)
+            $timeout(function()
             {
-                $scope.focusCommandLine();
-            }
+                $scope.showTerminal = !$scope.showTerminal;
+                if($scope.showTerminal)
+                {
+                    $scope.focusCommandLine();
+                }
+            },200);
         };
 
         $scope.focusCommandLine = function()
