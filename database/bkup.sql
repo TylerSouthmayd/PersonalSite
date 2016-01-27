@@ -34,7 +34,7 @@ CREATE TABLE `argument` (
   PRIMARY KEY (`id`),
   KEY `command_id` (`command_id`),
   CONSTRAINT `argument_ibfk_1` FOREIGN KEY (`command_id`) REFERENCES `command` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `argument` (
 
 LOCK TABLES `argument` WRITE;
 /*!40000 ALTER TABLE `argument` DISABLE KEYS */;
-INSERT INTO `argument` VALUES ('resume',1,0,0,2,1,0,0),('pseubuntu',2,0,0,4,1,0,0),('home',3,0,0,2,1,0,0),('terminal',5,1,0,5,1,0,0),('clear',6,0,0,6,1,0,0),('ls',7,0,0,6,1,0,0),('sandbox',8,0,0,2,1,0,0),('grid',17,0,1,8,1,0,0),('row',18,0,1,8,1,0,0),('grid_name',19,0,0,8,2,17,1),('row_name',20,0,0,8,2,18,1),('ProjectHeader',21,0,0,10,2,37,0),('TylerSouthmayd.com',22,0,0,10,2,37,0),('UConnSmash.com',24,0,0,10,2,37,0),('RaspberryPi',25,0,0,10,2,37,0),('Chinook',26,0,0,10,2,37,0),('HTMLEditor',27,0,0,10,2,37,0),('ProjectHeader',29,0,0,11,2,40,0),('TylerSouthmayd.com',30,0,0,11,2,40,0),('UConnSmash.com',31,0,0,11,2,40,0),('RaspberryPi',32,0,0,11,2,40,0),('Chinook',33,0,0,11,2,40,0),('HTMLEditor',34,0,0,11,2,40,0),('.',35,0,0,10,1,0,0),('.',36,0,0,11,1,0,0),('project',37,0,0,10,1,0,0),('project',40,0,0,11,1,0,0);
+INSERT INTO `argument` VALUES ('resume',1,0,0,2,1,0,0),('pseubuntu',2,0,0,4,1,0,0),('home',3,0,0,2,1,0,0),('terminal',5,1,0,5,1,0,0),('clear',6,0,0,6,1,0,0),('ls',7,0,0,6,1,0,0),('sandbox',8,0,0,2,1,0,0),('grid',17,0,1,8,1,0,0),('row',18,0,1,8,1,0,0),('grid_name',19,0,0,8,2,17,1),('row_name',20,0,0,8,2,18,1),('ProjectHeader',21,0,0,10,2,37,0),('TylerSouthmayd.com',22,0,0,10,2,37,0),('UConnSmash.com',24,0,0,10,2,37,0),('RaspberryPi',25,0,0,10,2,37,0),('Chinook',26,0,0,10,2,37,0),('HTMLEditor',27,0,0,10,2,37,0),('ProjectHeader',29,0,0,11,2,40,0),('TylerSouthmayd.com',30,0,0,11,2,40,0),('UConnSmash.com',31,0,0,11,2,40,0),('RaspberryPi',32,0,0,11,2,40,0),('Chinook',33,0,0,11,2,40,0),('HTMLEditor',34,0,0,11,2,40,0),('.',35,0,0,10,1,0,0),('.',36,0,0,11,1,0,0),('project',37,0,0,10,1,0,0),('project',40,0,0,11,1,0,0),('Navbar',41,0,0,10,1,0,0),('Navbar',42,0,0,11,1,0,0),('add',43,0,0,6,1,0,0),('mv',44,0,0,6,1,0,0),('rm',45,0,0,6,1,0,0),('git',46,0,0,6,1,0,0),('help',47,0,0,6,1,0,0),('cd',48,0,0,6,1,0,0);
 /*!40000 ALTER TABLE `argument` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `command` (
 
 LOCK TABLES `command` WRITE;
 /*!40000 ALTER TABLE `command` DISABLE KEYS */;
-INSERT INTO `command` VALUES ('ls',1,0,1),('cd',2,0,1),('clear',3,0,1),('help',4,0,1),('move',5,0,1),('man',6,0,1),('create',8,0,0),('git',9,0,1),('add',10,0,1),('rm',11,0,1);
+INSERT INTO `command` VALUES ('ls',1,0,1),('cd',2,0,1),('clear',3,0,1),('help',4,0,1),('mv',5,0,1),('man',6,0,1),('create',8,0,0),('git',9,0,1),('add',10,0,1),('rm',11,0,1);
 /*!40000 ALTER TABLE `command` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,6 +128,10 @@ LOCK TABLES `command_option` WRITE;
 INSERT INTO `command_option` VALUES (3,'--top','-t',8),(4,'--bottom','-b',5);
 /*!40000 ALTER TABLE `command_option` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'personalsite'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -138,4 +142,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-01-14 17:04:55
+-- Dump completed on 2016-01-22 15:38:48

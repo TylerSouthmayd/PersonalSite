@@ -1,0 +1,6 @@
+NAME
+       git - bring up my GitHub account in a new tab
+SYNOPSIS
+       git
+DESCRIPTION
+       All the code for this website is hosted publicly on my GitHub account, take a look!

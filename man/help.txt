@@ -1,0 +1,6 @@
+NAME
+       help - bring up the popup help window
+SYNOPSIS
+       help
+DESCRIPTION
+       The help window provides (or will) useful information and examples for using the website.

@@ -1,0 +1,12 @@
+NAME
+       cd - change directory (url)
+SYNOPSIS
+       cd [ARGUMENT]
+DESCRIPTION
+       Will relocate the browser to the appropriate location.
+       You can see navigable places with the 'ls' command.
+ARGUMENTS
+       home - the intro screen to the website.
+       resume - my personal resume.
+       sandbox - supports user content manipulation. Go there to add, remove, and modify pieces of my website. You will be taken there automatically if you attempt to add content to the view with the 'add' command.
+

@@ -9,7 +9,6 @@ angular.module('mainApp')
             },
             function (e) {
                 elem[0].scrollTop = elem[0].scrollHeight;
-                autosize.update(elem);
             });
     }
 
