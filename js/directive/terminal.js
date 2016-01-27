@@ -64,16 +64,12 @@ angular.module('mainApp')
             if ($scope.grid !== undefined) { BroadcastUtility.updateGrid($scope.grid); }
         },true);
 
-        $scope.updateGrid = function()
+        $scope.$on('Console Message', function(prop, args)
         {
-//            console.log($scope.grid);
-//            var test = {'property': $scope.i};
-//            $scope.grid = test;
-//            $scope.i++;
-//            console.log($scope.grid);
-//            $scope.grid.test = 'property' + $scope.i;
-//            $scope.i++;
-        };
+//            console.log('msg arg', args);
+            newTerminalLine();
+            addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + args);
+        });
 
         //@Param - String line to add to console output
         //       - int delay (ms)
@@ -124,16 +120,33 @@ angular.module('mainApp')
             {
                 var cmd = res.commandInfo.command.command;
                 console.log('cmd', cmd);
-                if(cmd === "ls") { ls();}
-                else if (cmd === "cd") { cd(res);}
-                else if (cmd === "clear") { clear();}
-                else if (cmd === "mv") { mv(res); }
-                else if (cmd === "help") { help(); }
-                else if (cmd === "man") { man(res); }
-                else if (cmd === "create") { create(res); }
-                else if (cmd === "git") { git(res); }
-                else if (cmd === "add") { add(res); }
-                else if (cmd === "rm") { rm(res); }
+                switch(cmd)
+                {
+                    case "ls":
+                        ls(res);
+                        break;
+                    case "cd":
+                        cd(res);
+                        break;
+                    case  "clear":
+                        clear(res);
+                        break;
+                    case "mv":
+                        mv(res);
+                        break;
+                    case  "help":
+                        help(res);
+                        break;
+                    case  "add":
+                        add(res);
+                        break;
+                    case  "rm":
+                        rm(res);
+                        break;
+                    case "git":
+                        git(res);
+                        break;
+                }
             }
             else
             {
@@ -159,8 +172,34 @@ angular.module('mainApp')
         function cd(res)
         {
             console.log('cd', res.argumentInfo.tier1_arg);
-            $scope.path = '/' + res.argumentInfo.tier1_arg.argument;
-            $location.path($scope.path);
+            var arg = res.argumentInfo.tier1_arg.argument;
+            $scope.path = '/' + arg;
+            switch(arg)
+            {
+                case "home":
+                    $scope.grid = [
+                        {method: 'rm', component: '.', exclude: 'navbar'},
+                        {method: 'add', component: 'intro'}
+                    ];
+                    BroadcastUtility.activateTab('intronav');
+                    break;
+                case "resume":
+                    $scope.grid = [
+                        {method: 'rm', component: '.', exclude: 'navbar'},
+                        {method: 'add', component: 'resume'}
+                    ];
+                    BroadcastUtility.activateTab('resumenav');
+                    break;
+                case "sandbox":
+                    $scope.grid = [
+                        {method: 'rm', component: '.', exclude: 'navbar'}
+                    ];
+                    BroadcastUtility.activateTab('sandboxnav');
+                    break;
+            }
+
+//            $location.path($scope.path);
+//            $location.path($scope.path).search({navigation: $scope.showNavigation || false});
         }
 
         function help()
@@ -277,13 +316,13 @@ angular.module('mainApp')
         {
             newTerminalLine();
             console.log('add', res);
-            if($location.path() !== '/sandbox')
-            {
-                addLineNoDelay('Changing directory to  \'\\sandbox\'');
-                newTerminalLine();
-                $scope.path = '/sandbox';
-                $location.path($scope.path);
-            }
+//            if($location.path() !== '/sandbox')
+//            {
+//                addLineNoDelay('Changing directory to  \'\\sandbox\'');
+//                newTerminalLine();
+//                $scope.path = '/sandbox';
+//                $location.path($scope.path);
+//            }
             $timeout(function()
             {
 
@@ -326,12 +365,13 @@ angular.module('mainApp')
         {
             newTerminalLine();
             console.log('rm', res);
-            if($location.path() !== '/sandbox')
-            {
-                addLineNoDelay('You can only remove items you have added to the \'\\sandbox\' page');
-                newTerminalLine();
-            } else
-            {
+//            if($location.path() !== '/sandbox')
+//            {
+//                addLineNoDelay('You can only remove items you have added to the \'\\sandbox\' page');
+//                newTerminalLine();
+//            } else
+//
+//            {
                 if(res.argumentInfo.tier1_arg.argument == 'project')
                 {
                     switch (res.argumentInfo.tier2_arg.argument)
@@ -360,10 +400,11 @@ angular.module('mainApp')
                     }
                 } else
                 {
+                    if (res.argumentInfo.tier1_arg.argument == 'intro') { BroadcastUtility.resetIntro();}
                     $scope.grid = {method: "rm", component: res.argumentInfo.tier1_arg.argument};
                 }
                 addLineNoDelay('Removing copy of \'' + $scope.grid.component + '\' component');
-            }
+//            }
         }
 
         $scope.captureKeyPress = function(event)
@@ -538,7 +579,6 @@ angular.module('mainApp')
             $timeout(function()
             {
                 $scope.readyForInput = true;
-                $scope.updateGrid();
             }, introText.length*ms);
 
             test();

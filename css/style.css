@@ -241,6 +241,7 @@ body {
 #resume
 {
     background: white;
+    /*background-color: rgba(81, 76, 82, 0.54);*/
     margin-top:55px;
     margin-bottom:65px;
 }
@@ -250,4 +251,9 @@ body {
     position: fixed;
     bottom: 10px;
     right: 10px;
+}
+
+.clickable
+{
+    cursor: pointer;
 }

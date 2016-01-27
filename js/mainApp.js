@@ -8,21 +8,21 @@ mainApp.config(['$routeProvider', function ($routeProvider)
     {
         $routeProvider.when ('/home',
             {
-                controller: 'HomeController',
-                templateUrl: 'views/home.html'
-            }
-        ).
-            when ('/resume',
-            {
-                controller: 'HomeController',
-                templateUrl: 'views/resume.html'
-            }
-        ).  when ('/sandbox',
-            {
-                controller: 'HomeController',
+                controller: 'MainController',
                 templateUrl: 'views/sandbox.html'
             }
         ).
+//            when ('/resume',
+//            {
+//                controller: 'MainController',
+//                templateUrl: 'views/resume.html'
+//            }
+//        ).  when ('/sandbox',
+//            {
+//                controller: 'MainController',
+//                templateUrl: 'views/sandbox.html'
+//            }
+//        ).
             otherwise(
             {
                 redirectTo: '/home'

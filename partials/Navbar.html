@@ -13,15 +13,26 @@
             </div>
             <div class = "collapse navbar-collapse navHeaderCollapse">
                 <ul class="nav navbar-nav">
-                    <li ng-repeat="link in pageLinks"
-                        class="nav-item"
-                        ng-class="{ active: isActive(link.path)}">
-                        <a href="#{{link.path}}">{{link.label}}</a>
+                    <li class="nav-item" id="intronav" data-toggle="popover">
+                        <a class="clickable" ng-click="introView();">Intro</a>
+                        <!--<a class="clickable">Intro</a>-->
                     </li>
+                    <li class="nav-item" id="sandboxnav" data-toggle="popover">
+                        <a class="clickable" ng-click="sandboxView();">Sandbox</a>
+                    </li>
+
+                    <li class="nav-item" id="resumenav" data-toggle="popover">
+                        <a class="clickable" ng-click="resumeView();" >Resume</a>
+                    </li>
+                    <!--<li ng-repeat="link in pageLinks"-->
+                        <!--class="nav-item"-->
+                        <!--ng-class="{ active: isActive(link.path)}">
+                        <a href="#{{link.path}}">{{link.label}}</a>-->
+                    <!--</li>-->
                 </ul>
                 <ul class="nav navbar-nav pull-right">
-                    <li class="nav-item">
-                        <a href="#">Traditional View</a>
+                    <li class="nav-item" id="lazynav" data-toggle="popover">
+                        <a class="clickable" ng-click="lazyView();">Lazy View</a>
                     </li>
                 </ul>
 
@@ -29,20 +40,12 @@
         </div>
     </nav>
 
+<!--<script>-->
+    <!--$(document).ready(function(e){-->
 
-<!--<div class="navmenu navmenu-default navmenu-fixed-left offcanvas" id="navbar" ng-controller="NavigationController">-->
-    <!--<a class="navmenu-brand" href="#">Project name</a>-->
-    <!--<ul class="nav navmenu-nav">-->
-        <!--<li ng-repeat="link in pageLinks" ng-class="{active: isActive(link.path)}"><a href="#{{link.path}}">{{link.label}}</a></li>-->
-    <!--</ul>-->
-<!--</div>-->
-
-<script>
-    $(document).ready(function(e){
-
-        $('.nav li').removeClass('active');//or $('.active').removeClass('active');
-    });
-</script>
+        <!--$('.nav li').removeClass('active');//or $('.active').removeClass('active');-->
+    <!--});-->
+<!--</script>-->
 
     <!--$(function () {-->
         <!--$('.navmenu').offcanvas({-->
@@ -53,3 +56,50 @@
         <!--}).offcanvas('show');-->
     <!--});-->
 <!--</script>-->
+<div id="intropopover-content" class="hide">
+    <div class="row">
+        <div class="col-sm-12">
+            <p>You are not actually changing pages, just issuing these command(s):</p>
+            <div><code>1. rm . --exclude navbar</code></div>
+            <div><code>2. add intro</code></div>
+        </div>
+    </div>
+</div>
+
+<div id="resumepopover-content" class="hide">
+    <div class="row">
+        <div class="col-sm-12">
+            <p>You are not actually changing pages, just issuing these command(s):</p>
+            <div><code>1. rm . --exclude navbar</code></div>
+            <div><code>2. add resume</code></div>
+        </div>
+    </div>
+</div>
+
+<div id="sandboxpopover-content" class="hide">
+    <div class="row">
+        <div class="col-sm-12">
+            <p>The sandbox page is a relatively blank slate for the user to do whatever they want.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p>You are not actually changing pages, just issuing these command(s):</p>
+            <div><code>1. rm . --exclude navbar</code></div>
+        </div>
+    </div>
+</div>
+<div id="lazypopover-content" class="hide">
+    <div class="row">
+        <div class="col-sm-12">
+            <p>Show everything there is to see at once..</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <p>You are not actually changing pages, just issuing these command(s):</p>
+            <div><code>1. rm .</code></div>
+            <div><code>1. add .</code></div>
+        </div>
+    </div>
+</div>

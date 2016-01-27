@@ -1,7 +1,8 @@
 
 /* ORANGE */
 .navbar-default {
-    background-color: #514c52;
+    /*background-color: #514c52;*/
+    background-color: rgba(81, 76, 82, 0.54);
     border-color: #dd4814;
 }
 .navbar-default .navbar-brand {
@@ -157,3 +158,5 @@
     /*background-color: rgba(81,76,85,0.58);*/
     border-color: #070707;
 }
+
+.popover { max-width: 400px;}
