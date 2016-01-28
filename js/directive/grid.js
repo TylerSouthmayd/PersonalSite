@@ -125,16 +125,16 @@ angular.module('mainApp')
 
             switch($location.path())
             {
-                case '/resume':
-                    parseGridMethod({method: 'add', component: 'resume'});
-                    break;
+//                case '/resume':
+//                    parseGridMethod({method: 'add', component: 'resume'});
+//                    break;
                 case '/home':
                     parseGridMethod({method: 'add', component: 'navbar'});
                     parseGridMethod({method: 'add', component: 'intro'});
                     break;
-                case '/sandbox':
-                    parseGridMethod({method: 'add', component: 'intro'});
-                    break;
+//                case '/sandbox':
+//                    parseGridMethod({method: 'add', component: 'intro'});
+//                    break;
             }
         };
         scope.init();

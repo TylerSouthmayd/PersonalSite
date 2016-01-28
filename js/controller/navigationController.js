@@ -21,7 +21,7 @@ function NavigationController($scope, $location, BroadcastUtility)
             {method: 'rm', component: '.', exclude: 'navbar'},
             {method: 'add', component: 'intro'}
         ];
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
         BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component);
         BroadcastUtility.updateGrid(queue);
         $('#sandboxnav').removeClass('active');
@@ -37,7 +37,7 @@ function NavigationController($scope, $location, BroadcastUtility)
             {method: 'add', component: 'resume'}
         ];
 
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
         BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component);
         BroadcastUtility.updateGrid(queue);
         $('#intronav').removeClass('active');
@@ -57,8 +57,13 @@ function NavigationController($scope, $location, BroadcastUtility)
         $('#lazynav').removeClass('active');
         $('#sandboxnav').addClass('active');
 
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
 
+    };
+    $scope.toggleHelpModal = function()
+    {
+        $('#helpModal').modal('toggle');
+        BroadcastUtility.consoleMessage('help');
     };
 
     $scope.lazyView = function()
@@ -68,8 +73,8 @@ function NavigationController($scope, $location, BroadcastUtility)
             {method: 'add', component: '.', exclude: 'navbar'}
         ];
         BroadcastUtility.updateGrid(queue);
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
-        BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component + '--exclude navbar');
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
+        BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component + ' --exclude navbar');
 
         $('#intronav').removeClass('active');
         $('#resumenav').removeClass('active');
@@ -126,6 +131,16 @@ function NavigationController($scope, $location, BroadcastUtility)
                 function()
                 {
                     return $('#lazypopover-content').html();
+                }
+        });
+        $('#helpnav').popover({
+            trigger : 'hover',
+            placement: 'bottom',
+            html: true,
+            content:
+                function()
+                {
+                    return $('#helppopover-content').html();
                 }
         });
     };

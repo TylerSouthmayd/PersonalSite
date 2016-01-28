@@ -14,7 +14,6 @@
             <ul class="nav navbar-nav">
                 <li class="nav-item" id="intronav" data-toggle="popover">
                     <a class="clickable" ng-click="introView();">Intro</a>
-                    <!--<a class="clickable">Intro</a>-->
                 </li>
                 <li class="nav-item" id="sandboxnav" data-toggle="popover">
                     <a class="clickable" ng-click="sandboxView();">Sandbox</a>
@@ -25,6 +24,9 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav pull-right">
+                <li class="nav-item" id="helpnav" data-toggle="popover">
+                    <a class="clickable" ng-click="toggleHelpModal();">Help</a>
+                </li>
                 <li class="nav-item" id="lazynav" data-toggle="popover">
                     <a class="clickable" ng-click="lazyView();">Lazy View</a>
                 </li>
@@ -37,7 +39,7 @@
 <div id="intropopover-content" class="hide">
     <div class="row">
         <div class="col-sm-12">
-            <p>You are not actually changing pages, just issuing the following command(s):</p>
+            <p>You are not actually changing pages, just queueing the following commands to the terminal:</p>
             <div><code>1. rm . --exclude navbar</code></div>
             <div><code>2. add intro</code></div>
         </div>
@@ -47,7 +49,7 @@
 <div id="resumepopover-content" class="hide">
     <div class="row">
         <div class="col-sm-12">
-            <p>You are not actually changing pages, just issuing the following command(s):</p>
+            <p>You are not actually changing pages, just queueing the following commands to the terminal:</p>
             <div><code>1. rm . --exclude navbar</code></div>
             <div><code>2. add resume</code></div>
         </div>
@@ -57,12 +59,12 @@
 <div id="sandboxpopover-content" class="hide">
     <div class="row">
         <div class="col-sm-12">
-            <p>The sandbox page is a relatively blank slate for the user to do whatever they want.</p>
+            <p>The sandbox page is a blank slate for the user to do whatever they want.</p>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <p>You are not actually changing pages, just issuing the following command(s):</p>
+            <p>You are not actually changing pages, just queueing the following commands to the terminal:</p>
             <div><code>1. rm . --exclude navbar</code></div>
         </div>
     </div>
@@ -75,9 +77,17 @@
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <p>You are not actually changing pages, just issuing the following command(s):</p>
+            <p>You are not actually changing pages, just queueing the following commands to the terminal:</p>
             <div><code>1. rm . --exclude navbar</code></div>
             <div><code>2. add . --exclude navbar</code></div>
+        </div>
+    </div>
+</div>
+<div id="helppopover-content" class="hide">
+    <div class="row">
+        <div class="col-sm-12">
+            <p>Issue the following command to the terminal:</p>
+            <div><code>1. help</code></div>
         </div>
     </div>
 </div>

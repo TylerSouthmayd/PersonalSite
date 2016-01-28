@@ -69,6 +69,7 @@ angular.module('mainApp')
 //            console.log('msg arg', args);
             newTerminalLine();
             addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + args);
+            $scope.commandHistory.push(args);
         });
 
         //@Param - String line to add to console output
@@ -133,6 +134,9 @@ angular.module('mainApp')
                         break;
                     case "mv":
                         mv(res);
+                        break;
+                    case "man":
+                        man(res);
                         break;
                     case  "help":
                         help(res);
