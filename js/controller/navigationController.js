@@ -11,6 +11,7 @@ function NavigationController($scope, $location, BroadcastUtility)
         $('#sandboxnav').removeClass('active');
         $('#resumenav').removeClass('active');
         $('#intronav').removeClass('active');
+        $('#lazynav').removeClass('active');
         $('#' + tab).addClass('active');
     });
 
@@ -20,11 +21,12 @@ function NavigationController($scope, $location, BroadcastUtility)
             {method: 'rm', component: '.', exclude: 'navbar'},
             {method: 'add', component: 'intro'}
         ];
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component);
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
         BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component);
         BroadcastUtility.updateGrid(queue);
         $('#sandboxnav').removeClass('active');
         $('#resumenav').removeClass('active');
+        $('#lazynav').removeClass('active');
         $('#intronav').addClass('active');
     };
 
@@ -35,10 +37,11 @@ function NavigationController($scope, $location, BroadcastUtility)
             {method: 'add', component: 'resume'}
         ];
 
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component);
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
         BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component);
         BroadcastUtility.updateGrid(queue);
         $('#intronav').removeClass('active');
+        $('#lazynav').removeClass('active');
         $('#sandboxnav').removeClass('active');
         $('#resumenav').addClass('active');
     };
@@ -51,21 +54,27 @@ function NavigationController($scope, $location, BroadcastUtility)
         BroadcastUtility.updateGrid(queue);
         $('#intronav').removeClass('active');
         $('#resumenav').removeClass('active');
+        $('#lazynav').removeClass('active');
         $('#sandboxnav').addClass('active');
 
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component);
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
 
     };
 
     $scope.lazyView = function()
     {
         var queue = [
-            {method: 'rm', component: '.'},
-            {method: 'add', component: '.'}
+            {method: 'rm', component: '.', exclude: 'navbar'},
+            {method: 'add', component: '.', exclude: 'navbar'}
         ];
         BroadcastUtility.updateGrid(queue);
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component);
-        BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component);
+        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + '--exclude navbar');
+        BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component + '--exclude navbar');
+
+        $('#intronav').removeClass('active');
+        $('#resumenav').removeClass('active');
+        $('#sandboxnav').removeClass('active');
+        $('#lazynav').addClass('active');
 
     };
 

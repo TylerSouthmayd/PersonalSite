@@ -70,7 +70,7 @@ class Command {
 
                     foreach($argumentOptions as $argOpt)
                     {
-                        if($argOpt["argument_name"] == $arg["argument_name"])
+                        if($argOpt["argument_id"] == $arg["argument_id"])
                         {
                             array_push($argOpts, array(
                                 "option_id" => $argOpt["argument_option_id"],

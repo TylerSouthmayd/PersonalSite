@@ -196,6 +196,13 @@ angular.module('mainApp')
                     ];
                     BroadcastUtility.activateTab('sandboxnav');
                     break;
+                case "lazyview":
+                    $scope.grid = [
+                        {method: 'rm', component: '.', exclude: 'navbar'},
+                        {method: 'add', component: '.', exclude: 'navbar'}
+                    ];
+                    BroadcastUtility.activateTab('lazynav');
+                    break;
             }
 
 //            $location.path($scope.path);
@@ -325,6 +332,11 @@ angular.module('mainApp')
 //            }
             $timeout(function()
             {
+                var option = res.argumentInfo.tier1_option || res.argumentInfo.tier2_option || false;
+                option = !option? false : option.option;
+                var arg2 = res.argumentInfo.tier2_arg != null ? res.argumentInfo.tier2_arg.argument : false;
+//                console.log('add option and arg2', option, arg2);
+                var excludeNav = option == '--exclude' && arg2 == 'navbar';
 
                 if(res.argumentInfo.tier1_arg.argument == 'project')
                 {
@@ -349,12 +361,15 @@ angular.module('mainApp')
                             $scope.grid = {method: "add", component: "projects/htmleditor"};
                             break;
                         case ".":
-                            $scope.grid = {method: "add", component: "."};
+                            $scope.grid = {method: "add", component: ".", exclude: excludeNav ? 'navbar' : false};
                             break;
                     }
                 } else
                 {
-                    $scope.grid = {method: "add", component: res.argumentInfo.tier1_arg.argument};
+                    $scope.grid = {
+                        method: "add",
+                        component: res.argumentInfo.tier1_arg.argument,
+                        exclude: excludeNav? 'navbar' : false};
 
                 }
                 addLineNoDelay('Adding copy of \'' + $scope.grid.component + '\' component');
@@ -365,46 +380,49 @@ angular.module('mainApp')
         {
             newTerminalLine();
             console.log('rm', res);
-//            if($location.path() !== '/sandbox')
-//            {
-//                addLineNoDelay('You can only remove items you have added to the \'\\sandbox\' page');
-//                newTerminalLine();
-//            } else
-//
-//            {
-                if(res.argumentInfo.tier1_arg.argument == 'project')
+
+            var option = res.argumentInfo.tier1_option || res.argumentInfo.tier2_option || false;
+            option = !option? false : option.option;
+            var arg2 = res.argumentInfo.tier2_arg != null ? res.argumentInfo.tier2_arg.argument : false;
+//            console.log('rm option and arg2', option, arg2);
+            var excludeNav = option == '--exclude' && arg2 == 'navbar';
+
+            if(res.argumentInfo.tier1_arg.argument == 'project')
+            {
+                switch (res.argumentInfo.tier2_arg.argument)
                 {
-                    switch (res.argumentInfo.tier2_arg.argument)
-                    {
-                        case "projectheader":
-                            $scope.grid = {method: "rm", component: "projects/projectheader"};
-                            break;
-                        case "tylersouthmayd.com":
-                            $scope.grid = {method: "rm", component: "projects/tylersouthmayd.com"};
-                            break;
-                        case "raspberrypi":
-                            $scope.grid = {method: "rm", component: "projects/raspberrypi"};
-                            break;
-                        case "uconnsmash.com":
-                            $scope.grid = {method: "rm", component: "projects/uconnsmash.com"};
-                            break;
-                        case "chinook":
-                            $scope.grid = {method: "rm", component: "projects/chinook"};
-                            break;
-                        case "htmleditor":
-                            $scope.grid = {method: "rm", component: "projects/htmleditor"};
-                            break;
-                        case ".":
-                            $scope.grid = {method: "rm", component: "."};
-                            break;
-                    }
-                } else
-                {
-                    if (res.argumentInfo.tier1_arg.argument == 'intro') { BroadcastUtility.resetIntro();}
-                    $scope.grid = {method: "rm", component: res.argumentInfo.tier1_arg.argument};
+                    case "projectheader":
+                        $scope.grid = {method: "rm", component: "projects/projectheader"};
+                        break;
+                    case "tylersouthmayd.com":
+                        $scope.grid = {method: "rm", component: "projects/tylersouthmayd.com"};
+                        break;
+                    case "raspberrypi":
+                        $scope.grid = {method: "rm", component: "projects/raspberrypi"};
+                        break;
+                    case "uconnsmash.com":
+                        $scope.grid = {method: "rm", component: "projects/uconnsmash.com"};
+                        break;
+                    case "chinook":
+                        $scope.grid = {method: "rm", component: "projects/chinook"};
+                        break;
+                    case "htmleditor":
+                        $scope.grid = {method: "rm", component: "projects/htmleditor"};
+                        break;
+                    case ".":
+                        $scope.grid = {method: "rm", component: "."};
+                        break;
                 }
-                addLineNoDelay('Removing copy of \'' + $scope.grid.component + '\' component');
-//            }
+            } else
+            {
+                if (res.argumentInfo.tier1_arg.argument == 'intro') { BroadcastUtility.resetIntro();}
+                $scope.grid = {
+                    method: "rm",
+                    component: res.argumentInfo.tier1_arg.argument,
+                    exclude: excludeNav? 'navbar' : false
+                };
+            }
+            addLineNoDelay('Removing copy of \'' + $scope.grid.component + '\' component');
         }
 
         $scope.captureKeyPress = function(event)
