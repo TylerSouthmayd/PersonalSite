@@ -66,10 +66,17 @@ angular.module('mainApp')
 
         $scope.$on('Console Message', function(prop, args)
         {
-//            console.log('msg arg', args);
-            newTerminalLine();
-            addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + args);
-            $scope.commandHistory.push(args);
+            console.log('msg arg', args);
+//            newTerminalLine();
+//            addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + args.method);
+            if(args.consoleCommand == true)
+            {
+                $scope.command = args.method;
+                executeCommand();
+                $scope.command = '';
+                commandHistoryIndex = $scope.commandHistory.length;
+            }
+//            $scope.commandHistory.push(args.method);
         });
 
         //@Param - String line to add to console output

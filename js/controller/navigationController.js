@@ -17,13 +17,8 @@ function NavigationController($scope, $location, BroadcastUtility)
 
     $scope.introView = function(id)
     {
-        var queue = [
-            {method: 'rm', component: '.', exclude: 'navbar'},
-            {method: 'add', component: 'intro'}
-        ];
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
-        BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component);
-        BroadcastUtility.updateGrid(queue);
+        var queue = {method: 'cd home', consoleCommand: true};
+        BroadcastUtility.consoleMessage(queue);
         $('#sandboxnav').removeClass('active');
         $('#resumenav').removeClass('active');
         $('#lazynav').removeClass('active');
@@ -32,14 +27,8 @@ function NavigationController($scope, $location, BroadcastUtility)
 
     $scope.resumeView = function()
     {
-        var queue = [
-            {method: 'rm', component: '.', exclude: 'navbar'},
-            {method: 'add', component: 'resume'}
-        ];
-
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
-        BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component);
-        BroadcastUtility.updateGrid(queue);
+        var queue = {method: 'cd resume', consoleCommand: true};
+        BroadcastUtility.consoleMessage(queue);
         $('#intronav').removeClass('active');
         $('#lazynav').removeClass('active');
         $('#sandboxnav').removeClass('active');
@@ -48,39 +37,31 @@ function NavigationController($scope, $location, BroadcastUtility)
 
     $scope.sandboxView = function()
     {
-        var queue = [
-            {method: 'rm', component: '.', exclude: 'navbar'}
-        ];
-        BroadcastUtility.updateGrid(queue);
+        var queue = {method: 'cd sandbox', consoleCommand: true};
+        BroadcastUtility.consoleMessage(queue);
         $('#intronav').removeClass('active');
         $('#resumenav').removeClass('active');
         $('#lazynav').removeClass('active');
         $('#sandboxnav').addClass('active');
-
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
-
-    };
-    $scope.toggleHelpModal = function()
-    {
-        $('#helpModal').modal('toggle');
-        BroadcastUtility.consoleMessage('help');
     };
 
     $scope.lazyView = function()
     {
-        var queue = [
-            {method: 'rm', component: '.', exclude: 'navbar'},
-            {method: 'add', component: '.', exclude: 'navbar'}
-        ];
-        BroadcastUtility.updateGrid(queue);
-        BroadcastUtility.consoleMessage(queue[0].method + ' ' + queue[0].component + ' --exclude navbar');
-        BroadcastUtility.consoleMessage(queue[1].method + ' ' + queue[1].component + ' --exclude navbar');
-
+        var queue = {method: 'cd lazyview', consoleCommand: true};
+        BroadcastUtility.consoleMessage(queue);
         $('#intronav').removeClass('active');
         $('#resumenav').removeClass('active');
         $('#sandboxnav').removeClass('active');
         $('#lazynav').addClass('active');
 
+    };
+
+    $scope.toggleHelpModal = function()
+    {
+//        $('#helpModal').modal('toggle');
+        var queue = {method: 'help', consoleCommand: true};
+
+        BroadcastUtility.consoleMessage(queue);
     };
 
     $scope.isActive = function (viewLocation) {
