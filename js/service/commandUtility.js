@@ -108,7 +108,7 @@ function CommandUtility(CommandDataSource)
                         {
                             curr = cmd.tier1_arguments[i];
 
-                            console.log('curr argument', curr, commandParts[0]);
+//                            console.log('curr argument', curr, commandParts[0]);
                             if(curr.argument == commandParts[0])
                             {
                                 result.argumentInfo.tier1_arg = curr;
@@ -160,14 +160,14 @@ function CommandUtility(CommandDataSource)
                         for(var i = 0; i < cmd.tier2_arguments.length; i++)
                         {
                             curr = cmd.tier2_arguments[i];
-                            console.log('currTier2', curr, currArg, commandParts);
+//                            console.log('currTier2', curr, currArg, commandParts);
                             //
                             if(curr.argument_parent_id == currArg.argument_id && curr.argument.indexOf(commandParts[0]) == 0)
                             {
                                 result.argumentInfo.tier2_arg = curr;
                                 currArg = curr;
                                 success = true;
-                                console.log('made tier 2 apply2');
+//                                console.log('made tier 2 apply2');
                                 tier2Applied = true;
                                 break;
                             }
@@ -477,7 +477,7 @@ function CommandUtility(CommandDataSource)
             for(var i = 0; i < cmd.tier2_arguments.length; i++)
             {
                 curr = cmd.tier2_arguments[i];
-                console.log('curr', curr);
+//                console.log('curr', curr);
                 if(curr.argument_parent_id == argParent.argument_id && curr.argument.indexOf(argPiece) == 0)
                 {
                     autocompleteChoices.push(curr.argument);

@@ -13,18 +13,12 @@ angular.module('mainApp')
     {
         console.log(scope, elem, attr);
 
-        scope.universalNavbar = function()
-        {
-            BroadcastUtility.toggleNavbar();
-        };
-
         function parseGridMethod(info)
         {
             console.log('GRID METHOD: ', info);
             console.log('grid copy', angular.copy(scope.grid));
             scope.method = info.method;
             scope.component = info.component;
-
             scope.exclude = info.exclude || false;
             var i = 0;
             switch(scope.method)
@@ -34,11 +28,14 @@ angular.module('mainApp')
                     {
                         for(i = 0; i < scope.gridChoices.length; i++)
                         {
-                            (scope.grid).push({
-                                name: scope.gridChoices[i].name,
-                                url: scope.gridChoices[i].url,
-                                poppable: scope.gridChoices[i].poppable || false
-                            });
+                            if(scope.gridChoices[i].name !== scope.exclude)
+                            {
+                                (scope.grid).push({
+                                    name: scope.gridChoices[i].name,
+                                    url: scope.gridChoices[i].url,
+                                    poppable: scope.gridChoices[i].poppable || false
+                                });
+                            }
                         }
                     } else
                     {
@@ -78,29 +75,6 @@ angular.module('mainApp')
                             }
                         }
                     }
-
-
-//                    for(i = 0; i < scope.grid.length; i++)
-//                    {
-//                        if(scope.component == '.')
-//                        {
-//                            if(scope.exclude !== false)
-//                            {
-//                                for(i = 0; i < scope.grid.length; i++)
-//                                {
-//                                    if(scope.grid[i].name !== scope.exclude)
-//                                    {
-//                                        scope.grid.splice(i,1);
-//                                    }
-//                                }
-//                            } else scope.grid = [];
-//                            break;
-//                        } else if(scope.grid[i].name == scope.component)
-//                        {
-//                            scope.grid.splice(i,1);
-//                            break;
-//                        }
-//                    }
             }
             console.log('$scope.grid', scope.grid);
         }
@@ -151,15 +125,16 @@ angular.module('mainApp')
 
             switch($location.path())
             {
-                case '/resume':
-                    parseGridMethod({method: 'add', component: 'resume'});
-                    break;
+//                case '/resume':
+//                    parseGridMethod({method: 'add', component: 'resume'});
+//                    break;
                 case '/home':
                     parseGridMethod({method: 'add', component: 'navbar'});
-                    break;
-                case '/sandbox':
                     parseGridMethod({method: 'add', component: 'intro'});
                     break;
+//                case '/sandbox':
+//                    parseGridMethod({method: 'add', component: 'intro'});
+//                    break;
             }
         };
         scope.init();
