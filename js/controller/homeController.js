@@ -34,7 +34,7 @@ function HomeController($scope, $timeout)
             addOutroLineWithCharDelay(outroString, 75);
             $timeout(function()
             {
-                outroString = '\nTry \'help\', \'add navbar\', \'cd resume\', or press tab to see available commands.';
+                outroString = '\nTry \'help\', \'add project tylersouthmayd.com\', \'cd resume\', or press tab to see available commands.';
                 addOutroLineWithCharDelay(outroString, 75);
             },75*(outroString.length));
         },75*(introString.length));
@@ -68,10 +68,6 @@ function HomeController($scope, $timeout)
                 }, delay*i);
             })(i);
         }
-    }
-    function addLineNoDelay(line)
-    {
-        $scope.introText += line;
     }
 
     $scope.init = function()

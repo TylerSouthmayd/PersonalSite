@@ -119,7 +119,7 @@ class Command {
 //                            "requires_option" => $needsOp
 //                        ));
 //                    }
-
+                $argOpts = array();
                 }
             }
             foreach($commandOptions as $cmdOpt)

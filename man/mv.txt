@@ -2,9 +2,20 @@ NAME
        mv - move
 SYNOPSIS
        mv [ARGUMENT] [OPTION]
+       mv [ARGUMENT1] [OPTION] [ARGUMENT2]
+       mv [ARGUMENT1] [ARGUMENT2] [OPTION]
 DESCRIPTION
        Used in a literal sense - applies the specified option to the content piece argument to reposition items on the view.
 ARGUMENTS / Options
-       terminal / -t,--top,-b,--bottom
-
-
+       All movable components have the following options:
+            --up or -u, --down or -d, --top or -t, and --bottom or -b
+       Movable components:
+            project
+                projectheader
+                tylersouthmayd.com
+                raspberrypi
+                uconnsmash.com
+                chinook
+                htmleditor
+            navbar
+            intro

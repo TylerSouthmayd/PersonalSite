@@ -62,19 +62,20 @@ angular.module('mainApp')
         {
 //            console.log('made it to watch');
             if ($scope.grid !== undefined) { BroadcastUtility.updateGrid($scope.grid); }
+            $scope.grid = '';
         },true);
 
         $scope.$on('Console Message', function(prop, args)
         {
             console.log('msg arg', args);
-//            newTerminalLine();
-//            addLineNoDelay($scope.user + '@pseubuntu' + $scope.path + ': ' + args.method);
             if(args.consoleCommand == true)
             {
                 $scope.command = args.method;
                 executeCommand();
-                $scope.command = '';
-                commandHistoryIndex = $scope.commandHistory.length;
+            } else
+            {
+                newTerminalLine();
+                addLineNoDelay(args);
             }
 //            $scope.commandHistory.push(args.method);
         });
@@ -165,6 +166,8 @@ angular.module('mainApp')
                 addLineNoDelay(res.errorMsg);
             }
 
+            $scope.command = '';
+            commandHistoryIndex = $scope.commandHistory.length;
         }
 
         function ls()
@@ -295,96 +298,95 @@ angular.module('mainApp')
 
         function mv(res)
         {
-            console.log('move');
-            var arg1 = res.argumentInfo.tier1_arg.argument;
-            var arg2 = res.argumentInfo.tier1_option.option;
-            console.log('arg1', arg1, 'arg2', arg2);
-            if(arg1 == 'terminal') {
-                newTerminalLine();
-                if (arg2 == '--top' || arg2 == '-t') {
-                    if ($scope.showTop) {
-                        addLineNoDelay("The terminal is already on the top of the view.");
-                    }
-                    else {
-                        addLineNoDelay("The terminal is currently on the bottom of the view");
-                        newTerminalLine();
-                        addLineNoDelay("Moving terminal to top of the view.");
-                    }
-                    $scope.showTop = true;
-                } else if (arg2 == '--bottom' || arg2 == '-b') {
-                    if (!$scope.showTop) {
-                        addLineNoDelay("The terminal is already on the bottom of the view.");
-                    }
-                    else {
-                        addLineNoDelay("The terminal is currently on the top of the view");
-                        newTerminalLine();
-                        addLineNoDelay("Moving terminal to bottom of the view.");
-                    }
-                    $scope.showTop = false;
-                } else {
-                    addLineNoDelay("Invalid arg" + arg2 + "for command move");
+            newTerminalLine();
+            console.log('move', res);
+            var option = res.argumentInfo.tier1_option || res.argumentInfo.tier2_option || false;
+            option = !option ? false : option.option;
+            var arg2 = res.argumentInfo.tier2_arg != null ? res.argumentInfo.tier2_arg.argument : false;
+
+            if(res.argumentInfo.tier1_arg.argument == 'project')
+            {
+                switch(arg2)
+                {
+                    case "projectheader":
+                        $scope.grid = {method: "mv", component: "projects/projectheader", option: option};
+                        break;
+                    case "tylersouthmayd.com":
+                        $scope.grid = {method: "mv", component: "projects/tylersouthmayd.com", option: option};
+                        break;
+                    case "raspberrypi":
+                        $scope.grid = {method: "mv", component: "projects/raspberrypi", option: option};
+                        break;
+                    case "uconnsmash.com":
+                        $scope.grid = {method: "mv", component: "projects/uconnsmash.com", option: option};
+                        break;
+                    case "chinook":
+                        $scope.grid = {method: "mv", component: "projects/chinook", option: option};
+                        break;
+                    case "htmleditor":
+                        $scope.grid = {method: "mv", component: "projects/htmleditor", option: option};
+                        break;
                 }
             } else
             {
-                addLineNoDelay("Invalid element to move: " + arg1);
+                $scope.grid = {
+                    method: "mv",
+                    component: res.argumentInfo.tier1_arg.argument,
+                    option: option
+                };
+
             }
+            addLineNoDelay('moving \'' + $scope.grid.component + '\' component');
         }
 
         function add(res)
         {
             newTerminalLine();
             console.log('add', res);
-//            if($location.path() !== '/sandbox')
-//            {
-//                addLineNoDelay('Changing directory to  \'\\sandbox\'');
-//                newTerminalLine();
-//                $scope.path = '/sandbox';
-//                $location.path($scope.path);
-//            }
-            $timeout(function()
+            var option = res.argumentInfo.tier1_option || res.argumentInfo.tier2_option || false;
+            option = !option? false : option.option;
+            var arg2 = res.argumentInfo.tier2_arg != null ? res.argumentInfo.tier2_arg.argument : false;
+            var excludeNav = option == '--exclude' && arg2 == 'navbar';
+
+            if(res.argumentInfo.tier1_arg.argument == 'project')
             {
-                var option = res.argumentInfo.tier1_option || res.argumentInfo.tier2_option || false;
-                option = !option? false : option.option;
-                var arg2 = res.argumentInfo.tier2_arg != null ? res.argumentInfo.tier2_arg.argument : false;
-//                console.log('add option and arg2', option, arg2);
-                var excludeNav = option == '--exclude' && arg2 == 'navbar';
-
-                if(res.argumentInfo.tier1_arg.argument == 'project')
+                switch(res.argumentInfo.tier2_arg.argument)
                 {
-                    switch(res.argumentInfo.tier2_arg.argument)
-                    {
-                        case "projectheader":
-                            $scope.grid = {method: "add", component: "projects/projectheader"};
-                            break;
-                        case "tylersouthmayd.com":
-                            $scope.grid = {method: "add", component: "projects/tylersouthmayd.com"};
-                            break;
-                        case "raspberrypi":
-                            $scope.grid = {method: "add", component: "projects/raspberrypi"};
-                            break;
-                        case "uconnsmash.com":
-                            $scope.grid = {method: "add", component: "projects/uconnsmash.com"};
-                            break;
-                        case "chinook":
-                            $scope.grid = {method: "add", component: "projects/chinook"};
-                            break;
-                        case "htmleditor":
-                            $scope.grid = {method: "add", component: "projects/htmleditor"};
-                            break;
-                        case ".":
-                            $scope.grid = {method: "add", component: ".", exclude: excludeNav ? 'navbar' : false};
-                            break;
-                    }
-                } else
-                {
-                    $scope.grid = {
-                        method: "add",
-                        component: res.argumentInfo.tier1_arg.argument,
-                        exclude: excludeNav? 'navbar' : false};
-
+                    case "projectheader":
+                        $scope.grid = {method: "add", component: "projects/projectheader"};
+                        break;
+                    case "tylersouthmayd.com":
+                        $scope.grid = {method: "add", component: "projects/tylersouthmayd.com"};
+                        break;
+                    case "raspberrypi":
+                        $scope.grid = {method: "add", component: "projects/raspberrypi"};
+                        break;
+                    case "uconnsmash.com":
+                        $scope.grid = {method: "add", component: "projects/uconnsmash.com"};
+                        break;
+                    case "chinook":
+                        $scope.grid = {method: "add", component: "projects/chinook"};
+                        break;
+                    case "htmleditor":
+                        $scope.grid = {method: "add", component: "projects/htmleditor"};
+                        break;
+                    case ".":
+                        $scope.grid = {method: "add", component: ".", exclude: excludeNav ? 'navbar' : false};
+                        break;
                 }
-                addLineNoDelay('Adding copy of \'' + $scope.grid.component + '\' component');
-            },350);
+            } else
+            {
+                $scope.grid = {
+                    method: "add",
+                    component: res.argumentInfo.tier1_arg.argument,
+                    exclude: excludeNav? 'navbar' : false};
+
+            }
+
+            if($scope.grid.component == '.')
+            {
+                addLineNoDelay('adding all components not already displayed');
+            } else addLineNoDelay('adding \'' + $scope.grid.component + '\' component if not already displayed');
         }
 
         function rm(res)
@@ -433,7 +435,10 @@ angular.module('mainApp')
                     exclude: excludeNav? 'navbar' : false
                 };
             }
-            addLineNoDelay('Removing copy of \'' + $scope.grid.component + '\' component');
+            if($scope.grid.component == '.')
+            {
+                addLineNoDelay('removing all components not already displayed');
+            } else addLineNoDelay('removing \'' + $scope.grid.component + '\' component if not already displayed');
         }
 
         $scope.captureKeyPress = function(event)
@@ -448,8 +453,6 @@ angular.module('mainApp')
                 $scope.command = ($scope.command).toLowerCase();
                 console.log('enter', $scope.command);
                 executeCommand();
-                $scope.command = '';
-                commandHistoryIndex = $scope.commandHistory.length;
 
                 //up
             } else if(event.which === 38)
