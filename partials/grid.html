@@ -1,1 +1,7 @@
-<!--{{grid}}-->
+<div style="margin-top:55px;"></div>
+<div ng-repeat="component in grid" style="margin-bottome:10px;">
+    <div ng-include="component.url"
+        id="partial{{$index}}"
+        ng-dblclick="popout('partial' + $index, component)">
+    </div>
+</div>

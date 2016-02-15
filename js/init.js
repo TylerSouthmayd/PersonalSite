@@ -3,5 +3,5 @@
  */
 
 function initNavbar(){
-    $('.nav li').removeClass('active');
+//    $('.nav li').removeClass('active');
 }

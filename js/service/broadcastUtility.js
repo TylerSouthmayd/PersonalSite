@@ -3,13 +3,13 @@
  */
 mainApp.factory('BroadcastUtility', function($rootScope)
 {
-    var service = [];
+    var service = {};
     service.message = 'init';
 
     /* * ***** Properties ***** (things to $on)
-     * 'Update Grid Broadcasted'
-     *
-     *
+     * 'Update Grid' - grid method/component obj param
+     * 'Activate Tab' - tab id param
+     * 'Console Message' - msg param
      *
      *
      *
@@ -20,7 +20,33 @@ mainApp.factory('BroadcastUtility', function($rootScope)
         //console.log('grid', grid);
 
         service.broadcastPropertyChanged('Update Grid', grid);
-        console.log('Update Grid Broadcasted');
+//        console.log('Update Grid Broadcasted');
+    };
+
+    service.toggleNavbar = function()
+    {
+        //console.log('grid', grid);
+
+        service.broadcastPropertyChanged('Toggle Navbar');
+//        console.log('Update Grid Broadcasted');
+    };
+
+    service.resetIntro = function()
+    {
+//        console.log('reset intro');
+        service.broadcastPropertyChanged('Reset Intro');
+    };
+
+    service.activateTab = function(tab)
+    {
+//        console.log('tab from service', tab);
+        service.broadcastPropertyChanged('Activate Tab', tab);
+    };
+
+    service.consoleMessage = function(msg)
+    {
+//        console.log('msg from service', msg);
+        service.broadcastPropertyChanged('Console Message', msg);
     };
 
     service.broadcastPropertyChanged = function(property, args)

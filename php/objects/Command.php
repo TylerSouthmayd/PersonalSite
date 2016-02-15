@@ -31,8 +31,8 @@ class Command {
     public static function getAllCommands()
     {
         $dbutil = new SQLUtil();
-
-        $res = $dbutil->selectAllFromTable(self::TABLE);
+        $where = ' active = \'1\' ';
+        $res = $dbutil->selectAllFromTableWhere(self::TABLE, $where);
         $retArr = $dbutil::interpretQueryResponse($res);
         return $retArr;
     }
@@ -70,7 +70,7 @@ class Command {
 
                     foreach($argumentOptions as $argOpt)
                     {
-                        if($argOpt["argument_name"] == $arg["argument_name"])
+                        if($argOpt["argument_id"] == $arg["argument_id"])
                         {
                             array_push($argOpts, array(
                                 "option_id" => $argOpt["argument_option_id"],
@@ -119,7 +119,7 @@ class Command {
 //                            "requires_option" => $needsOp
 //                        ));
 //                    }
-
+                $argOpts = array();
                 }
             }
             foreach($commandOptions as $cmdOpt)

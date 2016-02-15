@@ -1,0 +1,16 @@
+NAME
+       rm - remove a piece of content to the view
+SYNOPSIS
+       rm [ARGUMENT1]
+       rm [ARGUMENT1] [ARGUMENT2]
+       rn .
+DESCRIPTION
+       Used to remove chosen pieces of visual content to the display if applicable.
+       Once removed, the component can be replaced using the 'add' command.
+       The 'rm' command is only supported on the '/sandbox' page.
+ARGUMENT1 / ARGUMENT2
+    project / ProjectHeader, TylerSouthmayd.com, UConnSmash,com, RaspberryPi, Chinook, HTMLEditor
+        ex: 'rm project TylerSouthmayd.com'
+    Navbar - remove navigation from the page
+        ex: 'rm Navbar'
+    . - remove every piece of content from the page

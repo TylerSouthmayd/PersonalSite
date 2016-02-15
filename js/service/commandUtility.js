@@ -14,7 +14,7 @@ function CommandUtility(CommandDataSource)
         .success(function(commands)
         {
             commandStructure = commands.data;
-            console.log('command structure', commandStructure);
+            //console.log('command structure', commandStructure);
         }
     );
 
@@ -25,7 +25,7 @@ function CommandUtility(CommandDataSource)
             .success(function(commands)
             {
                 cmdStruct = commands.data;
-                console.log('command structure', commandStructure);
+                //console.log('command structure', commandStructure);
             }
         );
         return cmdStruct;
@@ -107,6 +107,8 @@ function CommandUtility(CommandDataSource)
                         for(var i = 0; i < cmd.tier1_arguments.length; i++)
                         {
                             curr = cmd.tier1_arguments[i];
+
+//                            console.log('curr argument', curr, commandParts[0]);
                             if(curr.argument == commandParts[0])
                             {
                                 result.argumentInfo.tier1_arg = curr;
@@ -120,6 +122,8 @@ function CommandUtility(CommandDataSource)
                                         for(var j = 0; j < cmd.tier2_arguments.length; j++)
                                         {
                                             currTier2 = cmd.tier2_arguments[j];
+
+                                            console.log('currTier2', currTier2);
                                             if((currTier2.argument_parent_id == currArg.argument_id && currTier2.user_defined) || (currTier2.argument == commandParts[1]))
                                             {
                                                 currArg = currTier2;
@@ -156,12 +160,14 @@ function CommandUtility(CommandDataSource)
                         for(var i = 0; i < cmd.tier2_arguments.length; i++)
                         {
                             curr = cmd.tier2_arguments[i];
-                            if(curr.argument_parent_id == currArg.argument_id)
+//                            console.log('currTier2', curr, currArg, commandParts);
+                            //
+                            if(curr.argument_parent_id == currArg.argument_id && curr.argument.indexOf(commandParts[0]) == 0)
                             {
                                 result.argumentInfo.tier2_arg = curr;
                                 currArg = curr;
                                 success = true;
-                                console.log('made tier 2 apply2');
+//                                console.log('made tier 2 apply2');
                                 tier2Applied = true;
                                 break;
                             }
@@ -195,6 +201,7 @@ function CommandUtility(CommandDataSource)
     CommandUtility.tab = function(command)
     {
         var commandParts = (command).split(" ");
+        console.log('tab command parts', commandParts);
         CommandUtility.choices = [];
         var res;
         var arg;
@@ -206,6 +213,7 @@ function CommandUtility(CommandDataSource)
             if(commandParts.length == 1)
             {
                 var cmdguts = getCommandArgsAndOpts(cmd.command);
+                console.log('guts', cmdguts);
                 CommandUtility.choices = CommandUtility.choices.concat(cmdguts);
             } else
             {
@@ -226,11 +234,11 @@ function CommandUtility(CommandDataSource)
                     {
                         //if res = complete, do complete for tier
                         //else push choices
-                        console.log('Command Dependency Res: ', res);
+//                        console.log('Command Dependency Res: ', res);
                         if(res[0] == toComplete && !hasOptStart(toComplete))
                         {
                             arg = getArgByName(cmd, toComplete);
-                            console.log('show more');
+//                            console.log('show more');
                             CommandDataSource.getArgumentChildren(arg.argument_id, function(children)
                             {
                                 children = children.children;
@@ -260,7 +268,9 @@ function CommandUtility(CommandDataSource)
                             res = isValidArgumentOptionStart(arg, toComplete);
                         } else
                         {
+//                            console.log('testsetestset: ', cmd.command, arg, toComplete);
                             res = isValidArgumentTierStart(cmd.command, arg, toComplete);
+//                            console.log('test res:', res);
                         }
                     }
                     if(res !== false)
@@ -294,7 +304,7 @@ function CommandUtility(CommandDataSource)
                 CommandUtility.choices = CommandUtility.choices.concat(res);
             }
         }
-        console.log('choices end', CommandUtility.choices);
+//        console.log('choices end', CommandUtility.choices);
         return CommandUtility.choices;
     };
 
@@ -302,26 +312,22 @@ function CommandUtility(CommandDataSource)
     function getCommandArgsAndOpts(cmd)
     {
         var ret = [];
-        var args = [];
-        var opts = [];
         var command = getCommandByName(cmd);
         for(var i = 0; i < command.tier1_arguments.length; i++)
         {
-            args.push(command.tier1_arguments[i].argument);
+            ret.push(command.tier1_arguments[i].argument);
 
         }
         for(var i = 0; i < command.options.length; i++)
         {
-            opts.push(command.options[i].option);
+            ret.push(command.options[i].option);
         }
-        ret.push(args, opts);
         return ret;
     }
 
     function getArgumentArgsAndOpts(cmd, argName)
     {
         var arg = getArgByName(cmd, argName);
-
     }
 
     function isValidCommand(cmdName)
@@ -471,7 +477,8 @@ function CommandUtility(CommandDataSource)
             for(var i = 0; i < cmd.tier2_arguments.length; i++)
             {
                 curr = cmd.tier2_arguments[i];
-                if(curr.argument_parent_id == argParent.argument_id)
+//                console.log('curr', curr);
+                if(curr.argument_parent_id == argParent.argument_id && curr.argument.indexOf(argPiece) == 0)
                 {
                     autocompleteChoices.push(curr.argument);
                 }

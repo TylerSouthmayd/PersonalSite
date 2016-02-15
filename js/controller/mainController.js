@@ -3,10 +3,12 @@
  */
 mainApp.controller('MainController', MainController);
 
-function MainController($scope, $timeout)
+function MainController($scope, BroadcastUtility, $timeout)
 {
     $scope.toggleHelpModal = function()
     {
         $('#helpModal').modal('toggle');
     };
+
+//    $scope.setGri
 }

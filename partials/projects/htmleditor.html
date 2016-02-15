@@ -1,0 +1,32 @@
+<div class="container" ng-controller="CarouselController">
+    <div class="panel panel-default project-panel curve-borders" style="height: 500px;">
+        <div class="panel-heading curve-top-border">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1 class="panel-title">Interactive HTML Editor</h1>
+                </div>
+                <div class="col-sm-6"><span class="pull-right">Spring 2014</span></div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <p>A software engineering course project during my Sophomore year - the HTML Editor involved users adding and manipulating visual representations of HTML elements on a grid.
+                        When the user was done, the software would parse the grid elements and generate the equivalent HTML code for what the user created.</p>
+                    <p>This was my first substantial project and was written in Java with the JHotDraw framework and Java Swing.</p>
+                    <p> </p>
+                </div>
+                <div class="col-sm-8">
+                    <uib-carousel interval="3000">
+                        <uib-slide ng-repeat="slide in htmleditorslides" active="slide.active">
+                            <img ng-src="{{slide.image}}" class="img-responsive">
+                            <!--<div class="carousel-caption">-->
+                            <!--<h4>{{slide.caption}}</h4>-->
+                            <!--</div>-->
+                        </uib-slide>
+                    </uib-carousel>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
