@@ -1,36 +1,42 @@
-<div class="navbar" ng-class="{'navbar-fixed-top': showTop, 'navbar-fixed-bottom': !showTop}" ng-click="focusCommandLine();">
-    <div class="row">
-        <div class="col-sm-2">
-            <div class = "text-center">
-                <div class="btn btn-sm btn-custom" ng-click="toggleTerminal();" id="terminalbutton">
-                    Toggle Terminal <span class="glyphicon glyphicon-sort text-danger"></span>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-8" style="padding:0;">
-            <div class="terminal" uib-collapse="!showTerminal">
-                <div is-open="false">
-                    <div class="row terminal-head curve-top-border">
-                        <div class="col-sm-12 terminal-text">
-                            {{user}}@pseubuntu
+<div class="row">
+    <div class="col-sm-12">
+        <div class="navbar" ng-class="{'navbar-fixed-top': showTop, 'navbar-fixed-bottom': !showTop}" ng-click="focusCommandLine();">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-1">
+                        <div class = "text-center">
+                            <div class="btn btn-sm btn-custom" ng-click="toggleTerminal();" id="terminalbutton">
+                                Terminal <span class="glyphicon glyphicon-sort text-danger"></span>
+                            </div>
                         </div>
                     </div>
-                    <div class="row terminal-body">
-                        <div class="col-sm-12">
-                            <textarea bottom-scroll
-                                      class="terminal-text terminal-text-area"
-                                      msd-elastic
-                                      ng-model="terminalBody" ng-disabled="true">
-                            </textarea>
-                            <div class="terminal-text" ng-show="readyForInput">
-                                <span class="terminal-command-line-label">
-                                    {{user}}@pseubuntu{{path}}:
-                                </span>
-                                <input id="commandLine" type="text"
-                                       class="terminal-command-line"
-                                       ng-model="command"
-                                       ng-keydown="captureKeyPress($event);"
-                                       maxlength="100"/>
+                    <div class="col-sm-10" style="padding:0;">
+                        <div class="terminal" uib-collapse="!showTerminal">
+                            <div is-open="false">
+                                <div class="row terminal-head curve-top-border">
+                                    <div class="col-sm-12 terminal-text">
+                                        {{user}}@pseubuntu
+                                    </div>
+                                </div>
+                                <div class="row terminal-body">
+                                    <div class="col-sm-12">
+                                        <textarea bottom-scroll
+                                                  class="terminal-text terminal-text-area"
+                                                  msd-elastic
+                                                  ng-model="terminalBody" ng-disabled="true">
+                                        </textarea>
+                                        <div class="terminal-text" ng-show="readyForInput">
+                                            <span class="terminal-command-line-label">
+                                                {{user}}@pseubuntu{{path}}:
+                                            </span>
+                                            <input id="commandLine" type="text"
+                                                   class="terminal-command-line"
+                                                   ng-model="command"
+                                                   ng-keydown="captureKeyPress($event);"
+                                                   maxlength="100"/>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

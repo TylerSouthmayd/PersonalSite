@@ -23,7 +23,10 @@ body {
     background-position: 75% 95%;
     background-image: url("../img/DAZai.jpg");
 }
-
+a{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
 #helpDialog
 {
     width: 900px;
@@ -127,7 +130,6 @@ body {
 .terminal-command-line
 {
     background: inherit;
-    width: 75%;
     height: inherit;
     margin: 0 !important;
     border: none !important;
@@ -174,13 +176,16 @@ body {
 }
 .intro-text-area
 {
-    height: 350px;
-    width: inherit;
+    height:475px;
+    max-height: 700px;
+    /*min-width: 750px;*/
+    width: 100%;
     background: inherit;
     resize:none;
     margin: 0 !important;
     border: none !important;
     outline: none;
+    overflow: hidden;
 }
 .dotless
 {
@@ -204,7 +209,8 @@ body {
 {
     position:relative;
     margin-top: 10px;
-    height: 460px;
+    min-height: 460px;
+    max-height: 800px;
     color: white;
     /*background-color: #DD4814;*/
     /*background-color: #514C52;*/

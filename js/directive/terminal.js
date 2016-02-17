@@ -437,8 +437,8 @@ angular.module('mainApp')
             }
             if($scope.grid.component == '.')
             {
-                addLineNoDelay('removing all components not already displayed');
-            } else addLineNoDelay('removing \'' + $scope.grid.component + '\' component if not already displayed');
+                addLineNoDelay('removing all components');
+            } else addLineNoDelay('removing \'' + $scope.grid.component + '\' component if displayed');
         }
 
         $scope.captureKeyPress = function(event)

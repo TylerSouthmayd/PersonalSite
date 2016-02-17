@@ -34,7 +34,7 @@ angular.module('mainApp')
                             if(scope.gridChoices[i].name == scope.exclude)
                             {
                                 shouldPush = false;
-                                BroadcastUtility.consoleMessage("excluding \'" + scope.exclude + "\' component" );
+                                BroadcastUtility.consoleMessage("excluding \'" + scope.exclude + "\' component from \'add .\'" );
                             }
                             for(j = 0; j < scope.grid.length; j++)
                             {
@@ -88,7 +88,7 @@ angular.module('mainApp')
                                     scope.grid.splice(i,1);
                                 } else i++;
                             }
-                            BroadcastUtility.consoleMessage("excluding \'" + scope.exclude + "\' component" );
+                            BroadcastUtility.consoleMessage("excluding \'" + scope.exclude + "\' component from \'rm .\'");
                         }
                         break;
                     } else
